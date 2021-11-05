@@ -10,8 +10,8 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ashpex.simplegallery.PictureActivity;
-import com.ashpex.simplegallery.R;
+import com.example.testgallery.PictureActivity;
+import com.example.testgallery.R;
 
 import java.util.List;
 

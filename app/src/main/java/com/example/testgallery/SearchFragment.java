@@ -1,4 +1,4 @@
-package com.ashpex.simplegallery;
+package com.example.testgallery;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

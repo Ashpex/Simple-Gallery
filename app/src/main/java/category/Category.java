@@ -1,4 +1,4 @@
-package com.ashpex.simplegallery.category;
+package category;
 
 import java.util.List;
 

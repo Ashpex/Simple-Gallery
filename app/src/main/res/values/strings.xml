@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SimpleGallery</string>
+    <string name="app_name">TestGallery</string>
     <string name="picture">Ảnh</string>
     <string name="search">Tìm kiếm</string>
     <string name="share">Chia sẻ</string>

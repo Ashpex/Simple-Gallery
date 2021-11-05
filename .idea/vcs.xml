@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="VcsDirectoryMappings">
-    <mapping directory="$PROJECT_DIR$/.." vcs="Git" />
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/New folder/Simple-Gallery" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/New folder/Week02-Vy/Mobile_Application_Development" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/New folder/Week02_Vuong/Mobile_Application_Development" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Simple-Gallery" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Week02-Vy/Mobile_Application_Development" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/Week02_Vuong/Mobile_Application_Development" vcs="Git" />
   </component>
 </project>

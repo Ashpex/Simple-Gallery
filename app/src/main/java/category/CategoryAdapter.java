@@ -1,4 +1,4 @@
-package com.ashpex.simplegallery.category;
+package category;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ashpex.simplegallery.R;
+import com.example.testgallery.R;
 
 import java.util.List;
 
