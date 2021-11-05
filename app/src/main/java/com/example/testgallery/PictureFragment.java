@@ -1,4 +1,4 @@
-package com.ashpex.simplegallery;
+package com.example.testgallery;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ashpex.simplegallery.category.Category;
-import com.ashpex.simplegallery.category.CategoryAdapter;
+import category.Category;
+import category.CategoryAdapter;
 import girl.Girl;
 
 public class PictureFragment extends Fragment {

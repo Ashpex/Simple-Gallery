@@ -1,4 +1,4 @@
-package com.ashpex.simplegallery;
+package com.example.testgallery;
 
 import org.junit.Test;
 

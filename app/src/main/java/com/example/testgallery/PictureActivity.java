@@ -1,4 +1,4 @@
-package com.ashpex.simplegallery;
+package com.example.testgallery;
 
 import android.content.Intent;
 import android.os.Bundle;

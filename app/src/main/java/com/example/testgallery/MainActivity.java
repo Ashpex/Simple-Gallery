@@ -1,7 +1,9 @@
-package com.ashpex.simplegallery;
+package com.example.testgallery;
 
+import android.Manifest;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +11,10 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.normal.TedPermission;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        requestPermission();
     }
 
     private void setUpViewPager() {
@@ -77,5 +85,25 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void requestPermission(){
+        PermissionListener permissionlistener = new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+                Toast.makeText(MainActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onPermissionDenied(List<String> deniedPermissions) {
+                Toast.makeText(MainActivity.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        TedPermission.create()
+                .setPermissionListener(permissionlistener)
+                .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+                .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
+                .check();
     }
 }
