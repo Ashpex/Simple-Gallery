@@ -3,9 +3,9 @@
     <item
         android:id="@+id/picture"
         android:title="@string/picture"
-        android:icon="@drawable/back"/>
+        android:icon="@drawable/ic_back"/>
 
     <item android:id="@+id/search"
         android:title="@string/search"
-        android:icon="@drawable/share_picture"/>
+        android:icon="@drawable/ic_share"/>
 </menu>

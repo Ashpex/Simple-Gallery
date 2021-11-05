@@ -23,18 +23,32 @@
 
     <!--    </LinearLayout>-->
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/top_picture"
-        android:layout_width="match_parent"
+<!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
+<!--        android:id="@+id/top_picture"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentTop="true"-->
+<!--        app:itemBackground="@color/white"        -->
+<!--        app:itemIconTint="@color/black"-->
+<!--        app:itemTextColor="@color/custom_color_bottom_nav"-->
+<!--        app:labelVisibilityMode="unlabeled"-->
+<!--        app:menu="@menu/menu_top_picture" />-->
+    <ImageView
+        android:id="@+id/imgViewBack"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        app:itemBackground="@color/white"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/ic_back" />
 
-        
-        app:itemIconTint="@color/black"
-        app:itemTextColor="@color/custom_color_bottom_nav"
-        app:labelVisibilityMode="unlabeled"
-        app:menu="@menu/menu_top_picture" />
+    <ImageView
+        android:layout_marginRight="25dp"
+        android:layout_marginTop="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+
+        android:src="@drawable/ic_info"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_picture"

@@ -2,7 +2,6 @@ package com.example.testgallery;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
@@ -19,15 +18,15 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position){
             case 0:
-                return new PictureFragment();
+                return new PhotoFragment();
             case 1:
-                return new SearchFragment();
+                return new AlbumFragment();
             case 2:
-                return new ShareFragment();
+                return new FavoriteFragment();
             case 3:
-                return new GalleryFragment();
+                return new ShareFragment();
             default:
-                return new PictureFragment();
+                return new PhotoFragment();
         }
     }
 

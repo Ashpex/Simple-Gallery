@@ -18,14 +18,14 @@ import category.Category;
 import category.CategoryAdapter;
 import girl.Girl;
 
-public class PictureFragment extends Fragment {
+public class PhotoFragment extends Fragment {
     private RecyclerView recyclerView;
     private CategoryAdapter categoryAdapter;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_picture, container,false);
+        View view = inflater.inflate(R.layout.fragment_photo, container,false);
 
         recyclerView = view.findViewById(R.id.rcv_category);
         categoryAdapter = new CategoryAdapter(getContext());

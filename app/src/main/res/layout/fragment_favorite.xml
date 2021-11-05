@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#CF5D40">
+    android:background="#4B9430">
 
     <TextView
         android:layout_centerInParent="true"
@@ -10,6 +10,6 @@
         android:layout_height="wrap_content"
         android:textSize="24sp"
         android:textColor="@color/black"
-        android:text="Search Fragment"/>
+        android:text="Favorite Fragment"/>
 
 </RelativeLayout>

@@ -3,6 +3,22 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/drawable/ic_back.xml" value="0.26614583333333336" />
+        <entry key="..\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/drawable/ic_delete.xml" value="0.26614583333333336" />
+        <entry key="..\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/drawable/ic_info.xml" value="0.26614583333333336" />
+        <entry key="..\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/drawable/ic_picture.xml" value="0.26614583333333336" />
+        <entry key="..\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/drawable/ic_search.xml" value="0.26614583333333336" />
+        <entry key="..\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/drawable/ic_share.xml" value="0.26614583333333336" />
+        <entry key="..\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/layout/activity_main.xml" value="0.20380434782608695" />
+        <entry key="..\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/layout/activity_picture.xml" value="0.20380434782608695" />
+        <entry key="..\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/layout/fragment_album.xml" value="0.20380434782608695" />
+        <entry key="..\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/layout/fragment_favorite.xml" value="0.20380434782608695" />
+        <entry key="..\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/layout/fragment_photo.xml" value="0.20380434782608695" />
+        <entry key="..\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/layout/fragment_picture.xml" value="0.20380434782608695" />
+        <entry key="..\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/layout/fragment_share.xml" value="0.20380434782608695" />
+        <entry key="..\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/menu/menu_bottom_nav.xml" value="0.25" />
+        <entry key="..\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/menu/menu_bottom_picture.xml" value="0.25" />
+        <entry key="..\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/menu/menu_top_picture.xml" value="0.25" />
         <entry key="..\:/CODE_ANDROID_19_3/Test_Gallery/app/src/main/res/layout/activity_main.xml" value="0.2223731884057971" />
         <entry key="..\:/CODE_ANDROID_19_3/Test_Gallery/app/src/main/res/layout/activity_picture.xml" value="0.213768115942029" />
         <entry key="..\:/CODE_ANDROID_19_3/Test_Gallery/app/src/main/res/layout/fragment_gallery.xml" value="0.22192028985507245" />

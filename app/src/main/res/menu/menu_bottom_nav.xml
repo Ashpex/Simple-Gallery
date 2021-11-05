@@ -2,18 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/picture"
-        android:title="@string/picture"
-        android:icon="@drawable/picture"/>
+        android:title="Photo"
+        android:icon="@drawable/ic_picture"/>
 
     <item android:id="@+id/search"
-        android:title="@string/search"
-        android:icon="@drawable/search"/>
+        android:title="Album"
+        android:icon="@drawable/ic_gallery"/>
 
     <item android:id="@+id/share"
-        android:title="@string/share"
-        android:icon="@drawable/share"/>
+        android:title="Favorite"
+        android:icon="@drawable/ic_star"/>
 
     <item android:id="@+id/gallery"
-        android:title="@string/gallery"
-        android:icon="@drawable/gallery"/>
+        android:title="Share"
+        android:icon="@drawable/ic_share"/>
 </menu>
