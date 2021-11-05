@@ -14,7 +14,7 @@ public class PictureActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().hide();
+        getSupportActionBar();
         setContentView(R.layout.activity_picture);
 
         imageView = findViewById(R.id.imgPicture);
