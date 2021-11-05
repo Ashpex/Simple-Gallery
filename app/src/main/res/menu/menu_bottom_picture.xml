@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/picture"
+        android:title="@string/picture"
+        android:icon="@drawable/share_picture"/>
+
+    <item android:id="@+id/search"
+        android:title="@string/search"
+        android:icon="@drawable/share_picture"/>
+
+    <item android:id="@+id/share"
+        android:title="@string/share"
+        android:icon="@drawable/back"/>
+
+    <item android:id="@+id/gallery"
+        android:title="@string/gallery"
+        android:icon="@drawable/star"/>
+</menu>

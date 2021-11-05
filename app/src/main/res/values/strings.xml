@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">SimpleGallery</string>
+    <string name="picture">Ảnh</string>
+    <string name="search">Tìm kiếm</string>
+    <string name="share">Chia sẻ</string>
+    <string name="gallery">Thư viện</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
