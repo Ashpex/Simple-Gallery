@@ -1,4 +1,4 @@
-package girl;
+package image;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,12 +15,12 @@ import com.example.testgallery.R;
 
 import java.util.List;
 
-public class GirlAdapter extends RecyclerView.Adapter<GirlAdapter.GirlViewHolder> {
+public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.GirlViewHolder> {
 
-    private List<Girl> listGirl;
+    private List<Image> listImage;
 
-    public void setData(List<Girl> listGirl) {
-        this.listGirl = listGirl;
+    public void setData(List<Image> listImage) {
+        this.listImage = listImage;
         notifyDataSetChanged();
     }
 
@@ -35,18 +35,18 @@ public class GirlAdapter extends RecyclerView.Adapter<GirlAdapter.GirlViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull GirlViewHolder holder, int position) {
-        Girl girl = listGirl.get(position);
-        if (girl == null) {
+        Image image = listImage.get(position);
+        if (image == null) {
             return;
         }
 
-        holder.imgGirl.setImageResource(girl.getResource());
+        holder.imgGirl.setImageResource(image.getResource());
 
         holder.imgGirl.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(holder.context, PictureActivity.class);
-                intent.putExtra("imgSrc", girl.getResource());
+                intent.putExtra("imgSrc", image.getResource());
                 holder.context.startActivity(intent);
             }
         });
@@ -54,8 +54,8 @@ public class GirlAdapter extends RecyclerView.Adapter<GirlAdapter.GirlViewHolder
 
     @Override
     public int getItemCount() {
-        if (listGirl != null)
-            return listGirl.size();
+        if (listImage != null)
+            return listImage.size();
         return 0;
     }
 

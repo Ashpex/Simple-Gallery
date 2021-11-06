@@ -1,4 +1,4 @@
-package com.example.testgallery.Album;
+package com.example.testgallery.album;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,11 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.testgallery.R;
-import com.example.testgallery.model.Album;
 
 import java.util.List;
-
-import girl.GirlAdapter;
 
 public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder>{
     private List<Album> mlistAlbums;
@@ -51,9 +48,9 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
             txtCount_item_album = itemView.findViewById(R.id.txtCount_item_album);
         }
         public void onBind(Album ref) {
-            img_album.setImageResource(ref.resource);
-            txtName_album.setText(ref.name);
-            txtCount_item_album.setText(String.valueOf(ref.count) + " items");
+            img_album.setImageResource(ref.getImg().getResource());
+            txtName_album.setText(ref.getName());
+            txtCount_item_album.setText(String.valueOf(ref.getList().size()) + " items");
         }
     }
 }
