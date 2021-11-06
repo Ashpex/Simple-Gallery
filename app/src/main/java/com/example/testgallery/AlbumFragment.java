@@ -11,14 +11,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.testgallery.Album.AlbumAdapter;
-import com.example.testgallery.model.Album;
+import com.example.testgallery.album.AlbumAdapter;
+import com.example.testgallery.album.Album;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import category.Category;
-import girl.Girl;
+import image.Image;
 
 public class AlbumFragment extends Fragment {
     private RecyclerView ryc_album;
@@ -30,14 +29,25 @@ public class AlbumFragment extends Fragment {
         ryc_album = view.findViewById(R.id.ryc_album);
 
         List<Album> listAlbum = new ArrayList<>();
-        listAlbum.add(new Album(R.drawable.anh1, "Bạn gái tao", 0));
-        listAlbum.add(new Album(R.drawable.anh2, "Bạn gái tao", 0));
-        listAlbum.add(new Album(R.drawable.anh3, "Bạn gái tao", 0));
-        listAlbum.add(new Album(R.drawable.anh4, "Bạn gái tao", 0));
-        listAlbum.add(new Album(R.drawable.anh5, "Bạn gái tao", 0));
-        listAlbum.add(new Album(R.drawable.anh6, "Bạn gái tao", 0));
-        listAlbum.add(new Album(R.drawable.anh7, "Bạn gái tao", 0));
-        listAlbum.add(new Album(R.drawable.anh8, "Bạn gái tao", 0));
+        List<Image> listImg = new ArrayList<>();
+        listImg.add(new Image(R.drawable.anh1));
+        listImg.add(new Image(R.drawable.anh2));
+        listImg.add(new Image(R.drawable.anh3));
+        listImg.add(new Image(R.drawable.anh4));
+        listImg.add(new Image(R.drawable.anh5));
+        listImg.add(new Image(R.drawable.anh6));
+        listImg.add(new Image(R.drawable.anh7));
+        listImg.add(new Image(R.drawable.anh8));
+        listAlbum.add(new Album(new Image(R.drawable.anh1), "Bạn gái tao", listImg));
+        listAlbum.add(new Album(new Image(R.drawable.anh2), "Bạn gái tao", listImg));
+        listAlbum.add(new Album(new Image(R.drawable.anh3), "Bạn gái tao", listImg));
+        listAlbum.add(new Album(new Image(R.drawable.anh4), "Bạn gái tao", listImg));
+        listAlbum.add(new Album(new Image(R.drawable.anh5), "Bạn gái tao", listImg));
+        listAlbum.add(new Album(new Image(R.drawable.anh6), "Bạn gái tao", listImg));
+        listAlbum.add(new Album(new Image(R.drawable.anh7), "Bạn gái tao", listImg));
+        listAlbum.add(new Album(new Image(R.drawable.anh8), "Bạn gái tao", listImg));
+
+
         ryc_album.setLayoutManager(new GridLayoutManager(view.getContext(), 2));
         ryc_album.setAdapter(new AlbumAdapter(listAlbum));
 

@@ -3,32 +3,43 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/CODE_ANDROID_19_3/Test_Gallery/app/src/main/res/layout/activity_main.xml" value="0.2223731884057971" />
-        <entry key="..\:/CODE_ANDROID_19_3/Test_Gallery/app/src/main/res/layout/activity_picture.xml" value="0.213768115942029" />
-        <entry key="..\:/CODE_ANDROID_19_3/Test_Gallery/app/src/main/res/layout/fragment_gallery.xml" value="0.22192028985507245" />
-        <entry key="..\:/CODE_ANDROID_19_3/Test_Gallery/app/src/main/res/layout/fragment_picture.xml" value="0.2223731884057971" />
-        <entry key="..\:/CODE_ANDROID_19_3/Test_Gallery/app/src/main/res/layout/fragment_search.xml" value="0.22192028985507245" />
-        <entry key="..\:/CODE_ANDROID_19_3/Test_Gallery/app/src/main/res/layout/fragment_share.xml" value="0.22192028985507245" />
-        <entry key="..\:/CODE_ANDROID_19_3/Test_Gallery/app/src/main/res/layout/item_category.xml" value="0.2223731884057971" />
-        <entry key="..\:/CODE_ANDROID_19_3/Test_Gallery/app/src/main/res/layout/item_picture.xml" value="0.2223731884057971" />
-        <entry key="..\:/CODE_ANDROID_19_3/Test_Gallery/app/src/main/res/menu/menu_bottom_nav.xml" value="0.25" />
-        <entry key="..\:/CODE_ANDROID_19_3/Test_Gallery/app/src/main/res/menu/menu_bottom_picture.xml" value="0.25" />
-        <entry key="..\:/CODE_ANDROID_19_3/Test_Gallery/app/src/main/res/menu/menu_top_picture.xml" value="0.25" />
-        <entry key="..\:/Coding/SimpleGallery/app/src/main/res/drawable/ic_albums.xml" value="0.2755208333333333" />
-        <entry key="..\:/Coding/SimpleGallery/app/src/main/res/drawable/ic_photos.xml" value="0.2755208333333333" />
-        <entry key="..\:/Coding/SimpleGallery/app/src/main/res/layout/activity_picture.xml" value="0.16032608695652173" />
-        <entry key="..\:/Coding/SimpleGallery/app/src/main/res/layout/fragment_album.xml" value="0.23233695652173914" />
-        <entry key="..\:/Coding/SimpleGallery/app/src/main/res/layout/fragment_albums.xml" value="0.176" />
-        <entry key="..\:/Coding/SimpleGallery/app/src/main/res/layout/fragment_favorite.xml" value="0.23233695652173914" />
-        <entry key="..\:/Coding/SimpleGallery/app/src/main/res/layout/fragment_gallery.xml" value="0.16032608695652173" />
-        <entry key="..\:/Coding/SimpleGallery/app/src/main/res/layout/fragment_photo.xml" value="0.23233695652173914" />
-        <entry key="..\:/Coding/SimpleGallery/app/src/main/res/layout/fragment_picture.xml" value="0.16032608695652173" />
-        <entry key="..\:/Coding/SimpleGallery/app/src/main/res/layout/fragment_search.xml" value="0.16032608695652173" />
-        <entry key="..\:/Coding/SimpleGallery/app/src/main/res/layout/fragment_share.xml" value="0.16032608695652173" />
-        <entry key="..\:/Coding/SimpleGallery/app/src/main/res/layout/item_album.xml" value="0.6" />
-        <entry key="..\:/Coding/SimpleGallery/app/src/main/res/layout/item_category.xml" value="0.23233695652173914" />
-        <entry key="..\:/Coding/SimpleGallery/app/src/main/res/layout/item_picture.xml" value="0.23233695652173914" />
-        <entry key="..\:/Coding/SimpleGallery/app/src/main/res/menu/menu_bottom_nav.xml" value="0.14375" />
+        <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/activity_main.xml" value="0.2223731884057971" />
+        <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/activity_picture.xml" value="0.213768115942029" />
+        <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_gallery.xml" value="0.22192028985507245" />
+        <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_picture.xml" value="0.2223731884057971" />
+        <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_search.xml" value="0.22192028985507245" />
+        <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_share.xml" value="0.22192028985507245" />
+        <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/item_category.xml" value="0.2223731884057971" />
+        <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/item_picture.xml" value="0.2223731884057971" />
+        <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/menu/menu_bottom_nav.xml" value="0.25" />
+        <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/menu/menu_bottom_picture.xml" value="0.25" />
+        <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/menu/menu_top_picture.xml" value="0.25" />
+        <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2911458333333333" />
+        <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_add_photo_list_album.xml" value="0.2911458333333333" />
+        <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_albums.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_gallery.xml" value="0.2911458333333333" />
+        <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_info.xml" value="0.2911458333333333" />
+        <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2911458333333333" />
+        <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_new_album.xml" value="0.2911458333333333" />
+        <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_photos.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_picture.xml" value="0.2911458333333333" />
+        <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_search.xml" value="0.2911458333333333" />
+        <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_share.xml" value="0.2911458333333333" />
+        <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_star.xml" value="0.2911458333333333" />
+        <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/activity_picture.xml" value="0.16032608695652173" />
+        <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_album.xml" value="0.23233695652173914" />
+        <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_albums.xml" value="0.176" />
+        <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_favorite.xml" value="0.23233695652173914" />
+        <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_gallery.xml" value="0.16032608695652173" />
+        <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_list_album.xml" value="0.264" />
+        <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_photo.xml" value="0.23233695652173914" />
+        <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_picture.xml" value="0.16032608695652173" />
+        <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_search.xml" value="0.16032608695652173" />
+        <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_share.xml" value="0.16032608695652173" />
+        <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/item_album.xml" value="0.6" />
+        <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/item_category.xml" value="0.23233695652173914" />
+        <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/item_picture.xml" value="0.23233695652173914" />
+        <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/menu/menu_bottom_nav.xml" value="0.14375" />
         <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/activity_main.xml" value="0.1721014492753623" />
       </map>
     </option>

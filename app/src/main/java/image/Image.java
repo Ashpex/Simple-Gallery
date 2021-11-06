@@ -1,6 +1,6 @@
-package girl;
+package image;
 
-public class Girl {
+public class Image {
     private int resource;
 
     public int getResource() {
@@ -11,7 +11,7 @@ public class Girl {
         this.resource = resource;
     }
 
-    public Girl(int resource) {
+    public Image(int resource) {
         this.resource = resource;
     }
 }

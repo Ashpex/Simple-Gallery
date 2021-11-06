@@ -25,7 +25,7 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
             case 2:
                 return new ShareFragment();
             case 3:
-                return null;
+                return new FavoriteFragment();
             default:
                 return null;
         }

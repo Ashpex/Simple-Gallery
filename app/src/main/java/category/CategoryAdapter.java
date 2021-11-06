@@ -14,7 +14,7 @@ import com.example.testgallery.R;
 
 import java.util.List;
 
-import girl.GirlAdapter;
+import image.PhotoAdapter;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>{
     private Context context;
@@ -47,9 +47,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false);
         holder.rcvPictures.setLayoutManager(linearLayoutManager);
 
-        GirlAdapter girlAdapter = new GirlAdapter();
-        girlAdapter.setData(category.getListGirl());
-        holder.rcvPictures.setAdapter(girlAdapter);
+        PhotoAdapter photoAdapter = new PhotoAdapter();
+        photoAdapter.setData(category.getListGirl());
+        holder.rcvPictures.setAdapter(photoAdapter);
     }
 
     @Override
