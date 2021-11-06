@@ -4,6 +4,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:layout_marginTop="10dp">
+
+        <ImageView
+            android:id="@+id/imgViewBack"
+            android:layout_width="0dp"
+            android:layout_weight="0.1"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_back"
+            android:foregroundTint="@color/black" />
+
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.1"
+
+            android:src="@drawable/ic_info" />
+    </LinearLayout>
+
+
     <ImageView
         android:id="@+id/imgPicture"
         android:layout_width="match_parent"
@@ -33,22 +59,7 @@
 <!--        app:itemTextColor="@color/custom_color_bottom_nav"-->
 <!--        app:labelVisibilityMode="unlabeled"-->
 <!--        app:menu="@menu/menu_top_picture" />-->
-    <ImageView
-        android:id="@+id/imgViewBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="25dp"
-        android:layout_marginTop="15dp"
-        android:src="@drawable/ic_back" />
 
-    <ImageView
-        android:layout_marginRight="25dp"
-        android:layout_marginTop="15dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-
-        android:src="@drawable/ic_info"/>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_picture"

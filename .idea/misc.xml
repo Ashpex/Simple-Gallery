@@ -42,13 +42,36 @@
         <entry key="..\:/Coding/SimpleGallery/app/src/main/res/menu/menu_bottom_nav.xml" value="0.14375" />
         <entry key="..\:/Coding/SimpleGallery/app/src/main/res/menu/menu_bottom_picture.xml" value="0.14375" />
         <entry key="..\:/Coding/SimpleGallery/app/src/main/res/menu/menu_top_picture.xml" value="0.14375" />
-        <entry key="..\:/SimpleGallery/app/src/main/res/layout/activity_main.xml" value="0.1337386018237082" />
-        <entry key="..\:/SimpleGallery/app/src/main/res/layout/activity_picture.xml" value="0.2726449275362319" />
-        <entry key="..\:/SimpleGallery/app/src/main/res/layout/fragment_favorite.xml" value="0.16032608695652173" />
-        <entry key="..\:/SimpleGallery/app/src/main/res/layout/fragment_list_album.xml" value="0.1337386018237082" />
-        <entry key="..\:/SimpleGallery/app/src/main/res/layout/item_album.xml" value="0.2726449275362319" />
+        <entry key="app/src/main/res/drawable/ic_add_photo_list_album.xml" value="0.5177083333333333" />
+        <entry key="app/src/main/res/drawable/ic_albums.xml" value="0.5177083333333333" />
+        <entry key="app/src/main/res/drawable/ic_back.xml" value="0.5177083333333333" />
+        <entry key="app/src/main/res/drawable/ic_delete.xml" value="0.5177083333333333" />
+        <entry key="app/src/main/res/drawable/ic_delete_list_album.xml" value="0.5177083333333333" />
+        <entry key="app/src/main/res/drawable/ic_edit.xml" value="0.3046875" />
+        <entry key="app/src/main/res/drawable/ic_gallery.xml" value="0.5177083333333333" />
+        <entry key="app/src/main/res/drawable/ic_info.xml" value="0.5177083333333333" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.5177083333333333" />
+        <entry key="app/src/main/res/drawable/ic_new_album.xml" value="0.5177083333333333" />
+        <entry key="app/src/main/res/drawable/ic_photos.xml" value="0.5177083333333333" />
+        <entry key="app/src/main/res/drawable/ic_picture.xml" value="0.3046875" />
+        <entry key="app/src/main/res/drawable/ic_search.xml" value="0.3046875" />
+        <entry key="app/src/main/res/drawable/ic_share.xml" value="0.3046875" />
+        <entry key="app/src/main/res/drawable/ic_star.xml" value="0.3046875" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.36594202898550726" />
+        <entry key="app/src/main/res/layout/activity_picture.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_album.xml" value="0.284375" />
+        <entry key="app/src/main/res/layout/fragment_favorite.xml" value="0.284375" />
+        <entry key="app/src/main/res/layout/fragment_list_album.xml" value="0.284375" />
+        <entry key="app/src/main/res/layout/fragment_photo.xml" value="0.284375" />
+        <entry key="app/src/main/res/layout/fragment_share.xml" value="0.284375" />
+        <entry key="app/src/main/res/layout/item_album.xml" value="0.284375" />
+        <entry key="app/src/main/res/layout/item_category.xml" value="0.284375" />
+        <entry key="app/src/main/res/layout/item_picture.xml" value="0.284375" />
+        <entry key="app/src/main/res/menu/menu_bottom_nav.xml" value="0.284375" />
+        <entry key="app/src/main/res/menu/menu_bottom_picture.xml" value="0.284375" />
+        <entry key="app/src/main/res/menu/menu_top_picture.xml" value="0.284375" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK" />
 </project>
