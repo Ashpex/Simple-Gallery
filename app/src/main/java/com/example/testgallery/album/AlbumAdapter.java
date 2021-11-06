@@ -7,8 +7,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.testgallery.ListAlbumFragment;
 import com.example.testgallery.R;
 
 import java.util.List;
@@ -51,6 +53,18 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
             img_album.setImageResource(ref.getImg().getResource());
             txtName_album.setText(ref.getName());
             txtCount_item_album.setText(String.valueOf(ref.getList().size()) + " items");
+
+            img_album.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AppCompatActivity activity = (AppCompatActivity) view.getContext();
+                    ListAlbumFragment myFragment = new ListAlbumFragment(ref);
+                    activity.getSupportFragmentManager().beginTransaction()
+                            .setCustomAnimations(R.anim.anim_open_fragment, R.anim.anim_close_fragment)
+                            .replace(R.id.frlayout, myFragment, "fragment_list_album").addToBackStack(null).commit();
+                }
+            });
+
         }
     }
 }

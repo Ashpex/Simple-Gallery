@@ -38,14 +38,14 @@ public class AlbumFragment extends Fragment {
         listImg.add(new Image(R.drawable.anh6));
         listImg.add(new Image(R.drawable.anh7));
         listImg.add(new Image(R.drawable.anh8));
-        listAlbum.add(new Album(new Image(R.drawable.anh1), "Bạn gái tao", listImg));
-        listAlbum.add(new Album(new Image(R.drawable.anh2), "Bạn gái tao", listImg));
-        listAlbum.add(new Album(new Image(R.drawable.anh3), "Bạn gái tao", listImg));
-        listAlbum.add(new Album(new Image(R.drawable.anh4), "Bạn gái tao", listImg));
-        listAlbum.add(new Album(new Image(R.drawable.anh5), "Bạn gái tao", listImg));
-        listAlbum.add(new Album(new Image(R.drawable.anh6), "Bạn gái tao", listImg));
-        listAlbum.add(new Album(new Image(R.drawable.anh7), "Bạn gái tao", listImg));
-        listAlbum.add(new Album(new Image(R.drawable.anh8), "Bạn gái tao", listImg));
+        listAlbum.add(new Album(new Image(R.drawable.anh1), "Ex-girlfri", listImg));
+        listAlbum.add(new Album(new Image(R.drawable.anh2), "Ex-girlfri", listImg));
+        listAlbum.add(new Album(new Image(R.drawable.anh3), "Ex-girlfri", listImg));
+        listAlbum.add(new Album(new Image(R.drawable.anh4), "Ex-girlfri", listImg));
+        listAlbum.add(new Album(new Image(R.drawable.anh5), "Ex-girlfri", listImg));
+        listAlbum.add(new Album(new Image(R.drawable.anh6), "Ex-girlfri", listImg));
+        listAlbum.add(new Album(new Image(R.drawable.anh7), "Ex-girlfri", listImg));
+        listAlbum.add(new Album(new Image(R.drawable.anh8), "Ex-girlfri", listImg));
 
 
         ryc_album.setLayoutManager(new GridLayoutManager(view.getContext(), 2));
