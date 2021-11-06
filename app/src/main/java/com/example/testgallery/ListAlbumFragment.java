@@ -55,6 +55,6 @@ public class ListAlbumFragment extends Fragment {
     }
 
     private void closefragment() {
-        getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
+        getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.anim_open_fragment, R.anim.anim_close_fragment).remove(this).commit();
     }
 }

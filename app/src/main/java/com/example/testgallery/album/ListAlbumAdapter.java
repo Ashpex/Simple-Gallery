@@ -1,5 +1,7 @@
 package com.example.testgallery.album;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +10,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.testgallery.PictureActivity;
 import com.example.testgallery.R;
 
 import image.Image;
@@ -38,12 +41,22 @@ public class ListAlbumAdapter extends RecyclerView.Adapter<ListAlbumAdapter.List
 
     class ListAlbumViewHolder extends RecyclerView.ViewHolder {
         private ImageView imgGirl;
+        private Context context;
         public ListAlbumViewHolder(@NonNull View itemView) {
             super(itemView);
+            context = itemView.getContext();
             imgGirl = itemView.findViewById(R.id.imgGirl);
         }
         public void onBind(Image img) {
             imgGirl.setImageResource(img.getResource());
+            imgGirl.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, PictureActivity.class);
+                    intent.putExtra("imgSrc", img.getResource());
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 }

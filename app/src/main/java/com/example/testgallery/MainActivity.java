@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         ListAlbumFragment fragment = (ListAlbumFragment) getSupportFragmentManager().findFragmentByTag("fragment_list_album");
         if(fragment != null) {
-            fragmentTransaction.remove(fragment);
+            fragmentTransaction.setCustomAnimations(R.anim.anim_open_fragment, R.anim.anim_close_fragment).remove(fragment);
             fragmentTransaction.commit();
         }
     }
