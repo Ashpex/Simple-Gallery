@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -34,8 +35,10 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                removeFragment();
                 switch (item.getItemId()) {
                     case R.id.picture:
+
                         viewPager.setCurrentItem(0);
                         break;
 
@@ -66,10 +69,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageScrollStateChanged(int state) {
                 super.onPageScrollStateChanged(state);
+                removeFragment();
             }
 
             @Override
             public void onPageSelected(int position) {
+                removeFragment();
                 switch (position){
                     case 0:
                         bottomNavigationView.getMenu().findItem(R.id.picture).setChecked(true);
@@ -106,5 +111,14 @@ public class MainActivity extends AppCompatActivity {
                 .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
                 .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE)
                 .check();
+    }
+
+    public  void removeFragment() {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        ListAlbumFragment fragment = (ListAlbumFragment) getSupportFragmentManager().findFragmentByTag("fragment_list_album");
+        if(fragment != null) {
+            fragmentTransaction.remove(fragment);
+            fragmentTransaction.commit();
+        }
     }
 }

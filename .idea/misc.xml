@@ -42,8 +42,12 @@
         <entry key="..\:/Coding/SimpleGallery/app/src/main/res/menu/menu_bottom_nav.xml" value="0.14375" />
         <entry key="..\:/Coding/SimpleGallery/app/src/main/res/menu/menu_bottom_picture.xml" value="0.14375" />
         <entry key="..\:/Coding/SimpleGallery/app/src/main/res/menu/menu_top_picture.xml" value="0.14375" />
+        <entry key="..\:/SimpleGallery/app/src/main/res/layout/activity_main.xml" value="0.1337386018237082" />
+        <entry key="..\:/SimpleGallery/app/src/main/res/layout/activity_picture.xml" value="0.2726449275362319" />
+        <entry key="..\:/SimpleGallery/app/src/main/res/layout/fragment_favorite.xml" value="0.16032608695652173" />
+        <entry key="..\:/SimpleGallery/app/src/main/res/layout/fragment_list_album.xml" value="0.1337386018237082" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
 </project>
