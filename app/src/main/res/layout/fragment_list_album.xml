@@ -9,12 +9,16 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal"
+<<<<<<< HEAD
         android:layout_marginTop="10dp"
+=======
+>>>>>>> 60dd20e (album ui)
         android:padding="10dp">
 
         <ImageButton
             android:id="@+id/btnBack"
             android:layout_width="0dp"
+<<<<<<< HEAD
 <<<<<<< HEAD
             android:layout_height="match_parent"
             android:layout_weight="1.5"
@@ -23,6 +27,12 @@
             android:layout_height="30dp"
             android:layout_weight="1.2"
 >>>>>>> 3929822 (update)
+=======
+            android:layout_marginTop="2.5dp"
+            android:layout_marginBottom="2.5dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+>>>>>>> 60dd20e (album ui)
             android:background="@drawable/ic_back" />
 
         <TextView
@@ -33,14 +43,19 @@
             android:textSize="22sp"
 =======
             android:layout_marginStart="10dp"
+<<<<<<< HEAD
             android:textSize="25sp"
             android:layout_marginTop="4dp"
 >>>>>>> 3929822 (update)
+=======
+            android:textSize="24sp"
+>>>>>>> 60dd20e (album ui)
             android:layout_width="0dp"
             android:layout_weight="10"
             android:layout_height="match_parent"/>
         <ImageButton
             android:layout_width="0dp"
+<<<<<<< HEAD
 <<<<<<< HEAD
             android:layout_marginBottom="2.5dp"
             android:layout_marginTop="2.5dp"
@@ -61,6 +76,18 @@
             android:layout_marginStart="5dp"
 =======
             android:layout_height="30dp"
+=======
+            android:layout_marginTop="2.5dp"
+            android:layout_marginBottom="2.5dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/ic_add_photo_list_album"/>
+        <ImageButton
+            android:layout_marginTop="2.5dp"
+            android:layout_marginBottom="2.5dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+>>>>>>> 60dd20e (album ui)
             android:padding="10dp"
             android:layout_marginStart="10dp"
 >>>>>>> 3929822 (update)
@@ -70,8 +97,8 @@
     </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ryc_list_album"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginStart="30dp"
+        android:layout_gravity="center"
         android:layout_marginTop="15dp"/>
 </LinearLayout>

@@ -14,6 +14,8 @@
         <ImageView
             android:id="@+id/imgViewBack"
             android:layout_width="0dp"
+            android:layout_marginTop="2.5dp"
+            android:layout_marginBottom="2.5dp"
             android:layout_weight="0.1"
             android:layout_height="match_parent"
             android:layout_gravity="start"
@@ -30,6 +32,8 @@
         <ImageView
             android:layout_gravity="end"
             android:layout_width="0dp"
+            android:layout_marginTop="2.5dp"
+            android:layout_marginBottom="2.5dp"
             android:layout_height="match_parent"
             android:layout_weight="0.1"
 

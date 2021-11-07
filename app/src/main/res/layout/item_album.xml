@@ -3,8 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="165dp"
-    android:layout_marginStart="10dp"
-    android:layout_marginTop="5dp">
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingTop="5dp">
     <androidx.cardview.widget.CardView
         android:id="@+id/img_item_album"
         android:layout_width="130dp"
@@ -33,7 +34,7 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="80dp"
-            android:layout_height="30dp"
+            android:layout_height="25dp"
             android:background="#EEEEEE">
             <TextView
                 android:id="@+id/txtName_album"
