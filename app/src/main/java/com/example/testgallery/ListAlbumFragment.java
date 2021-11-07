@@ -15,8 +15,8 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.testgallery.album.Album;
-import com.example.testgallery.album.ListAlbumAdapter;
+import com.example.testgallery.Album.Album;
+import com.example.testgallery.Album.ListAlbumAdapter;
 
 
 public class ListAlbumFragment extends Fragment {

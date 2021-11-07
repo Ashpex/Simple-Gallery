@@ -7,44 +7,40 @@
     android:background="@color/white">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="50dp"
         android:orientation="horizontal"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="10dp"
-        android:padding="10dp"
-        android:layout_marginStart="10dp">
+        android:layout_marginTop="10dp"
+        android:padding="10dp">
 
         <ImageButton
             android:id="@+id/btnBack"
             android:layout_width="0dp"
-            android:layout_marginTop="5dp"
-            android:layout_height="34dp"
-            android:layout_weight="1.4"
+            android:layout_height="match_parent"
+            android:layout_weight="1.5"
             android:background="@drawable/ic_back" />
 
         <TextView
             android:id="@+id/txtName_list_album"
             android:text="List album"
             android:textColor="@color/black"
-            android:layout_marginStart="10dp"
-            android:textSize="25sp"
-            android:layout_marginTop="5dp"
+            android:textSize="22sp"
             android:layout_width="0dp"
             android:layout_weight="10"
             android:layout_height="match_parent"/>
         <ImageButton
             android:layout_width="0dp"
-            android:layout_marginTop="5dp"
-            android:layout_height="32dp"
-            android:layout_weight="1.4"
+            android:layout_marginBottom="2.5dp"
+            android:layout_marginTop="2.5dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:background="@drawable/ic_add_photo_list_album"/>
         <ImageButton
-            android:layout_marginTop="5dp"
+            android:layout_marginBottom="2.5dp"
+            android:layout_marginTop="2.5dp"
             android:layout_width="0dp"
-            android:layout_height="32dp"
-            android:padding="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_weight="1.4"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_weight="1.2"
             android:backgroundTint="@color/black"
             android:background="@drawable/ic_delete"/>
     </LinearLayout>
