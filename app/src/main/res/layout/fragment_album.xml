@@ -6,19 +6,23 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp"
+        android:padding="10dp">
         <TextView
             android:text="Danh sách"
             android:textColor="@color/black"
-            android:textSize="25dp"
+            android:textSize="25sp"
+            android:layout_weight="14"
             android:textStyle="bold"
-            android:layout_marginTop="20dp"
             android:layout_marginStart="20dp"
-            android:layout_width="330dp"
-            android:layout_height="wrap_content"/>
+            android:layout_width="0dp"
+            android:layout_height="match_parent"/>
         <ImageButton
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="0dp"
+            android:layout_weight="1.5"
+            android:layout_height="match_parent"
             android:background="@drawable/ic_new_album"
             android:layout_gravity="center" />
     </LinearLayout>
