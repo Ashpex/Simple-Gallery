@@ -17,15 +17,16 @@
         <ImageButton
             android:id="@+id/btnBack"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1.5"
+            android:layout_marginTop="5dp"
+            android:layout_height="34dp"
+            android:layout_weight="1.4"
             android:background="@drawable/ic_back" />
 
         <TextView
             android:id="@+id/txtName_list_album"
             android:text="List album"
             android:textColor="@color/black"
-            android:layout_marginStart="5dp"
+            android:layout_marginStart="10dp"
             android:textSize="25sp"
             android:layout_marginTop="5dp"
             android:layout_width="0dp"
@@ -33,8 +34,9 @@
             android:layout_height="match_parent"/>
         <ImageButton
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1.5"
+            android:layout_marginTop="5dp"
+            android:layout_height="32dp"
+            android:layout_weight="1.4"
             android:background="@drawable/ic_add_photo_list_album"/>
         <ImageButton
             android:layout_marginTop="5dp"
@@ -42,7 +44,7 @@
             android:layout_height="32dp"
             android:padding="10dp"
             android:layout_marginStart="10dp"
-            android:layout_weight="1.5"
+            android:layout_weight="1.4"
             android:backgroundTint="@color/black"
             android:background="@drawable/ic_delete"/>
     </LinearLayout>
