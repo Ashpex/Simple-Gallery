@@ -16,12 +16,19 @@
             android:layout_width="0dp"
             android:layout_weight="0.1"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
+            android:layout_gravity="start"
             android:src="@drawable/ic_back"
             android:foregroundTint="@color/black" />
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.9"
+            android:layout_gravity="center"/>
+
+
         <ImageView
-            android:layout_gravity="center"
+            android:layout_gravity="end"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.1"
