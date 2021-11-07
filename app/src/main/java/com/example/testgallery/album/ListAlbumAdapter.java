@@ -1,4 +1,4 @@
-package com.example.testgallery.album;
+package com.example.testgallery.Album;
 
 import android.content.Context;
 import android.content.Intent;

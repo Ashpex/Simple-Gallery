@@ -11,8 +11,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.testgallery.album.AlbumAdapter;
-import com.example.testgallery.album.Album;
+import com.example.testgallery.Album.AlbumAdapter;
+import com.example.testgallery.Album.Album;
 
 import java.util.ArrayList;
 import java.util.List;

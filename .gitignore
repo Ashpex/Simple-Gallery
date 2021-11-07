@@ -90,3 +90,8 @@ lint/tmp/
 # Android Profiling
 *.hprof
 
+app/.project
+*.json
+.project
+.idea/misc.xml
+.idea/misc.xml
