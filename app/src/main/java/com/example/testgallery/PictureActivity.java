@@ -1,14 +1,18 @@
 package com.example.testgallery;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.ParcelFileDescriptor;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.FileDescriptor;
@@ -16,6 +20,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 
 public class PictureActivity extends AppCompatActivity {
@@ -23,17 +28,19 @@ public class PictureActivity extends AppCompatActivity {
     ImageView imgViewBack;
     ImageView imgViewInfo;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_picture);
 
-        imageView = findViewById(R.id.imgPicture);
-        imgViewBack = findViewById(R.id.imgViewBack);
-        imgViewInfo = findViewById(R.id.imgViewInfo);
+        viewMapping();
+
+
         Intent intent = getIntent();
         String thumb = intent.getStringExtra("imgSrc");
         Glide.with(this).load(thumb).into(imageView);
+
 
 
         imgViewInfo.setOnClickListener(new View.OnClickListener() {
@@ -61,12 +68,30 @@ public class PictureActivity extends AppCompatActivity {
 
             ParcelFileDescriptor parcelFileDescriptor = null;
 
+
+
             try {
                 parcelFileDescriptor = getContentResolver().openFileDescriptor(photoUri, "r");
                 FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
 
                 ExifInterface exifInterface = new ExifInterface(fileDescriptor);
                 String exif="Exif: " + fileDescriptor.toString();
+
+                BottomSheetDialog infoDialog = new BottomSheetDialog(this,R.style.BottomSheetDialogTheme);
+                View infoDialogView = LayoutInflater.from(getApplicationContext())
+                        .inflate(
+                                R.layout.layout_info,
+                                (LinearLayout) findViewById(R.id.infoContainer),
+                                false
+                        );
+                TextView txtInfoProducer = (TextView) infoDialog.findViewById(R.id.txtInfoProducer);
+
+                //txtInfoProducer.setText(exifInterface.getAttribute(ExifInterface.TAG_MAKE));
+
+
+                infoDialog.setContentView(infoDialogView);
+                infoDialog.show();
+
                 exif += "\nChiều dài: " +
                         exifInterface.getAttribute(ExifInterface.TAG_IMAGE_LENGTH);
                 exif += "\nChiều rộng: " +
@@ -87,19 +112,7 @@ public class PictureActivity extends AppCompatActivity {
                         exifInterface.getAttribute(ExifInterface.TAG_FOCAL_LENGTH);
                 exif += "\n Flash: " +
                         exifInterface.getAttribute(ExifInterface.TAG_FLASH);
-                exif += "\nThông tin GPS:";
-                exif += "\n TAG_GPS_DATESTAMP: " +
-                        exifInterface.getAttribute(ExifInterface.TAG_GPS_DATESTAMP);
-                exif += "\n TAG_GPS_TIMESTAMP: " +
-                        exifInterface.getAttribute(ExifInterface.TAG_GPS_TIMESTAMP);
-                exif += "\n Vĩ độ: " +
-                        exifInterface.getAttribute(ExifInterface.TAG_GPS_LATITUDE);
-                exif += "\n Vĩ độ_REF: " +
-                        exifInterface.getAttribute(ExifInterface.TAG_GPS_LATITUDE_REF);
-                exif += "\n Cao độ: " +
-                        exifInterface.getAttribute(ExifInterface.TAG_GPS_LONGITUDE);
-                exif += "\n Cao độ_REF: " +
-                        exifInterface.getAttribute(ExifInterface.TAG_GPS_LONGITUDE_REF);
+
                 parcelFileDescriptor.close();
 
                 Toast.makeText(getApplicationContext(),
@@ -118,7 +131,7 @@ public class PictureActivity extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
             }
 
-            //String thumb = photoUri.getPath();
+
 
         }else{
             Toast.makeText(getApplicationContext(),
@@ -126,4 +139,11 @@ public class PictureActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
         }
     };
+
+    void viewMapping(){
+        imageView = findViewById(R.id.imgPicture);
+        imgViewBack = findViewById(R.id.imgViewBack);
+        imgViewInfo = findViewById(R.id.imgViewInfo);
+
+    }
 }

@@ -36,12 +36,14 @@
         <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/menu/menu_bottom_nav.xml" value="0.14375" />
         <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/menu/menu_bottom_picture.xml" value="0.25" />
         <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/menu/menu_top_picture.xml" value="0.25" />
+        <entry key="app/src/main/res/drawable-v24/bottom_sheet_background.xml" value="0.4601851851851852" />
         <entry key="app/src/main/res/layout/activity_picture.xml" value="0.4316123188405797" />
         <entry key="app/src/main/res/layout/fragment_album.xml" value="0.4316123188405797" />
         <entry key="app/src/main/res/layout/fragment_list_album.xml" value="0.2148964896489649" />
         <entry key="app/src/main/res/layout/item_album.xml" value="0.4316123188405797" />
+        <entry key="app/src/main/res/layout/layout_info.xml" value="0.44212962962962965" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
 </project>
