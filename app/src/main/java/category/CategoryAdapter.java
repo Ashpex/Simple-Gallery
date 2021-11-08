@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,7 +14,7 @@ import com.example.testgallery.R;
 
 import java.util.List;
 
-import image.PhotoAdapter;
+import image.ImageAdapter;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>{
     private Context context;
@@ -45,12 +44,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
         holder.tvNameCategory.setText(category.getNameCategory());
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 3);
-        holder.rcvPictures.setLayoutManager(gridLayoutManager);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, RecyclerView.HORIZONTAL, false);
+        holder.rcvPictures.setLayoutManager(linearLayoutManager);
 
-        PhotoAdapter photoAdapter = new PhotoAdapter();
-        photoAdapter.setData(category.getListGirl());
-        holder.rcvPictures.setAdapter(photoAdapter);
+        ImageAdapter girlAdapter = new ImageAdapter(context.getApplicationContext());
+        girlAdapter.setData(category.getListGirl());
+        holder.rcvPictures.setAdapter(girlAdapter);
     }
 
     @Override

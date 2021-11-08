@@ -41,28 +41,28 @@ public class PhotoFragment extends Fragment {
     private List<Category> getListCategory() {
         List<Category> categoryList = new ArrayList<>();
 
-        List<Image> imageList = new ArrayList<>();
-        imageList.add(new Image(R.drawable.anh1));
-        imageList.add(new Image(R.drawable.anh2));
-        imageList.add(new Image(R.drawable.anh3));
-        imageList.add(new Image(R.drawable.anh4));
-        imageList.add(new Image(R.drawable.anh5));
-        imageList.add(new Image(R.drawable.anh6));
-        imageList.add(new Image(R.drawable.anh7));
-        imageList.add(new Image(R.drawable.anh8));
-        imageList.add(new Image(R.drawable.anh9));
-        imageList.add(new Image(R.drawable.anh10));
-        imageList.add(new Image(R.drawable.anh11));
-        imageList.add(new Image(R.drawable.anh12));
+        List<Image> imageList = GetAllPhotoFromGallery.getAllImageFromGallery(getContext());
+//        imageList.add(new Image(R.drawable.anh1));
+//        imageList.add(new Image(R.drawable.anh2));
+//        imageList.add(new Image(R.drawable.anh3));
+//        imageList.add(new Image(R.drawable.anh4));
+//        imageList.add(new Image(R.drawable.anh5));
+//        imageList.add(new Image(R.drawable.anh6));
+//        imageList.add(new Image(R.drawable.anh7));
+//        imageList.add(new Image(R.drawable.anh8));
+//        imageList.add(new Image(R.drawable.anh9));
+//        imageList.add(new Image(R.drawable.anh10));
+//        imageList.add(new Image(R.drawable.anh11));
+//        imageList.add(new Image(R.drawable.anh12));
 
-        categoryList.add(new Category("Category 1", imageList));
-        categoryList.add(new Category("Category 2", imageList));
-        categoryList.add(new Category("Category 3", imageList));
-        categoryList.add(new Category("Category 4", imageList));
-        categoryList.add(new Category("Category 5", imageList));
-        categoryList.add(new Category("Category 6", imageList));
-        categoryList.add(new Category("Category 7", imageList));
-        categoryList.add(new Category("Category 8", imageList));
+        categoryList.add(new Category("Category 1 (" + imageList.size() + " ảnh)", imageList));
+//        categoryList.add(new Category("Category 2", imageList));
+//        categoryList.add(new Category("Category 3", imageList));
+//        categoryList.add(new Category("Category 4", imageList));
+//        categoryList.add(new Category("Category 5", imageList));
+//        categoryList.add(new Category("Category 6", imageList));
+//        categoryList.add(new Category("Category 7", imageList));
+//        categoryList.add(new Category("Category 8", imageList));
         return categoryList;
     }
 }

@@ -16,6 +16,7 @@ import com.example.testgallery.Album.Album;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import image.Image;
 
@@ -29,27 +30,27 @@ public class AlbumFragment extends Fragment {
         ryc_album = view.findViewById(R.id.ryc_album);
 
         List<Album> listAlbum = new ArrayList<>();
-        List<Image> listImg = new ArrayList<>();
-        listImg.add(new Image(R.drawable.anh1));
-        listImg.add(new Image(R.drawable.anh2));
-        listImg.add(new Image(R.drawable.anh3));
-        listImg.add(new Image(R.drawable.anh4));
-        listImg.add(new Image(R.drawable.anh5));
-        listImg.add(new Image(R.drawable.anh6));
-        listImg.add(new Image(R.drawable.anh7));
-        listImg.add(new Image(R.drawable.anh8));
-        listAlbum.add(new Album(new Image(R.drawable.anh1), "Album 1", listImg));
-        listAlbum.add(new Album(new Image(R.drawable.anh2), "Album 2", listImg));
-        listAlbum.add(new Album(new Image(R.drawable.anh3), "Album 3", listImg));
-        listAlbum.add(new Album(new Image(R.drawable.anh4), "Album 4", listImg));
-        listAlbum.add(new Album(new Image(R.drawable.anh5), "Album 5", listImg));
-        listAlbum.add(new Album(new Image(R.drawable.anh6), "Album 6", listImg));
-        listAlbum.add(new Album(new Image(R.drawable.anh7), "Album 7", listImg));
-        listAlbum.add(new Album(new Image(R.drawable.anh8), "Album 8", listImg));
+        List<Image> listImg = GetAllPhotoFromGallery.getAllImageFromGallery(getContext());
+//        listImg.add(new Image(R.drawable.anh1));
+//        listImg.add(new Image(R.drawable.anh2));
+//        listImg.add(new Image(R.drawable.anh3));
+//        listImg.add(new Image(R.drawable.anh4));
+//        listImg.add(new Image(R.drawable.anh5));
+//        listImg.add(new Image(R.drawable.anh7));
+//        listImg.add(new Image(R.drawable.anh8));
+        Random rand = new Random();
+        listAlbum.add(new Album( listImg.get(rand.nextInt(listImg.size())), "Album 1", listImg));
+        listAlbum.add(new Album(listImg.get(rand.nextInt(listImg.size())), "Album 2", listImg));
+        listAlbum.add(new Album(listImg.get(rand.nextInt(listImg.size())), "Album 3", listImg));
+        listAlbum.add(new Album(listImg.get(rand.nextInt(listImg.size())), "Album 4", listImg));
+        listAlbum.add(new Album(listImg.get(rand.nextInt(listImg.size())), "Album 5", listImg));
+        listAlbum.add(new Album(listImg.get(rand.nextInt(listImg.size())), "Album 6", listImg));
+        listAlbum.add(new Album(listImg.get(rand.nextInt(listImg.size())), "Album 7", listImg));
+        listAlbum.add(new Album(listImg.get(rand.nextInt(listImg.size())), "Album 8", listImg));
 
 
         ryc_album.setLayoutManager(new GridLayoutManager(view.getContext(), 2));
-        ryc_album.setAdapter(new AlbumAdapter(listAlbum));
+        ryc_album.setAdapter(new AlbumAdapter(listAlbum, getContext()));
 
         return view;
     }

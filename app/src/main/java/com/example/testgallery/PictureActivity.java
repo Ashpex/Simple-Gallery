@@ -7,6 +7,8 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
+
 public class PictureActivity extends AppCompatActivity {
     ImageView imageView;
     ImageView imgViewBack;
@@ -14,14 +16,15 @@ public class PictureActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar();
         setContentView(R.layout.activity_picture);
 
         imageView = findViewById(R.id.imgPicture);
         imgViewBack = findViewById(R.id.imgViewBack);
         Intent intent = getIntent();
-        int src = intent.getIntExtra("imgSrc", 0);
-        imageView.setImageResource(src);
+        String thumb = intent.getStringExtra("imgSrc");
+        Glide.with(this).load(thumb).into(imageView);
+
+//        imageView.setImageResource(src);
 
         imgViewBack.setOnClickListener(new View.OnClickListener() {
             @Override
