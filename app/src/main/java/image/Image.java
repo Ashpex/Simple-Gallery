@@ -3,7 +3,7 @@ package image;
 public class Image {
     private String path;
     private String thumb;
-
+    private String dateTaken;
     public String getPath() {
         return path;
     }
@@ -26,5 +26,13 @@ public class Image {
     public Image(String path, String thumb) {
         this.path = path;
         this.thumb = thumb;
+    }
+
+    public String getDateTaken() {
+        return dateTaken;
+    }
+
+    public void setDateTaken(String dateTaken) {
+        this.dateTaken = dateTaken;
     }
 }

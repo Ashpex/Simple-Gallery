@@ -1,6 +1,7 @@
 package com.example.testgallery;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,8 +41,17 @@ public class PhotoFragment extends Fragment {
 
     private List<Category> getListCategory() {
         List<Category> categoryList = new ArrayList<>();
-
+        int categoryCount = 0;
         List<Image> imageList = GetAllPhotoFromGallery.getAllImageFromGallery(getContext());
+        categoryList.add(new Category(imageList.get(0).getDateTaken(),new ArrayList<>()));
+        categoryList.get(categoryCount).addListGirl(imageList.get(0));
+        for(int i=1;i<imageList.size();i++){
+            if(!imageList.get(i).getDateTaken().equals(imageList.get(i-1).getDateTaken())){
+                categoryList.add(new Category(imageList.get(i).getDateTaken(),new ArrayList<>()));
+                categoryCount++;
+            }
+            categoryList.get(categoryCount).addListGirl(imageList.get(i));
+        }
 //        imageList.add(new Image(R.drawable.anh1));
 //        imageList.add(new Image(R.drawable.anh2));
 //        imageList.add(new Image(R.drawable.anh3));
@@ -54,8 +64,7 @@ public class PhotoFragment extends Fragment {
 //        imageList.add(new Image(R.drawable.anh10));
 //        imageList.add(new Image(R.drawable.anh11));
 //        imageList.add(new Image(R.drawable.anh12));
-
-        categoryList.add(new Category("Category 1 (" + imageList.size() + " ảnh)", imageList));
+      //  categoryList.add(new Category("Category 1 (" + imageList.size() + " ảnh)", imageList));
 //        categoryList.add(new Category("Category 2", imageList));
 //        categoryList.add(new Category("Category 3", imageList));
 //        categoryList.add(new Category("Category 4", imageList));
