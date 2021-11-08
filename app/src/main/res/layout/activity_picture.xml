@@ -30,6 +30,7 @@
 
 
         <ImageView
+            android:id="@+id/imgViewInfo"
             android:layout_gravity="end"
             android:layout_width="0dp"
             android:layout_marginTop="2.5dp"

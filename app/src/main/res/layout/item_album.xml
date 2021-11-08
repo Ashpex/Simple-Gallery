@@ -5,10 +5,10 @@
     android:layout_height="165dp"
     android:paddingLeft="15dp"
     android:paddingRight="15dp"
-    android:paddingTop="5dp">
+    android:paddingTop="7dp">
     <androidx.cardview.widget.CardView
         android:id="@+id/img_item_album"
-        android:layout_width="130dp"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
         app:cardCornerRadius="8dp">
         <LinearLayout
