@@ -61,12 +61,6 @@ public class AlbumFragment extends Fragment {
 
             if(ref.contains(name)) {
                 list.add(listImage.get(i));
-
-                if(i == listImage.size()- 1) {
-                    Album token = new Album(listImage.get(i-1), name);
-                    token.addList(list);
-                    listAlbum.add(token);
-                }
             }
             else {
                 if(list.size() !=0) {
@@ -74,13 +68,15 @@ public class AlbumFragment extends Fragment {
                     token.addList(list);
                     listAlbum.add(token);
                 }
-                else {
-                    Album token = new Album(listImage.get(i-1), name);
-                    token.addItem(listImage.get(i-1));
-                    listAlbum.add(token);
-                }
                 ref.add(name);
                 list.clear();
+                list.add(listImage.get(i));
+            }
+
+            if(i == listImage.size()- 1) {
+                Album token = new Album(listImage.get(i-1), name);
+                token.addList(list);
+                listAlbum.add(token);
             }
         }
         return listAlbum;
