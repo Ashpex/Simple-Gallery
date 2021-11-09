@@ -1,5 +1,6 @@
 package com.example.testgallery.activities.mainActivities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.testgallery.R;
 import com.example.testgallery.adapters.ImageAdapter;
+import com.example.testgallery.adapters.SlideShowAdapter;
 import com.example.testgallery.models.Image;
 import com.example.testgallery.utility.GetAllPhotoFromGallery;
 
@@ -41,6 +43,18 @@ public class CreateAlbumActivity extends AppCompatActivity {
         });
 
         setViewRyc();
+        menu_album.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                action();
+            }
+        });
+    }
+
+    private void action() {
+        Intent intent = new Intent(this, SlideShowActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     private void setViewRyc() {

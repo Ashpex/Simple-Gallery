@@ -20,7 +20,6 @@ import com.example.testgallery.models.Image;
 public class ItemAlbumAdapter extends RecyclerView.Adapter<ItemAlbumAdapter.ItemAlbumViewHolder> {
     private Album album;
     private Context context;
-
     public ItemAlbumAdapter(Context context) {
         this.context = context;
     }
