@@ -115,9 +115,9 @@ public class PictureActivity extends AppCompatActivity {
 
                 parcelFileDescriptor.close();
 
-                Toast.makeText(getApplicationContext(),
-                        exif,
-                        Toast.LENGTH_LONG).show();
+//                Toast.makeText(getApplicationContext(),
+//                        exif,
+//                        Toast.LENGTH_LONG).show();
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();

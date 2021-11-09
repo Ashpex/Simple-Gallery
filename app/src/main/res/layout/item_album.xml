@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="165dp"
-    android:paddingLeft="15dp"
-    android:paddingRight="15dp"
-    android:paddingTop="7dp">
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:layout_marginTop="7dp">
     <androidx.cardview.widget.CardView
         android:id="@+id/img_item_album"
-        android:layout_width="160dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         app:cardCornerRadius="8dp">
         <LinearLayout
@@ -33,15 +33,15 @@
         app:layout_anchorGravity="center|bottom">
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="80dp"
-            android:layout_height="25dp"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
             android:background="#EEEEEE">
             <TextView
                 android:id="@+id/txtName_album"
                 android:singleLine="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="10dp"
+                android:textSize="12dp"
                 android:text="Album"
                 android:textColor="@color/black"
                 android:textStyle="bold"

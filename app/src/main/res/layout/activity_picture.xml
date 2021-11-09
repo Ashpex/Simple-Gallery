@@ -9,7 +9,8 @@
         android:layout_height="50dp"
         android:orientation="horizontal"
         android:padding="10dp"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+        android:translationZ="90dp">
 
         <ImageView
             android:id="@+id/imgViewBack"
