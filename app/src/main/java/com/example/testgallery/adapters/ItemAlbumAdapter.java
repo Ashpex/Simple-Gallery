@@ -17,27 +17,27 @@ import com.example.testgallery.R;
 import com.example.testgallery.models.Album;
 import com.example.testgallery.models.Image;
 
-public class ListAlbumAdapter extends RecyclerView.Adapter<ListAlbumAdapter.ListAlbumViewHolder> {
+public class ItemAlbumAdapter extends RecyclerView.Adapter<ItemAlbumAdapter.ItemAlbumViewHolder> {
     private Album album;
     private Context context;
 
-    public ListAlbumAdapter(Context context) {
+    public ItemAlbumAdapter(Context context) {
         this.context = context;
     }
 
-    public ListAlbumAdapter(Album album) {
+    public ItemAlbumAdapter(Album album) {
         this.album = album;
     }
     @NonNull
     @Override
-    public ListAlbumViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ItemAlbumViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_picture, parent, false);
 
-        return new ListAlbumViewHolder(view);
+        return new ItemAlbumViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ListAlbumViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ItemAlbumViewHolder holder, int position) {
         holder.onBind(album.getList().get(position));
     }
 
@@ -46,10 +46,10 @@ public class ListAlbumAdapter extends RecyclerView.Adapter<ListAlbumAdapter.List
         return album.getList().size();
     }
 
-    class ListAlbumViewHolder extends RecyclerView.ViewHolder {
+    class ItemAlbumViewHolder extends RecyclerView.ViewHolder {
         private ImageView imgPhoto;
         private Context context;
-        public ListAlbumViewHolder(@NonNull View itemView) {
+        public ItemAlbumViewHolder(@NonNull View itemView) {
             super(itemView);
             context = itemView.getContext();
             imgPhoto = itemView.findViewById(R.id.imgPhoto);

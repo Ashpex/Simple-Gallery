@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.testgallery.fragments.subFragments.ListAlbumFragment;
+import com.example.testgallery.fragments.subFragments.ItemAlbumFragment;
 import com.example.testgallery.R;
 import com.example.testgallery.models.Album;
 
@@ -72,7 +72,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
 //                context.startActivity(intent);
 
                 AppCompatActivity activity = (AppCompatActivity) view.getContext();
-                ListAlbumFragment myFragment = new ListAlbumFragment(album);
+                ItemAlbumFragment myFragment = new ItemAlbumFragment(album);
                 activity.getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(R.anim.anim_open_fragment, R.anim.anim_close_fragment)
                         .replace(R.id.frlayout, myFragment, "fragment_list_album").addToBackStack(null).commit();

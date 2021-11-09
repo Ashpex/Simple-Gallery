@@ -12,7 +12,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.testgallery.R;
 import com.example.testgallery.adapters.ViewPagerAdapter;
-import com.example.testgallery.fragments.subFragments.ListAlbumFragment;
+import com.example.testgallery.fragments.subFragments.ItemAlbumFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.gun0912.tedpermission.PermissionListener;
@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
 
     public  void removeFragment() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        ListAlbumFragment fragment = (ListAlbumFragment) getSupportFragmentManager().findFragmentByTag("fragment_list_album");
+        ItemAlbumFragment fragment = (ItemAlbumFragment) getSupportFragmentManager().findFragmentByTag("fragment_list_album");
         if(fragment != null) {
             fragmentTransaction.setCustomAnimations(R.anim.anim_open_fragment, R.anim.anim_close_fragment).remove(fragment);
             fragmentTransaction.commit();

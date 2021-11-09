@@ -15,16 +15,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.testgallery.R;
 import com.example.testgallery.models.Album;
-import com.example.testgallery.adapters.ListAlbumAdapter;
+import com.example.testgallery.adapters.ItemAlbumAdapter;
 
 
-public class ListAlbumFragment extends Fragment {
+public class ItemAlbumFragment extends Fragment {
     private Album myAlbum;
     private RecyclerView ryc_album;
     private TextView txtName_list_album;
     private ImageButton btnBack;
     private RecyclerView ryc_list_album;
-    public ListAlbumFragment(Album album) {
+    public ItemAlbumFragment(Album album) {
         myAlbum = album;
     }
     @Nullable
@@ -43,7 +43,7 @@ public class ListAlbumFragment extends Fragment {
         });
         txtName_list_album.setText(myAlbum.getName());
         ryc_list_album.setLayoutManager(new GridLayoutManager(view.getContext(), 3));
-        ryc_list_album.setAdapter(new ListAlbumAdapter(myAlbum));
+        ryc_list_album.setAdapter(new ItemAlbumAdapter(myAlbum));
 
         return view;
     }
