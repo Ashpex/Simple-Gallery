@@ -1,6 +1,7 @@
 package com.example.testgallery.fragments.mainFragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,37 +24,65 @@ import java.util.Random;
 import com.example.testgallery.models.Image;
 
 public class AlbumFragment extends Fragment {
-    private RecyclerView ryc_album;
+    List<Image> listImage;
+    public AlbumFragment(List<Image> data) {
+        this.listImage = data;
+    }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_album, container,false);
 
-        ryc_album = view.findViewById(R.id.ryc_album);
+        RecyclerView ryc_album = view.findViewById(R.id.ryc_album);
 
-        List<Album> listAlbum = new ArrayList<>();
-        List<Image> listImg = GetAllPhotoFromGallery.getAllImageFromGallery(getContext());
-//        listImg.add(new Image(R.drawable.anh1));
-//        listImg.add(new Image(R.drawable.anh2));
-//        listImg.add(new Image(R.drawable.anh3));
-//        listImg.add(new Image(R.drawable.anh4));
-//        listImg.add(new Image(R.drawable.anh5));
-//        listImg.add(new Image(R.drawable.anh7));
-//        listImg.add(new Image(R.drawable.anh8));
-        Random rand = new Random();
-        listAlbum.add(new Album( listImg.get(rand.nextInt(listImg.size())), "Album 1", listImg));
-        listAlbum.add(new Album(listImg.get(rand.nextInt(listImg.size())), "Album 2", listImg));
-        listAlbum.add(new Album(listImg.get(rand.nextInt(listImg.size())), "Album 3", listImg));
-        listAlbum.add(new Album(listImg.get(rand.nextInt(listImg.size())), "Album 4", listImg));
-        listAlbum.add(new Album(listImg.get(rand.nextInt(listImg.size())), "Album 5", listImg));
-        listAlbum.add(new Album(listImg.get(rand.nextInt(listImg.size())), "Album 6", listImg));
-        listAlbum.add(new Album(listImg.get(rand.nextInt(listImg.size())), "Album 7", listImg));
-        listAlbum.add(new Album(listImg.get(rand.nextInt(listImg.size())), "Album 8", listImg));
-
+        List<Album> listAlbum = getListAlbum(listImage);
 
         ryc_album.setLayoutManager(new GridLayoutManager(view.getContext(), 2));
         ryc_album.setAdapter(new AlbumAdapter(listAlbum, getContext()));
 
         return view;
+    }
+
+    private List<Album> getListAlbum(List<Image> listImage) {
+        List<String> ref = new ArrayList<>();
+        List<Album> listAlbum = new ArrayList<>();
+        List<Image> list = new ArrayList<>();
+
+        String[] _array = listImage.get(0).getThumb().split("/");
+        String _name = _array[_array.length -2];
+
+        ref.add(_name);
+        list.add(listImage.get(0));
+
+        for(int i = 1; i < listImage.size();i++) {
+
+            String[] array = listImage.get(i).getThumb().split("/");
+            String name = array[array.length -2];
+
+            if(ref.contains(name)) {
+                list.add(listImage.get(i));
+
+                if(i == listImage.size()- 1) {
+                    Album token = new Album(listImage.get(i-1), name);
+                    token.addList(list);
+                    listAlbum.add(token);
+                }
+            }
+            else {
+                if(list.size() !=0) {
+                    Album token = new Album(list.get(0), ref.get(ref.size()-1));
+                    token.addList(list);
+                    listAlbum.add(token);
+                }
+                else {
+                    Album token = new Album(listImage.get(i-1), name);
+                    token.addItem(listImage.get(i-1));
+                    listAlbum.add(token);
+                }
+                ref.add(name);
+                list.clear();
+            }
+        }
+        return listAlbum;
     }
 }

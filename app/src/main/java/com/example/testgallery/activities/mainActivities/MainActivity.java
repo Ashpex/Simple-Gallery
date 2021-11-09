@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
                 removeFragment();
                 switch (item.getItemId()) {
                     case R.id.picture:
-
                         viewPager.setCurrentItem(0);
                         break;
 
@@ -66,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setUpViewPager() {
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), getLifecycle());
+        viewPagerAdapter.setContext(getApplicationContext());
         viewPager.setAdapter(viewPagerAdapter);
 
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {

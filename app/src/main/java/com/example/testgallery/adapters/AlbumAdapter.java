@@ -90,9 +90,9 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
     }
 
     class AlbumViewHolder extends RecyclerView.ViewHolder {
-        private ImageView img_album;
-        private TextView txtName_album;
-        private TextView txtCount_item_album;
+        private final ImageView img_album;
+        private final TextView txtName_album;
+        private final TextView txtCount_item_album;
 
         public AlbumViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -103,21 +103,6 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
         }
 
         public void onBind(Album ref) {
-//            code cũ của Nguyên
-//            img_album.setImageResource(ref.getImg().getResource()); // comment de test chuong trinh
-//            txtName_album.setText(ref.getName());
-//            txtCount_item_album.setText(String.valueOf(ref.getList().size()) + " items");
-
-//            img_album.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    AppCompatActivity activity = (AppCompatActivity) view.getContext();
-//                    ListAlbumFragment myFragment = new ListAlbumFragment(ref);
-//                    activity.getSupportFragmentManager().beginTransaction()
-//                            .setCustomAnimations(R.anim.anim_open_fragment, R.anim.anim_close_fragment)
-//                            .replace(R.id.frlayout, myFragment, "fragment_list_album").addToBackStack(null).commit();
-//                }
-//            });
 
         }
     }
