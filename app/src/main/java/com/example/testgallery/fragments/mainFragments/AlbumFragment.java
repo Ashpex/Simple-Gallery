@@ -1,4 +1,4 @@
-package com.example.testgallery;
+package com.example.testgallery.fragments.mainFragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,14 +11,16 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.testgallery.Album.AlbumAdapter;
-import com.example.testgallery.Album.Album;
+import com.example.testgallery.utility.GetAllPhotoFromGallery;
+import com.example.testgallery.R;
+import com.example.testgallery.adapters.AlbumAdapter;
+import com.example.testgallery.models.Album;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import image.Image;
+import com.example.testgallery.models.Image;
 
 public class AlbumFragment extends Fragment {
     private RecyclerView ryc_album;

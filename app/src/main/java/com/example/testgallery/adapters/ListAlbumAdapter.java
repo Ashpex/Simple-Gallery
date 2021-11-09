@@ -1,4 +1,4 @@
-package com.example.testgallery.Album;
+package com.example.testgallery.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,10 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.testgallery.PictureActivity;
+import com.example.testgallery.activities.mainActivities.PictureActivity;
 import com.example.testgallery.R;
 
-import image.Image;
+import com.example.testgallery.models.Album;
+import com.example.testgallery.models.Image;
 
 public class ListAlbumAdapter extends RecyclerView.Adapter<ListAlbumAdapter.ListAlbumViewHolder> {
     private Album album;

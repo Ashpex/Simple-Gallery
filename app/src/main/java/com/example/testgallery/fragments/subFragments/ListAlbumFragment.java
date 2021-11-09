@@ -1,4 +1,4 @@
-package com.example.testgallery;
+package com.example.testgallery.fragments.subFragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,8 +13,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.testgallery.Album.Album;
-import com.example.testgallery.Album.ListAlbumAdapter;
+import com.example.testgallery.R;
+import com.example.testgallery.models.Album;
+import com.example.testgallery.adapters.ListAlbumAdapter;
 
 
 public class ListAlbumFragment extends Fragment {

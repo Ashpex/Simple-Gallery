@@ -13,10 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TestGallery"> 
         <activity
-            android:name=".PictureActivity"
+            android:name=".activities.mainActivities.PictureActivity"
             android:exported="true" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.mainActivities.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

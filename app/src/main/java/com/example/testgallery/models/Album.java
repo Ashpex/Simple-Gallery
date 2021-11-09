@@ -1,8 +1,6 @@
-package com.example.testgallery.Album;
+package com.example.testgallery.models;
 
 import java.util.List;
-
-import image.Image;
 
 public class Album {
     private Image img;

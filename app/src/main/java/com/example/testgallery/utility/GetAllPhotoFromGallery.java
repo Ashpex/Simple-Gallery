@@ -1,17 +1,16 @@
-package com.example.testgallery;
+package com.example.testgallery.utility;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import image.Image;
+import com.example.testgallery.models.Image;
 
 public class GetAllPhotoFromGallery {
     public static final List<Image> getAllImageFromGallery(Context context) {

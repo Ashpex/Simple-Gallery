@@ -1,4 +1,4 @@
-package image;
+package com.example.testgallery.models;
 
 public class Image {
     private String path;

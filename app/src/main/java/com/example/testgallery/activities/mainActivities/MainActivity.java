@@ -1,4 +1,4 @@
-package com.example.testgallery;
+package com.example.testgallery.activities.mainActivities;
 
 import android.Manifest;
 import android.os.Bundle;
@@ -10,6 +10,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.testgallery.R;
+import com.example.testgallery.adapters.ViewPagerAdapter;
+import com.example.testgallery.fragments.subFragments.ListAlbumFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.gun0912.tedpermission.PermissionListener;

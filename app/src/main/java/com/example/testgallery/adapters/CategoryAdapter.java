@@ -1,4 +1,4 @@
-package category;
+package com.example.testgallery.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,14 +8,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.testgallery.R;
+import com.example.testgallery.models.Category;
 
 import java.util.List;
-
-import image.ImageAdapter;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>{
     private Context context;

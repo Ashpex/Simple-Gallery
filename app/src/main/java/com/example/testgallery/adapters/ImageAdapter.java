@@ -1,4 +1,4 @@
-package image;
+package com.example.testgallery.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,8 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.testgallery.PictureActivity;
+import com.example.testgallery.activities.mainActivities.PictureActivity;
 import com.example.testgallery.R;
+import com.example.testgallery.models.Image;
 
 import java.util.List;
 

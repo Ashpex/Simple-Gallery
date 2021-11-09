@@ -1,4 +1,4 @@
-package com.example.testgallery;
+package com.example.testgallery.activities.mainActivities;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -20,6 +20,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import com.bumptech.glide.Glide;
+import com.example.testgallery.R;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 

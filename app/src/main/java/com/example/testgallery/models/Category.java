@@ -1,8 +1,6 @@
-package category;
+package com.example.testgallery.models;
 
 import java.util.List;
-
-import image.Image;
 
 public class Category {
     private String nameCategory;

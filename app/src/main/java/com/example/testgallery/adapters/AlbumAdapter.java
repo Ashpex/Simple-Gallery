@@ -1,4 +1,4 @@
-package com.example.testgallery.Album;
+package com.example.testgallery.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,8 +12,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.testgallery.ListAlbumFragment;
+import com.example.testgallery.fragments.subFragments.ListAlbumFragment;
 import com.example.testgallery.R;
+import com.example.testgallery.models.Album;
 
 import java.util.List;
 

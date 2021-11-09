@@ -1,7 +1,6 @@
-package com.example.testgallery;
+package com.example.testgallery.fragments.mainFragments;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-import category.Category;
-import category.CategoryAdapter;
-import image.Image;
+import com.example.testgallery.utility.GetAllPhotoFromGallery;
+import com.example.testgallery.R;
+import com.example.testgallery.models.Category;
+import com.example.testgallery.adapters.CategoryAdapter;
+import com.example.testgallery.models.Image;
 
 public class PhotoFragment extends Fragment {
     private RecyclerView recyclerView;
