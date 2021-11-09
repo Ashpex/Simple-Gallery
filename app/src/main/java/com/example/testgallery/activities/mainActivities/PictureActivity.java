@@ -6,6 +6,7 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -62,6 +63,8 @@ public class PictureActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+
     }
 
     void showExif(Uri photoUri){
@@ -140,6 +143,16 @@ public class PictureActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG).show();
         }
     };
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_album:
+                Toast.makeText(this,"test",Toast.LENGTH_SHORT);
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     void viewMapping(){
         imageView = findViewById(R.id.imgPicture);

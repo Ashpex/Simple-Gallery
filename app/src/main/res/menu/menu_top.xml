@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item android:id="@+id/menuSearch"
+        android:title="@string/search"
+        android:icon="@drawable/ic_searchmin"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/menuCamera"
+        android:title="Camera"
+        android:icon="@drawable/ic_camera"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/menuSlideshow"
+        android:title="Slideshow"
+        android:icon="@drawable/ic_picture"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/menuAdd"
+        android:title="Thêm"
+        android:icon="@drawable/ic_add"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/menuDelete"
+        android:title="Xóa"
+        android:icon="@drawable/ic_delete"
+        app:showAsAction="never"/>
+</menu>
