@@ -16,6 +16,9 @@
             android:name=".activities.mainActivities.PictureActivity"
             android:exported="true" />
         <activity
+            android:name=".activities.mainActivities.CreateAlbumActivity"
+            android:exported="true" />
+        <activity
             android:name=".activities.mainActivities.MainActivity"
             android:exported="true">
             <intent-filter>

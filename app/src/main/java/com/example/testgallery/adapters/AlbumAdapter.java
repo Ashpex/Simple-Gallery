@@ -19,24 +19,16 @@ import com.example.testgallery.models.Album;
 import java.util.List;
 
 public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder> {
-    private List<Album> mlistAlbums;
+    private List<Album> mListAlbums;
     private Context context;
 
-    public AlbumAdapter(List<Album> listAlbums) {
-        mlistAlbums = listAlbums;
-    }
-
-    public AlbumAdapter(Context context) {
+    public AlbumAdapter(List<Album> mListAlbums, Context context) {
+        this.mListAlbums = mListAlbums;
         this.context = context;
     }
 
-    public AlbumAdapter(List<Album> mlistAlbums, Context context) {
-        this.mlistAlbums = mlistAlbums;
-        this.context = context;
-    }
-
-    public void setData(List<Album> mlistAlbums) {
-        this.mlistAlbums = mlistAlbums;
+    public void setData(List<Album> mListAlbums) {
+        this.mListAlbums = mListAlbums;
         notifyDataSetChanged();
     }
 
@@ -51,40 +43,13 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
 
     @Override
     public void onBindViewHolder(@NonNull AlbumAdapter.AlbumViewHolder holder, int position) {
-//        holder.onBind(mlistAlbums.get(position));
-
-        Album album = mlistAlbums.get(position);
-        if (album == null) {
-            return;
-        }
-
-        Glide.with(context).load(album.getImg().getThumb()).into(holder.img_album);
-
-        holder.txtName_album.setText(album.getName());
-        holder.txtCount_item_album.setText(String.valueOf(album.getList().size()) + " items");
-
-        holder.img_album.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                Intent intent = new Intent(context, PictureActivity.class);
-//                intent.putExtra("imgSrc", image.getThumb());
-//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                context.startActivity(intent);
-
-                AppCompatActivity activity = (AppCompatActivity) view.getContext();
-                ItemAlbumFragment myFragment = new ItemAlbumFragment(album);
-                activity.getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(R.anim.anim_open_fragment, R.anim.anim_close_fragment)
-                        .replace(R.id.frlayout, myFragment, "fragment_list_album").addToBackStack(null).commit();
-
-            }
-        });
+        holder.onBind(mListAlbums.get(position));
     }
 
     @Override
     public int getItemCount() {
-        if (mlistAlbums != null) {
-            return mlistAlbums.size();
+        if (mListAlbums != null) {
+            return mListAlbums.size();
         }
         return 0;
     }
@@ -99,11 +64,25 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
             img_album = itemView.findViewById(R.id.img_album);
             txtName_album = itemView.findViewById(R.id.txtName_album);
             txtCount_item_album = itemView.findViewById(R.id.txtCount_item_album);
-
         }
 
         public void onBind(Album ref) {
+            txtName_album.setText(ref.getName());
+            txtCount_item_album.setText(String.valueOf(ref.getList().size()) + " items");
+            Glide.with(context).load(ref.getImg().getThumb()).into(img_album);
 
+            img_album.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // Open Fragment
+                    AppCompatActivity activity = (AppCompatActivity) view.getContext();
+                    ItemAlbumFragment myFragment = new ItemAlbumFragment(ref);
+                    activity.getSupportFragmentManager().beginTransaction()
+                            .setCustomAnimations(R.anim.anim_open_fragment, R.anim.anim_close_fragment)
+                            .replace(R.id.frlayout, myFragment, "fragment_list_album").addToBackStack(null).commit();
+
+                }
+            });
         }
     }
 }

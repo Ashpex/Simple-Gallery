@@ -1,10 +1,12 @@
 package com.example.testgallery.fragments.mainFragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,6 +14,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.testgallery.activities.mainActivities.CreateAlbumActivity;
+import com.example.testgallery.activities.mainActivities.PictureActivity;
 import com.example.testgallery.utility.GetAllPhotoFromGallery;
 import com.example.testgallery.R;
 import com.example.testgallery.adapters.AlbumAdapter;
@@ -24,25 +28,52 @@ import java.util.Random;
 import com.example.testgallery.models.Image;
 
 public class AlbumFragment extends Fragment {
-    List<Image> listImage;
+    private RecyclerView ryc_album;
+    private ImageButton btnAddAlbum;
+    private List<Image> listImage;
+    private View view;
     public AlbumFragment(List<Image> data) {
         this.listImage = data;
     }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_album, container,false);
+        view = inflater.inflate(R.layout.fragment_album, container,false);
 
-        RecyclerView ryc_album = view.findViewById(R.id.ryc_album);
+        mappingControls();
+        events();
+        return view;
+    }
 
+    private void events() {
+        setViewRyc();
+
+        btnAddAlbum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openCreateAlbumActivity();
+            }
+        });
+    }
+
+    private void openCreateAlbumActivity() {
+        Intent intent = new Intent(view.getContext(), CreateAlbumActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        view.getContext().startActivity(intent);
+    }
+
+    private void mappingControls() {
+        ryc_album = view.findViewById(R.id.ryc_album);
+        btnAddAlbum = view.findViewById(R.id.btnAddAlbum);
+    }
+
+    private void setViewRyc() {
         List<Album> listAlbum = getListAlbum(listImage);
 
         ryc_album.setLayoutManager(new GridLayoutManager(view.getContext(), 2));
         ryc_album.setAdapter(new AlbumAdapter(listAlbum, getContext()));
-
-        return view;
     }
-
+    @NonNull
     private List<Album> getListAlbum(List<Image> listImage) {
         List<String> ref = new ArrayList<>();
         List<Album> listAlbum = new ArrayList<>();
