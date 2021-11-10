@@ -11,12 +11,13 @@ import com.example.testgallery.R;
 import com.example.testgallery.models.Image;
 import com.smarteist.autoimageslider.SliderViewAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SlideShowAdapter extends SliderViewAdapter<SlideShowAdapter.SliderViewHolder> {
-    private List<Image> imageList;
+    private ArrayList<String> imageList;
 
-    public void setData(List<Image> imageList) {
+    public void setData(ArrayList<String> imageList) {
         this.imageList = imageList;
         notifyDataSetChanged();
     }
@@ -44,8 +45,8 @@ public class SlideShowAdapter extends SliderViewAdapter<SlideShowAdapter.SliderV
             context = itemView.getContext();
         }
 
-        public void onbind(Image img) {
-            Glide.with(context).load(img.getThumb()).into(img_slide_show);
+        public void onbind(String img) {
+            Glide.with(context).load(img).into(img_slide_show);
         }
     }
 }

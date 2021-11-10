@@ -26,12 +26,14 @@ public class SlideShowActivity extends AppCompatActivity {
     private SliderView sliderView;
     private ImageView img_back_slide_show;
     private Toolbar toolbar_slide;
+    private List<Image> imageList;
+    private Intent intent;
     private List<SliderAnimations> effect = new ArrayList<SliderAnimations>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_slide_show);
-
+        intent = getIntent();
         mappingControls();
         event();
 
@@ -79,7 +81,7 @@ public class SlideShowActivity extends AppCompatActivity {
     }
 
     private void setUpSlider(int i) {
-        List<Image> imageList = GetAllPhotoFromGallery.getAllImageFromGallery(getApplicationContext());
+        ArrayList<String> imageList = intent.getStringArrayListExtra("data_slide");
         SlideShowAdapter slideShowAdapter = new SlideShowAdapter();
         slideShowAdapter.setData(imageList);
         sliderView.setSliderAdapter(slideShowAdapter);
