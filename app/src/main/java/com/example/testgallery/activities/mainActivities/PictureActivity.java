@@ -88,9 +88,9 @@ public class PictureActivity extends AppCompatActivity {
                                 (LinearLayout) findViewById(R.id.infoContainer),
                                 false
                         );
-                TextView txtInfoProducer = (TextView) infoDialog.findViewById(R.id.txtInfoProducer);
+                TextView txtInfoProducer = (TextView) infoDialogView.findViewById(R.id.txtInfoProducer);
 
-                //txtInfoProducer.setText(exifInterface.getAttribute(ExifInterface.TAG_MAKE));
+                txtInfoProducer.setText(exifInterface.getAttribute(ExifInterface.TAG_MAKE));
 
 
                 infoDialog.setContentView(infoDialogView);
