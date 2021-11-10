@@ -47,6 +47,8 @@
         <entry key="app/src/main/res/layout/fragment_favorite.xml" value="0.3745471014492754" />
         <entry key="app/src/main/res/layout/fragment_list_album.xml" value="0.2148964896489649" />
         <entry key="app/src/main/res/layout/fragment_photo.xml" value="0.3745471014492754" />
+        <entry key="app/src/main/res/layout/fragment_secret_createpass.xml" value="0.350462962962963" />
+        <entry key="app/src/main/res/layout/fragment_secret_enterpass.xml" value="0.350462962962963" />
         <entry key="app/src/main/res/layout/fragment_share.xml" value="0.3745471014492754" />
         <entry key="app/src/main/res/layout/item_album.xml" value="0.4316123188405797" />
         <entry key="app/src/main/res/layout/item_category.xml" value="0.25277777777777777" />

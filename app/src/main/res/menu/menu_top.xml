@@ -3,16 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-    <item android:id="@+id/menuSearch"
-        android:title="@string/search"
-        android:icon="@drawable/ic_searchmin"
-        app:showAsAction="always"/>
-
     <item
         android:id="@+id/menuCamera"
         android:title="Camera"
         android:icon="@drawable/ic_camera"
         app:showAsAction="always"/>
+
+    <item android:id="@+id/menuSearch"
+        android:title="@string/search"
+        android:icon="@drawable/ic_searchmin"
+        app:showAsAction="ifRoom|collapseActionView"/>
 
     <item
         android:id="@+id/menuSlideshow"

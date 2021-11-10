@@ -2,13 +2,18 @@ package com.example.testgallery.activities.mainActivities;
 
 import android.Manifest;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.SearchView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.SharedValues;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -28,13 +33,19 @@ public class MainActivity extends AppCompatActivity {
     ViewPager2 viewPager;
 
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Hide status bar
+
         getSupportActionBar();
         setContentView(R.layout.activity_main);
 
         bottomNavigationView = findViewById(R.id.bottom_nav);
         viewPager = findViewById(R.id.view_pager);
+
+        // Show toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setUpViewPager();
@@ -70,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    // Toolbar handle
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
         getMenuInflater().inflate(R.menu.menu_top,menu);
@@ -82,6 +94,20 @@ public class MainActivity extends AppCompatActivity {
         switch (id){
             case R.id.menuSearch:
                 Toast.makeText(this,"Search",Toast.LENGTH_SHORT).show();
+
+                SearchView searchView = (SearchView) item.getActionView();
+                searchView.setQueryHint("Type to search");
+                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String s) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String s) {
+                        return false;
+                    }
+                });
                 break;
             case R.id.menuCamera:
                 Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");

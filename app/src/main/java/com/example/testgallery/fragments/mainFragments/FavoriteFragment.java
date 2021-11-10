@@ -19,7 +19,6 @@ public class FavoriteFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_favorite, container,false);
 
 
-
         return view;
     }
 }
