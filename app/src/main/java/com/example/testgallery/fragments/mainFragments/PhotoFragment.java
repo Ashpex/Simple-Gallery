@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.testgallery.activities.mainActivities.CameraActivity;
 import com.example.testgallery.utility.GetAllPhotoFromGallery;
 import com.example.testgallery.R;
 import com.example.testgallery.models.Category;
@@ -67,8 +68,10 @@ public class PhotoFragment extends Fragment {
                         //eventSearch(item);
                         break;
                     case R.id.menuCamera:
-                        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-                        startActivity(intent);
+//                        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+//                        startActivity(intent);
+                        Intent myIntent = new Intent(getActivity().getApplicationContext(), CameraActivity.class);
+                        getActivity().startActivity(myIntent);
                         break;
                     case R.id.menuAdd:
                         Toast.makeText(getContext(),"main",Toast.LENGTH_SHORT).show();
