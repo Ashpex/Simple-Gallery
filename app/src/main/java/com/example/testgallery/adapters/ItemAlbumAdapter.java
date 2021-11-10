@@ -17,14 +17,13 @@ import com.example.testgallery.R;
 import com.example.testgallery.models.Album;
 import com.example.testgallery.models.Image;
 
-public class ItemAlbumAdapter extends RecyclerView.Adapter<ItemAlbumAdapter.ItemAlbumViewHolder> {
-    private Album album;
-    private Context context;
-    public ItemAlbumAdapter(Context context) {
-        this.context = context;
-    }
+import java.util.ArrayList;
 
-    public ItemAlbumAdapter(Album album) {
+public class ItemAlbumAdapter extends RecyclerView.Adapter<ItemAlbumAdapter.ItemAlbumViewHolder> {
+    private ArrayList<String> album;
+    private Context context;
+
+    public ItemAlbumAdapter(ArrayList<String> album) {
         this.album = album;
     }
     @NonNull
@@ -37,12 +36,12 @@ public class ItemAlbumAdapter extends RecyclerView.Adapter<ItemAlbumAdapter.Item
 
     @Override
     public void onBindViewHolder(@NonNull ItemAlbumViewHolder holder, int position) {
-        holder.onBind(album.getList().get(position));
+        holder.onBind(album.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return album.getList().size();
+        return album.size();
     }
 
     class ItemAlbumViewHolder extends RecyclerView.ViewHolder {
@@ -53,14 +52,14 @@ public class ItemAlbumAdapter extends RecyclerView.Adapter<ItemAlbumAdapter.Item
             context = itemView.getContext();
             imgPhoto = itemView.findViewById(R.id.imgPhoto);
         }
-        public void onBind(Image img) {
+        public void onBind(String img) {
             // set ảnh cho imgPhoto bằng thư viện Glide
-            Glide.with(context).load(img.getThumb()).into(imgPhoto);
+            Glide.with(context).load(img).into(imgPhoto);
             imgPhoto.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(context, PictureActivity.class);
-                    intent.putExtra("imgSrc", img.getThumb());
+                    intent.putExtra("imgSrc", img);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
                 }

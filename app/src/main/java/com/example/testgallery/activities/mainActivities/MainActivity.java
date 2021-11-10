@@ -2,24 +2,19 @@ package com.example.testgallery.activities.mainActivities;
 
 import android.Manifest;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.SearchView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.SharedValues;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.testgallery.R;
 import com.example.testgallery.adapters.ViewPagerAdapter;
-import com.example.testgallery.fragments.subFragments.ItemAlbumFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 import com.gun0912.tedpermission.PermissionListener;
@@ -55,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                removeFragment();
+
                 switch (item.getItemId()) {
                     case R.id.picture:
                         viewPager.setCurrentItem(0);
@@ -126,12 +121,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageScrollStateChanged(int state) {
                 super.onPageScrollStateChanged(state);
-                removeFragment();
+
             }
 
             @Override
             public void onPageSelected(int position) {
-                removeFragment();
+
                 switch (position){
                     case 0:
                         bottomNavigationView.getMenu().findItem(R.id.picture).setChecked(true);
@@ -170,12 +165,5 @@ public class MainActivity extends AppCompatActivity {
                 .check();
     }
 
-    public  void removeFragment() {
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        ItemAlbumFragment fragment = (ItemAlbumFragment) getSupportFragmentManager().findFragmentByTag("fragment_list_album");
-        if(fragment != null) {
-            fragmentTransaction.setCustomAnimations(R.anim.anim_open_fragment, R.anim.anim_close_fragment).remove(fragment);
-            fragmentTransaction.commit();
-        }
-    }
+
 }

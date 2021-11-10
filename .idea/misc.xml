@@ -3,6 +3,15 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/SimpleGallery/app/src/main/res/layout/activity_item_album.xml" value="0.14375" />
+        <entry key="..\:/SimpleGallery/app/src/main/res/layout/activity_main.xml" value="0.16485507246376813" />
+        <entry key="..\:/SimpleGallery/app/src/main/res/layout/activity_picture.xml" value="0.16485507246376813" />
+        <entry key="..\:/SimpleGallery/app/src/main/res/layout/activity_slide_show.xml" value="0.16485507246376813" />
+        <entry key="..\:/SimpleGallery/app/src/main/res/layout/fragment_album.xml" value="0.16485507246376813" />
+        <entry key="..\:/SimpleGallery/app/src/main/res/layout/fragment_favorite.xml" value="0.16485507246376813" />
+        <entry key="..\:/SimpleGallery/app/src/main/res/layout/fragment_list_album.xml" value="0.264" />
+        <entry key="..\:/SimpleGallery/app/src/main/res/layout/fragment_photo.xml" value="0.16485507246376813" />
+        <entry key="..\:/SimpleGallery/app/src/main/res/layout/fragment_secret_createpass.xml" value="0.22871376811594202" />
         <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2911458333333333" />
         <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_add_photo_list_album.xml" value="0.2911458333333333" />
         <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_albums.xml" value="0.2755208333333333" />

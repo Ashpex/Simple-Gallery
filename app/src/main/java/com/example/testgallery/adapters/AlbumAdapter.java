@@ -1,6 +1,7 @@
 package com.example.testgallery.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,14 +9,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.testgallery.fragments.subFragments.ItemAlbumFragment;
+import com.example.testgallery.activities.mainActivities.ItemAlbumActivity;
 import com.example.testgallery.R;
 import com.example.testgallery.models.Album;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder> {
@@ -74,13 +75,16 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
             img_album.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    // Open Fragment
-                    AppCompatActivity activity = (AppCompatActivity) view.getContext();
-                    ItemAlbumFragment myFragment = new ItemAlbumFragment(ref);
-                    activity.getSupportFragmentManager().beginTransaction()
-                            .setCustomAnimations(R.anim.anim_open_fragment, R.anim.anim_close_fragment)
-                            .replace(R.id.frlayout, myFragment, "fragment_list_album").addToBackStack(null).commit();
+                    Intent intent = new Intent(context, ItemAlbumActivity.class);
+                    ArrayList<String> list = new ArrayList<>();
+                    for(int i=0;i<ref.getList().size();i++) {
+                        list.add(ref.getList().get(i).getThumb());
+                    }
 
+                    intent.putStringArrayListExtra("data", list);
+                    intent.putExtra("name", ref.getName());
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
                 }
             });
         }

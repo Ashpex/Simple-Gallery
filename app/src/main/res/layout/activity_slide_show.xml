@@ -49,14 +49,6 @@
         android:layout_height="match_parent"
         app:sliderAnimationDuration="500"
         app:sliderAutoCycleDirection="back_and_forth"
-        app:sliderIndicatorAnimationDuration="500"
-        app:sliderIndicatorGravity="center_horizontal|bottom"
-        app:sliderIndicatorMargin="15dp"
-        app:sliderIndicatorOrientation="horizontal"
-        app:sliderIndicatorPadding="3dp"
-        app:sliderIndicatorRadius="2dp"
-        app:sliderIndicatorSelectedColor="@color/black"
-        app:sliderIndicatorUnselectedColor="#CCCCCC"
         app:sliderScrollTimeInSec="2"
         app:sliderStartAutoCycle="true"/>
 </LinearLayout>

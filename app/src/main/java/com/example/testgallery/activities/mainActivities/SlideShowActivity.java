@@ -56,7 +56,6 @@ public class SlideShowActivity extends AppCompatActivity {
         SlideShowAdapter slideShowAdapter = new SlideShowAdapter();
         slideShowAdapter.setData(imageList);
         sliderView.setSliderAdapter(slideShowAdapter);
-        sliderView.setIndicatorAnimation(IndicatorAnimationType.WORM);
         sliderView.setSliderTransformAnimation(SliderAnimations.ZOOMOUTTRANSFORMATION);
         sliderView.startAutoCycle();
     }

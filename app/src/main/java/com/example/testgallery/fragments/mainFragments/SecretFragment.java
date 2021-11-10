@@ -2,7 +2,6 @@ package com.example.testgallery.fragments.mainFragments;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +13,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.example.testgallery.R;
-import com.example.testgallery.fragments.subFragments.ItemAlbumFragment;
 import com.example.testgallery.models.Album;
 import com.example.testgallery.models.Image;
-
-import java.util.ArrayList;
 
 public class SecretFragment extends Fragment {
 
@@ -104,11 +98,5 @@ public class SecretFragment extends Fragment {
         btnEnterPass = view.findViewById(R.id.btnEnterPass);
     }
     public void accessSecret(int container){
-        Image img = new Image();
-        AppCompatActivity activity = (AppCompatActivity) view.getContext();
-        ItemAlbumFragment myFragment = new ItemAlbumFragment(new Album(img,"Secret"));
-        activity.getSupportFragmentManager().beginTransaction()
-                .setCustomAnimations(R.anim.anim_open_fragment, R.anim.anim_close_fragment)
-                .replace(R.id.frlayout, myFragment, "fragment_list_album").addToBackStack(null).commit();
     }
 }

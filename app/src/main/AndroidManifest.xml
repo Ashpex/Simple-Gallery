@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TestGallery">
         <activity
+            android:name=".activities.mainActivities.ItemAlbumActivity"
+            android:exported="true" />
+        <activity
             android:name=".activities.mainActivities.SlideShowActivity"
             android:exported="true" />
         <activity
