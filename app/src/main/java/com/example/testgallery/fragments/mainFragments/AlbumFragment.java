@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.testgallery.activities.mainActivities.CreateAlbumActivity;
 import com.example.testgallery.R;
+import com.example.testgallery.activities.mainActivities.SlideShowActivity;
 import com.example.testgallery.adapters.AlbumAdapter;
 import com.example.testgallery.models.Album;
 
@@ -67,6 +68,11 @@ public class AlbumFragment extends Fragment {
                     case R.id.menuAdd:
                         openCreateAlbumActivity();
                         break;
+                    case R.id.menuSlideshow:
+                        Intent intentSlider = new Intent(view.getContext(), SlideShowActivity.class);
+                        intentSlider.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        view.getContext().startActivity(intentSlider);
+                        break;
                 }
                 return true;
             }
@@ -98,9 +104,9 @@ public class AlbumFragment extends Fragment {
 
 
     private void openCreateAlbumActivity() {
-        Intent intent = new Intent(view.getContext(), CreateAlbumActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        view.getContext().startActivity(intent);
+        Intent _intent = new Intent(view.getContext(), CreateAlbumActivity.class);
+        _intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        view.getContext().startActivity(_intent);
     }
 
     private void mappingControls() {

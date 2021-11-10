@@ -32,16 +32,10 @@
             android:layout_gravity="center"/>
 
 
-        <ImageView
-            android:id="@+id/anim"
-            android:layout_gravity="end"
-            android:layout_width="0dp"
-            android:layout_marginTop="2.5dp"
-            android:layout_marginBottom="2.5dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.1"
-
-            android:src="@drawable/ic_info" />
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar_slide"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
     <com.smarteist.autoimageslider.SliderView
         android:id="@+id/sliderView"
@@ -50,5 +44,5 @@
         app:sliderAnimationDuration="500"
         app:sliderAutoCycleDirection="back_and_forth"
         app:sliderScrollTimeInSec="2"
-        app:sliderStartAutoCycle="true"/>
+        app:sliderStartAutoCycle="true" />
 </LinearLayout>
