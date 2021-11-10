@@ -11,7 +11,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import com.example.testgallery.fragments.mainFragments.AlbumFragment;
 import com.example.testgallery.fragments.mainFragments.FavoriteFragment;
 import com.example.testgallery.fragments.mainFragments.PhotoFragment;
-import com.example.testgallery.fragments.mainFragments.ShareFragment;
+import com.example.testgallery.fragments.mainFragments.SecretFragment;
 import com.example.testgallery.models.Image;
 import com.example.testgallery.utility.GetAllPhotoFromGallery;
 
@@ -40,9 +40,9 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
             case 1:
                 return new AlbumFragment(data);
             case 2:
-                return new ShareFragment();
-            case 3:
                 return new FavoriteFragment();
+            case 3:
+                return new SecretFragment();
             default:
                 return null;
         }
