@@ -3,31 +3,6 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/SimpleGallery/app/src/main/res/drawable/ic_add_photo_list_album.xml" value="0.2755208333333333" />
-        <entry key="..\:/SimpleGallery/app/src/main/res/drawable/ic_share.xml" value="0.2911458333333333" />
-        <entry key="..\:/SimpleGallery/app/src/main/res/drawable/ic_slide_show.xml" value="0.2911458333333333" />
-        <entry key="..\:/SimpleGallery/app/src/main/res/layout/activity_create_album.xml" value="0.264" />
-        <entry key="..\:/SimpleGallery/app/src/main/res/layout/activity_item_album.xml" value="0.14375" />
-        <entry key="..\:/SimpleGallery/app/src/main/res/layout/activity_main.xml" value="0.16485507246376813" />
-        <entry key="..\:/SimpleGallery/app/src/main/res/layout/activity_picture.xml" value="0.16485507246376813" />
-        <entry key="..\:/SimpleGallery/app/src/main/res/layout/activity_slide_show.xml" value="0.16485507246376813" />
-        <entry key="..\:/SimpleGallery/app/src/main/res/layout/fragment_album.xml" value="0.16485507246376813" />
-        <entry key="..\:/SimpleGallery/app/src/main/res/layout/fragment_favorite.xml" value="0.16485507246376813" />
-        <entry key="..\:/SimpleGallery/app/src/main/res/layout/fragment_list_album.xml" value="0.264" />
-        <entry key="..\:/SimpleGallery/app/src/main/res/layout/fragment_photo.xml" value="0.16485507246376813" />
-        <entry key="..\:/SimpleGallery/app/src/main/res/layout/fragment_secret_createpass.xml" value="0.22871376811594202" />
-        <entry key="..\:/SimpleGallery/app/src/main/res/layout/fragment_secret_enterpass.xml" value="0.16485507246376813" />
-        <entry key="..\:/SimpleGallery/app/src/main/res/layout/fragment_share.xml" value="0.22871376811594202" />
-        <entry key="..\:/SimpleGallery/app/src/main/res/layout/item_album.xml" value="0.22871376811594202" />
-        <entry key="..\:/SimpleGallery/app/src/main/res/layout/item_picture.xml" value="0.22871376811594202" />
-        <entry key="..\:/SimpleGallery/app/src/main/res/layout/item_slide_show.xml" value="0.16485507246376813" />
-        <entry key="..\:/SimpleGallery/app/src/main/res/layout/layout_bottom_sheet_album.xml" value="0.6" />
-        <entry key="..\:/SimpleGallery/app/src/main/res/layout/layout_toolbar.xml" value="0.16485507246376813" />
-        <entry key="..\:/SimpleGallery/app/src/main/res/menu/menu_bottom_nav.xml" value="0.259375" />
-        <entry key="..\:/SimpleGallery/app/src/main/res/menu/menu_bottom_picture.xml" value="0.259375" />
-        <entry key="..\:/SimpleGallery/app/src/main/res/menu/menu_effect_slide.xml" value="0.2359375" />
-        <entry key="..\:/SimpleGallery/app/src/main/res/menu/menu_top.xml" value="0.259375" />
-        <entry key="..\:/SimpleGallery/app/src/main/res/menu/menu_top_picture.xml" value="0.259375" />
         <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2911458333333333" />
         <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_add_photo_list_album.xml" value="0.2911458333333333" />
         <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_albums.xml" value="0.2755208333333333" />
@@ -79,10 +54,12 @@
         <entry key="app/src/main/res/layout/item_category.xml" value="0.25277777777777777" />
         <entry key="app/src/main/res/layout/item_picture.xml" value="0.25277777777777777" />
         <entry key="app/src/main/res/layout/item_slide_show.xml" value="0.25277777777777777" />
+        <entry key="app/src/main/res/layout/layout_bottom_sheet_album.xml" value="0.44212962962962965" />
         <entry key="app/src/main/res/layout/layout_info.xml" value="0.44212962962962965" />
         <entry key="app/src/main/res/layout/layout_toolbar.xml" value="0.25277777777777777" />
         <entry key="app/src/main/res/menu/menu_bottom_nav.xml" value="0.25277777777777777" />
         <entry key="app/src/main/res/menu/menu_bottom_picture.xml" value="0.25277777777777777" />
+        <entry key="app/src/main/res/menu/menu_effect_slide.xml" value="0.44212962962962965" />
         <entry key="app/src/main/res/menu/menu_top.xml" value="0.25277777777777777" />
         <entry key="app/src/main/res/menu/menu_top_picture.xml" value="0.25972222222222224" />
       </map>
