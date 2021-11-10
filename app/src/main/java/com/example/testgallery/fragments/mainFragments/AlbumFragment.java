@@ -1,15 +1,13 @@
 package com.example.testgallery.fragments.mainFragments;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -21,15 +19,12 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.testgallery.activities.mainActivities.CreateAlbumActivity;
-import com.example.testgallery.activities.mainActivities.PictureActivity;
-import com.example.testgallery.utility.GetAllPhotoFromGallery;
 import com.example.testgallery.R;
 import com.example.testgallery.adapters.AlbumAdapter;
 import com.example.testgallery.models.Album;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import com.example.testgallery.models.Image;
 
@@ -38,7 +33,7 @@ public class AlbumFragment extends Fragment {
     private List<Image> listImage;
     private View view;
     private androidx.appcompat.widget.Toolbar toolbar_album;
-
+    private List<Album> listAlbum;
     public AlbumFragment(List<Image> data) {
         this.listImage = data;
     }
@@ -97,7 +92,8 @@ public class AlbumFragment extends Fragment {
     }
 
     private void events() {
-        setViewRyc();
+        MyAsyncTask myAsyncTask = new MyAsyncTask();
+        myAsyncTask.execute();
     }
 
 
@@ -112,8 +108,6 @@ public class AlbumFragment extends Fragment {
     }
 
     private void setViewRyc() {
-        List<Album> listAlbum = getListAlbum(listImage);
-
         ryc_album.setLayoutManager(new GridLayoutManager(view.getContext(), 2));
         ryc_album.setAdapter(new AlbumAdapter(listAlbum, getContext()));
     }
@@ -123,37 +117,47 @@ public class AlbumFragment extends Fragment {
         List<Album> listAlbum = new ArrayList<>();
         List<Image> list = new ArrayList<>();
 
-        String[] _array = listImage.get(0).getThumb().split("/");
-        String _name = _array[_array.length -2];
-
-        ref.add(_name);
-        list.add(listImage.get(0));
-
-        for(int i = 1; i < listImage.size();i++) {
-
-            String[] array = listImage.get(i).getThumb().split("/");
-            String name = array[array.length -2];
-
-            if(ref.contains(name)) {
+        for(int i = 0; i< listImage.size();i++) {
+            String[] _array = listImage.get(i).getThumb().split("/");
+            String _name = _array[_array.length -2];
+            Log.d("tesss", _name);
+            if(!ref.contains(_name)) {
                 list.add(listImage.get(i));
-            }
-            else {
-                if(list.size() !=0) {
-                    Album token = new Album(list.get(0), ref.get(ref.size()-1));
-                    token.addList(list);
-                    listAlbum.add(token);
+                for (int j = i + 1; j < listImage.size(); j++) {
+                    String[] array = listImage.get(j).getThumb().split("/");
+                    String name = array[array.length - 2];
+                    if (name.equals(_name)) {
+                        list.add(listImage.get(j));
+                    }
                 }
-                ref.add(name);
-                list.clear();
-                list.add(listImage.get(i));
             }
-
-            if(i == listImage.size()- 1) {
-                Album token = new Album(listImage.get(i-1), name);
+            Log.d("tesss", String.valueOf(list.size()));
+            if(list.size() !=0) {
+                ref.add(_name);
+                Album token = new Album(list.get(0), _name);
                 token.addList(list);
                 listAlbum.add(token);
+                list.clear();
             }
         }
+
         return listAlbum;
     }
+    public class MyAsyncTask extends AsyncTask<Void, Integer, Void> {
+
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            listAlbum = getListAlbum(listImage);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            super.onPostExecute(unused);
+            setViewRyc();
+        }
+    }
 }
+
+
