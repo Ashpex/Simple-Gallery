@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/picture"
+        android:id="@+id/photo"
         android:title="Photo"
         android:icon="@drawable/ic_picture"/>
 
-    <item android:id="@+id/search"
+    <item android:id="@+id/album"
         android:title="Album"
         android:icon="@drawable/ic_gallery"/>
 
-    <item android:id="@+id/share"
+    <item android:id="@+id/favorite"
         android:title="Favorite"
         android:icon="@drawable/ic_star"/>
 
-    <item android:id="@+id/gallery"
-        android:title="Share"
+    <item android:id="@+id/scret"
+        android:title="Scret"
         android:icon="@drawable/ic_share"/>
 </menu>

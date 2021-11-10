@@ -31,6 +31,7 @@ public class SecretFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         settings = getActivity().getSharedPreferences("PREFS",0);
         password = settings.getString("password","");
 
