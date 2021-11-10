@@ -40,7 +40,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginStart="5dp"
             android:text="Time"/>
+        <TextView
+            android:id="@+id/txtInfoTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="5dp"
+            android:text="Unkown"
+            android:textStyle="bold"
+            android:textColor="@color/black"/>
 
     </LinearLayout>
 
@@ -101,7 +111,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_gravity="center|end"
                 android:layout_marginEnd="10dp"
                 android:src="@drawable/ic_info_model"/>
 
@@ -182,7 +192,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_gravity="center|end"
                 android:layout_marginEnd="10dp"
                 android:src="@drawable/ic_info_focal_length"/>
 
@@ -263,7 +273,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:layout_gravity="center|end"
                 android:layout_marginEnd="10dp"
                 android:src="@drawable/ic_info_user" />
 

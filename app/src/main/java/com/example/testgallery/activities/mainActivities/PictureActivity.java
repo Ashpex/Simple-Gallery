@@ -81,7 +81,7 @@ public class PictureActivity extends AppCompatActivity {
                 FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
 
                 ExifInterface exifInterface = new ExifInterface(fileDescriptor);
-                String exif="Exif: " + fileDescriptor.toString();
+                //String exif="Exif: " + fileDescriptor.toString();
 
                 BottomSheetDialog infoDialog = new BottomSheetDialog(this,R.style.BottomSheetDialogTheme);
                 View infoDialogView = LayoutInflater.from(getApplicationContext())
@@ -96,6 +96,7 @@ public class PictureActivity extends AppCompatActivity {
                 TextView txtInfoFlash = (TextView) infoDialogView.findViewById(R.id.txtInfoFlash);
                 TextView txtInfoFocalLength = (TextView) infoDialogView.findViewById(R.id.txtInfoFocalLength);
                 TextView txtInfoAuthor = (TextView) infoDialogView.findViewById(R.id.txtInfoAuthor);
+                TextView txtInfoTime = (TextView) infoDialogView.findViewById(R.id.txtInfoTime);
 
                 txtInfoProducer.setText(exifInterface.getAttribute(ExifInterface.TAG_MAKE));
                 txtInfoSize.setText(exifInterface.getAttribute(ExifInterface.TAG_IMAGE_LENGTH) + "x" + exifInterface.getAttribute(ExifInterface.TAG_IMAGE_WIDTH));
@@ -103,36 +104,14 @@ public class PictureActivity extends AppCompatActivity {
                 txtInfoFlash.setText(exifInterface.getAttribute(ExifInterface.TAG_FLASH));
                 txtInfoFocalLength.setText(exifInterface.getAttribute(ExifInterface.TAG_FOCAL_LENGTH));
                 txtInfoAuthor.setText(exifInterface.getAttribute(ExifInterface.TAG_ARTIST));
+                txtInfoTime.setText(exifInterface.getAttribute(ExifInterface.TAG_DATETIME));
 
                 infoDialog.setContentView(infoDialogView);
                 infoDialog.show();
 
-                exif += "\nChiều dài: " +
-                        exifInterface.getAttribute(ExifInterface.TAG_IMAGE_LENGTH);
-                exif += "\nChiều rộng: " +
-                        exifInterface.getAttribute(ExifInterface.TAG_IMAGE_WIDTH);
-                exif += "\n Thời gian: " +
-                        exifInterface.getAttribute(ExifInterface.TAG_DATETIME);
-                exif += "\n Nhà sản xuất: " +
-                        exifInterface.getAttribute(ExifInterface.TAG_MAKE);
-                exif += "\n Thiết bị: " +
-                        exifInterface.getAttribute(ExifInterface.TAG_MODEL);
-                exif += "\n Tác giả: " +
-                        exifInterface.getAttribute(ExifInterface.TAG_ARTIST);
-                exif += "\n Orientation: " +
-                        exifInterface.getAttribute(ExifInterface.TAG_ORIENTATION);
-                exif += "\n Cân bằng trắng " +
-                        exifInterface.getAttribute(ExifInterface.TAG_WHITE_BALANCE);
-                exif += "\n Khẩu độ: " +
-                        exifInterface.getAttribute(ExifInterface.TAG_FOCAL_LENGTH);
-                exif += "\n Flash: " +
-                        exifInterface.getAttribute(ExifInterface.TAG_FLASH);
 
                 parcelFileDescriptor.close();
 
-//                Toast.makeText(getApplicationContext(),
-//                        exif,
-//                        Toast.LENGTH_LONG).show();
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
