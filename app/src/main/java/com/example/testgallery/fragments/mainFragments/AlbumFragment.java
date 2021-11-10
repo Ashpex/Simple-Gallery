@@ -54,7 +54,7 @@ public class AlbumFragment extends Fragment {
         return view;
     }
     private void toolBarEvents() {
-        toolbar_album.inflateMenu(R.menu.menu_top);
+        toolbar_album.inflateMenu(R.menu.menu_top_album);
         toolbar_album.setTitle("Album");
         toolbar_album.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -70,11 +70,6 @@ public class AlbumFragment extends Fragment {
                         break;
                     case R.id.menuAdd:
                         openCreateAlbumActivity();
-                        break;
-                    case R.id.menuSlideshow:
-                        Intent intentSlider = new Intent(view.getContext(), SlideShowActivity.class);
-                        intentSlider.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        view.getContext().startActivity(intentSlider);
                         break;
                 }
                 return true;
