@@ -87,6 +87,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
                     context.startActivity(intent);
                 }
             });
+
         }
     }
 }

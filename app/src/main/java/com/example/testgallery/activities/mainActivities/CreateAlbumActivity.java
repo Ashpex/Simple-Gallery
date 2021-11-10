@@ -21,7 +21,7 @@ import java.util.List;
 
 public class CreateAlbumActivity extends AppCompatActivity {
     private ImageView img_back_create_album;
-    private ImageView menu_album;
+    private ImageView btnTick;
     private EditText edtTitleAlbum;
     private RecyclerView rycAddAlbum;
     private List<Image> listImage;
@@ -43,19 +43,19 @@ public class CreateAlbumActivity extends AppCompatActivity {
         });
 
         setViewRyc();
-        menu_album.setOnClickListener(new View.OnClickListener() {
+        btnTick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                action();
+
             }
         });
     }
 
-    private void action() {
+    /*private void action() {
         Intent intent = new Intent(this, SlideShowActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-    }
+    }*/
 
     private void setViewRyc() {
         listImage = GetAllPhotoFromGallery.getAllImageFromGallery(this);
@@ -67,7 +67,7 @@ public class CreateAlbumActivity extends AppCompatActivity {
 
     private void mappingControls() {
         img_back_create_album = findViewById(R.id.img_back_create_album);
-        menu_album = findViewById(R.id.menu_album);
+        btnTick = findViewById(R.id.btnTick);
         edtTitleAlbum = findViewById(R.id.edtTitleAlbum);
         rycAddAlbum = findViewById(R.id.rycAddAlbum);
     }

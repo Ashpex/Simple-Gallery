@@ -4,9 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.SearchView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,31 +35,71 @@ import com.example.testgallery.models.Image;
 
 public class AlbumFragment extends Fragment {
     private RecyclerView ryc_album;
-    private ImageButton btnAddAlbum;
     private List<Image> listImage;
     private View view;
+    private androidx.appcompat.widget.Toolbar toolbar_album;
+
     public AlbumFragment(List<Image> data) {
         this.listImage = data;
     }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_album, container,false);
+        toolbar_album = view.findViewById(R.id.toolbar_album);
+
+        toolBarEvents();
         mappingControls();
         events();
         return view;
     }
-
-    private void events() {
-        setViewRyc();
-
-        btnAddAlbum.setOnClickListener(new View.OnClickListener() {
+    private void toolBarEvents() {
+        toolbar_album.inflateMenu(R.menu.menu_top);
+        toolbar_album.setTitle("Album");
+        toolbar_album.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
-            public void onClick(View view) {
-                openCreateAlbumActivity();
+            public boolean onMenuItemClick(MenuItem item) {
+                int id = item.getItemId();
+                switch (id){
+                    case R.id.menuSearch:
+                        //eventSearch(item);
+                        break;
+                    case R.id.menuCamera:
+                        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+                        startActivity(intent);
+                        break;
+                    case R.id.menuAdd:
+                        openCreateAlbumActivity();
+                        break;
+                }
+                return true;
             }
         });
     }
+
+    private void eventSearch(@NonNull MenuItem item) {
+        Toast.makeText(getContext(),"Search",Toast.LENGTH_SHORT).show();
+
+        SearchView searchView = (SearchView) item.getActionView();
+        searchView.setQueryHint("Type to search");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+    }
+
+    private void events() {
+        setViewRyc();
+    }
+
 
     private void openCreateAlbumActivity() {
         Intent intent = new Intent(view.getContext(), CreateAlbumActivity.class);
@@ -64,7 +109,6 @@ public class AlbumFragment extends Fragment {
 
     private void mappingControls() {
         ryc_album = view.findViewById(R.id.ryc_album);
-        btnAddAlbum = view.findViewById(R.id.btnAddAlbum);
     }
 
     private void setViewRyc() {

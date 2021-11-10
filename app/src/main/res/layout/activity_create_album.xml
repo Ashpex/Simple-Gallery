@@ -30,7 +30,7 @@
 
 
         <ImageView
-            android:id="@+id/menu_album"
+            android:id="@+id/btnTick"
             android:layout_gravity="end"
             android:layout_width="0dp"
             android:layout_marginTop="2.5dp"
@@ -38,7 +38,7 @@
             android:layout_height="match_parent"
             android:layout_weight="0.1"
 
-            android:src="@drawable/ic_info" />
+            android:src="@drawable/ic_tick" />
     </LinearLayout>
     <EditText
         android:id="@+id/edtTitleAlbum"

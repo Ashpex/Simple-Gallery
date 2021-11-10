@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
     ViewPager2 viewPager;
-    Toolbar toolbar;
+
 
     @Override
 
@@ -35,15 +35,15 @@ public class MainActivity extends AppCompatActivity {
 
         // Hide status bar
 
-        getSupportActionBar();
+        /*getSupportActionBar();*/
         setContentView(R.layout.activity_main);
 
         bottomNavigationView = findViewById(R.id.bottom_nav);
         viewPager = findViewById(R.id.view_pager);
 
         // Show toolbar
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        /*toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);*/
         setUpViewPager();
 
 
@@ -54,22 +54,22 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (item.getItemId()) {
                     case R.id.photo:
-                        toolbar.setTitle("Photo");
+
                         viewPager.setCurrentItem(0);
                         break;
 
                     case R.id.album:
-                        toolbar.setTitle("Album");
+
                         viewPager.setCurrentItem(1);
                         break;
 
                     case R.id.favorite:
-                        toolbar.setTitle("Favorite");
+
                         viewPager.setCurrentItem(2);
                         break;
 
                     case R.id.scret:
-                        toolbar.setTitle("Scret");
+
                         viewPager.setCurrentItem(3);
                         break;
                 }
@@ -82,40 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     // Toolbar handle
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_top,menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        switch (id){
-            case R.id.menuSearch:
-                Toast.makeText(this,"Search",Toast.LENGTH_SHORT).show();
-
-                SearchView searchView = (SearchView) item.getActionView();
-                searchView.setQueryHint("Type to search");
-                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                    @Override
-                    public boolean onQueryTextSubmit(String s) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onQueryTextChange(String s) {
-                        return false;
-                    }
-                });
-                break;
-            case R.id.menuCamera:
-                Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-                startActivity(intent);
-                break;
-        }
-        return true;
-    }
 
     private void setUpViewPager() {
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), getLifecycle());
@@ -134,19 +101,18 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (position){
                     case 0:
-                        toolbar.setTitle("Photo");
                         bottomNavigationView.getMenu().findItem(R.id.photo).setChecked(true);
                         break;
                     case 1:
-                        toolbar.setTitle("Album");
+
                         bottomNavigationView.getMenu().findItem(R.id.album).setChecked(true);
                         break;
                     case 2:
-                        toolbar.setTitle("Favorite");
+
                         bottomNavigationView.getMenu().findItem(R.id.favorite).setChecked(true);
                         break;
                     case 3:
-                        toolbar.setTitle("Scret");
+
                         bottomNavigationView.getMenu().findItem(R.id.scret).setChecked(true);
                         break;
                 }

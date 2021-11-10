@@ -1,13 +1,20 @@
 package com.example.testgallery.fragments.mainFragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,6 +31,7 @@ import com.example.testgallery.models.Image;
 public class PhotoFragment extends Fragment {
     private RecyclerView recyclerView;
     private CategoryAdapter categoryAdapter;
+    private androidx.appcompat.widget.Toolbar toolbar_photo;
 
     @Nullable
     @Override
@@ -31,16 +39,65 @@ public class PhotoFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_photo, container,false);
 
         recyclerView = view.findViewById(R.id.rcv_category);
-        categoryAdapter = new CategoryAdapter(getContext());
+        toolbar_photo = view.findViewById(R.id.toolbar_photo);
 
+        toolBarEvents();
+        setRyc();
+
+        return view;
+    }
+
+    private void setRyc() {
+        categoryAdapter = new CategoryAdapter(getContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
         categoryAdapter.setData(getListCategory());
         recyclerView.setAdapter(categoryAdapter);
-        Log.d("test", GetAllPhotoFromGallery.getAllImageFromGallery(getContext()).get(1).getThumb());
-        return view;
     }
 
+    private void toolBarEvents() {
+        toolbar_photo.inflateMenu(R.menu.menu_top);
+        toolbar_photo.setTitle("Photo");
+        toolbar_photo.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int id = item.getItemId();
+                switch (id){
+                    case R.id.menuSearch:
+                        //eventSearch(item);
+                        break;
+                    case R.id.menuCamera:
+                        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+                        startActivity(intent);
+                        break;
+                    case R.id.menuAdd:
+                        Toast.makeText(getContext(),"main",Toast.LENGTH_SHORT).show();
+                        break;
+                }
+                return true;
+            }
+        });
+    }
+
+    private void eventSearch(@NonNull MenuItem item) {
+        Toast.makeText(getContext(),"Search",Toast.LENGTH_SHORT).show();
+
+        SearchView searchView = (SearchView) item.getActionView();
+        searchView.setQueryHint("Type to search");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+    }
+
+    @NonNull
     private List<Category> getListCategory() {
         List<Category> categoryList = new ArrayList<>();
         int categoryCount = 0;
@@ -56,4 +113,5 @@ public class PhotoFragment extends Fragment {
         }
         return categoryList;
     }
+
 }

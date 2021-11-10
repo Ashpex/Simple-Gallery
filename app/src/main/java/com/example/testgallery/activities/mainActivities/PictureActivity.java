@@ -144,7 +144,7 @@ public class PictureActivity extends AppCompatActivity {
         }
     };
 
-    @Override
+/*    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_album:
@@ -152,7 +152,7 @@ public class PictureActivity extends AppCompatActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
+    }*/
 
     void viewMapping(){
         imageView = findViewById(R.id.imgPicture);

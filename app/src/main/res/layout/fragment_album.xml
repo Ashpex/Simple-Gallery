@@ -3,31 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        android:padding="5dp">
-        <TextView
-            android:text="Danh sách"
-            android:textColor="@color/black"
-            android:textSize="25sp"
-            android:layout_weight="14"
-            android:textStyle="bold"
-            android:layout_marginStart="20dp"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"/>
-        <ImageButton
-            android:id="@+id/btnAddAlbum"
-            android:layout_width="0dp"
-            android:layout_weight="1.5"
-            android:layout_height="match_parent"
-            android:background="@drawable/ic_new_album"
-            android:layout_gravity="center" />
-    </LinearLayout>
+    <include
+        android:id="@+id/toolbar_album"
+        layout="@layout/layout_toolbar" />
     <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="30dp"
         android:layout_gravity="center"
         android:id="@+id/ryc_album"
         android:layout_width="wrap_content"
