@@ -121,29 +121,18 @@ public class AlbumFragment extends Fragment {
     private List<Album> getListAlbum(List<Image> listImage) {
         List<String> ref = new ArrayList<>();
         List<Album> listAlbum = new ArrayList<>();
-        List<Image> list = new ArrayList<>();
 
         for(int i = 0; i< listImage.size();i++) {
             String[] _array = listImage.get(i).getThumb().split("/");
             String _name = _array[_array.length -2];
-            Log.d("tesss", _name);
             if(!ref.contains(_name)) {
-                list.add(listImage.get(i));
-                for (int j = i + 1; j < listImage.size(); j++) {
-                    String[] array = listImage.get(j).getThumb().split("/");
-                    String name = array[array.length - 2];
-                    if (name.equals(_name)) {
-                        list.add(listImage.get(j));
-                    }
-                }
-            }
-            Log.d("tesss", String.valueOf(list.size()));
-            if(list.size() !=0) {
                 ref.add(_name);
-                Album token = new Album(list.get(0), _name);
-                token.addList(list);
+                Album token = new Album(listImage.get(i), _name);
+                token.addItem(listImage.get(i));
                 listAlbum.add(token);
-                list.clear();
+            }
+            else {
+                listAlbum.get(ref.indexOf(_name)).addItem(listImage.get(i));
             }
         }
 
