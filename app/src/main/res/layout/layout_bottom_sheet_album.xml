@@ -6,67 +6,67 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:paddingStart="10dp"
-    app:behavior_hideable = "true"
-    app:behavior_peekHeight = "0dp"
-    app:layout_behavior="@string/bottom_sheet_behavior"
-    android:background="@drawable/bottom_sheet_background">
+    android:background="@color/white">
     <LinearLayout
+        android:id="@+id/layout_bottom_share"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="30dp">
         <ImageView
             android:layout_gravity="center"
             android:layout_marginStart="7dp"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
             android:background="@drawable/ic_share"/>
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:text="Share"
-            android:gravity="start|center"
+            android:gravity="left"
             android:padding="8dp"
             android:layout_marginStart="23dp"
-            android:textSize="16sp"
+            android:textSize="10dp"
             android:textStyle="normal"
             android:textColor="@color/black"/>
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/layout_bottom_slide_show"
         android:layout_width="match_parent"
-        android:layout_height="36dp">
+        android:layout_height="30dp">
         <ImageView
             android:layout_gravity="center"
             android:layout_marginStart="5dp"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:background="@drawable/ic_slide_show"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="Slide show"
-            android:gravity="start|center"
+            android:gravity="left"
             android:padding="8dp"
             android:layout_marginStart="20dp"
-            android:textSize="16sp"
+            android:textSize="10dp"
             android:textStyle="normal"
             android:textColor="@color/black"/>
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/layout_bottom_delete"
         android:layout_width="match_parent"
-        android:layout_height="36dp">
+        android:layout_height="30dp">
         <ImageView
             android:layout_gravity="center"
             android:layout_marginStart="5dp"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:background="@drawable/ic_delete"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="Delete"
-            android:gravity="start|center"
+            android:gravity="left"
             android:padding="8dp"
             android:layout_marginStart="20dp"
-            android:textSize="16sp"
+            android:textSize="10dp"
             android:textStyle="normal"
             android:textColor="@color/black"/>
     </LinearLayout>

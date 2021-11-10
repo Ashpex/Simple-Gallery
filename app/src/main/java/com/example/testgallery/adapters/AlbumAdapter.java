@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,8 +15,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.testgallery.activities.mainActivities.ItemAlbumActivity;
 import com.example.testgallery.R;
+import com.example.testgallery.activities.mainActivities.SlideShowActivity;
 import com.example.testgallery.models.Album;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,14 +26,10 @@ import java.util.List;
 public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder> {
     private List<Album> mListAlbums;
     private Context context;
-    private BottomSheetBehavior bottomSheetBehavior;
+    private BottomSheetDialog bottomSheetDialog;
     public AlbumAdapter(List<Album> mListAlbums, Context context) {
         this.mListAlbums = mListAlbums;
         this.context = context;
-    }
-
-    public void setBottomSheetBehavior(BottomSheetBehavior bottomSheetBehavior) {
-        this.bottomSheetBehavior = bottomSheetBehavior;
     }
 
     public void setData(List<Album> mListAlbums) {
@@ -64,18 +63,21 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
         private final ImageView img_album;
         private final TextView txtName_album;
         private final TextView txtCount_item_album;
+        private Context context;
+        private LinearLayout layout_bottom_share;
+        private LinearLayout layout_bottom_delete;
+        private LinearLayout layout_bottom_slide_show;
 
         public AlbumViewHolder(@NonNull View itemView) {
             super(itemView);
             img_album = itemView.findViewById(R.id.img_album);
             txtName_album = itemView.findViewById(R.id.txtName_album);
             txtCount_item_album = itemView.findViewById(R.id.txtCount_item_album);
+            context = itemView.getContext();
         }
 
         public void onBind(Album ref) {
-            txtName_album.setText(ref.getName());
-            txtCount_item_album.setText(String.valueOf(ref.getList().size()) + " items");
-            Glide.with(context).load(ref.getImg().getThumb()).into(img_album);
+            bindData(ref);
 
             img_album.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -92,16 +94,65 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
                     context.startActivity(intent);
                 }
             });
+
             img_album.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    if(bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
-                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
-                    }
+                    openBottomDialog();
+                    layout_bottom_slide_show.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            slideShowEvents(ref);
+                        }
+                    });
+                    layout_bottom_delete.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            deleteEvents(ref);
+                        }
+                    });
+                    layout_bottom_share.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            shareEvents(ref);
+                        }
+                    });
                     return true;
                 }
             });
 
+        }
+
+        private void bindData(Album ref) {
+            txtName_album.setText(ref.getName());
+            txtCount_item_album.setText(String.valueOf(ref.getList().size()) + " items");
+            Glide.with(context).load(ref.getImg().getThumb()).into(img_album);
+        }
+
+        private void slideShowEvents(@NonNull Album ref) {
+            Intent intent = new Intent(context, SlideShowActivity.class);
+            ArrayList<String> list = new ArrayList<>();
+            for(int i=0;i<ref.getList().size();i++) {
+                list.add(ref.getList().get(i).getThumb());
+            }
+            intent.putStringArrayListExtra("data_slide", list);
+            intent.putExtra("name", ref.getName());
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        }
+        private void deleteEvents(Album ref) {
+        }
+        private void shareEvents(Album ref) {
+        }
+        private void openBottomDialog() {
+            View viewDialog = LayoutInflater.from(context).inflate(R.layout.layout_bottom_sheet_album, null);
+            layout_bottom_share = viewDialog.findViewById(R.id.layout_bottom_share);
+            layout_bottom_delete = viewDialog.findViewById(R.id.layout_bottom_delete);
+            layout_bottom_slide_show = viewDialog.findViewById(R.id.layout_bottom_slide_show);
+
+            bottomSheetDialog = new BottomSheetDialog(context);
+            bottomSheetDialog.setContentView(viewDialog);
+            bottomSheetDialog.show();
         }
     }
 }

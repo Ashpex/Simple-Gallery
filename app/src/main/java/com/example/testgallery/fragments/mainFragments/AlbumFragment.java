@@ -37,7 +37,6 @@ public class AlbumFragment extends Fragment {
     private androidx.appcompat.widget.Toolbar toolbar_album;
     private List<Album> listAlbum;
     private LinearLayout layout_bottom;
-    private BottomSheetBehavior bottomSheet;
     public AlbumFragment(List<Image> data) {
         this.listImage = data;
     }
@@ -104,14 +103,10 @@ public class AlbumFragment extends Fragment {
     private void events() {
         MyAsyncTask myAsyncTask = new MyAsyncTask();
         myAsyncTask.execute();
-        
-        bottomSheetEvents();
+
 
     }
 
-    private void bottomSheetEvents() {
-        bottomSheet = BottomSheetBehavior.from(layout_bottom);
-    }
 
 
     private void openCreateAlbumActivity() {
@@ -127,7 +122,6 @@ public class AlbumFragment extends Fragment {
     private void setViewRyc() {
         ryc_album.setLayoutManager(new GridLayoutManager(view.getContext(), 2));
         AlbumAdapter albumAdapter = new AlbumAdapter(listAlbum, getContext());
-        albumAdapter.setBottomSheetBehavior(bottomSheet);
         ryc_album.setAdapter(albumAdapter);
     }
     @NonNull
