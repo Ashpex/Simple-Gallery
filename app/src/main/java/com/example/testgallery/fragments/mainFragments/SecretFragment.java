@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -104,11 +105,10 @@ public class SecretFragment extends Fragment {
     }
     public void accessSecret(int container){
         Image img = new Image();
-        ItemAlbumFragment fragment2 = new ItemAlbumFragment(new Album(img,"Secret"));
-        FragmentManager fragmentManager = getParentFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(container, fragment2);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        AppCompatActivity activity = (AppCompatActivity) view.getContext();
+        ItemAlbumFragment myFragment = new ItemAlbumFragment(new Album(img,"Secret"));
+        activity.getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(R.anim.anim_open_fragment, R.anim.anim_close_fragment)
+                .replace(R.id.frlayout, myFragment, "fragment_list_album").addToBackStack(null).commit();
     }
 }
