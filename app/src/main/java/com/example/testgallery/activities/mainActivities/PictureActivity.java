@@ -24,6 +24,8 @@ import com.bumptech.glide.Glide;
 import com.example.testgallery.R;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
+import org.w3c.dom.Text;
+
 
 public class PictureActivity extends AppCompatActivity {
     ImageView imageView;
@@ -89,9 +91,18 @@ public class PictureActivity extends AppCompatActivity {
                                 false
                         );
                 TextView txtInfoProducer = (TextView) infoDialogView.findViewById(R.id.txtInfoProducer);
+                TextView txtInfoSize = (TextView) infoDialogView.findViewById(R.id.txtInfoSize);
+                TextView txtInfoModel = (TextView) infoDialogView.findViewById(R.id.txtInfoModel);
+                TextView txtInfoFlash = (TextView) infoDialogView.findViewById(R.id.txtInfoFlash);
+                TextView txtInfoFocalLength = (TextView) infoDialogView.findViewById(R.id.txtInfoFocalLength);
+                TextView txtInfoAuthor = (TextView) infoDialogView.findViewById(R.id.txtInfoAuthor);
 
                 txtInfoProducer.setText(exifInterface.getAttribute(ExifInterface.TAG_MAKE));
-
+                txtInfoSize.setText(exifInterface.getAttribute(ExifInterface.TAG_IMAGE_LENGTH) + "x" + exifInterface.getAttribute(ExifInterface.TAG_IMAGE_WIDTH));
+                txtInfoModel.setText(exifInterface.getAttribute(ExifInterface.TAG_MODEL));
+                txtInfoFlash.setText(exifInterface.getAttribute(ExifInterface.TAG_FLASH));
+                txtInfoFocalLength.setText(exifInterface.getAttribute(ExifInterface.TAG_FOCAL_LENGTH));
+                txtInfoAuthor.setText(exifInterface.getAttribute(ExifInterface.TAG_ARTIST));
 
                 infoDialog.setContentView(infoDialogView);
                 infoDialog.show();

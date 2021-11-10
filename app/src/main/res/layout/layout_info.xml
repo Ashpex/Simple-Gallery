@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/infoContainer"
@@ -16,11 +17,35 @@
         android:textStyle="bold"
         android:textColor="@color/black"/>
 
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#FFD8D8D8"
         android:layout_marginBottom="10dp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:padding="10dp">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_info_time"
+            app:tint="@color/black"
+            android:layout_gravity="center"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Time"/>
+
+    </LinearLayout>
+
+
+
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -41,7 +66,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginEnd="10dp"
-                android:src="@drawable/ic_photos"/>
+                android:src="@drawable/ic_camera"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -78,7 +103,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginEnd="10dp"
-                android:src="@drawable/ic_photos"/>
+                android:src="@drawable/ic_info_model"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -122,7 +147,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginEnd="10dp"
-                android:src="@drawable/ic_photos"/>
+                android:src="@drawable/ic_info_size"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -159,7 +184,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginEnd="10dp"
-                android:src="@drawable/ic_photos"/>
+                android:src="@drawable/ic_info_focal_length"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -203,7 +228,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginEnd="10dp"
-                android:src="@drawable/ic_photos"/>
+                android:src="@drawable/ic_info_exposure"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -213,10 +238,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Exposure"
+                    android:text="Flash"
                     android:textSize="10sp"/>
                 <TextView
-                    android:id="@+id/txtInfoExposure"
+                    android:id="@+id/txtInfoFlash"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Unknown"
@@ -240,7 +265,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginEnd="10dp"
-                android:src="@drawable/ic_photos"/>
+                android:src="@drawable/ic_info_user" />
 
             <LinearLayout
                 android:layout_width="match_parent"
