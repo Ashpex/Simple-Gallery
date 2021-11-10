@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.example.testgallery.activities.mainActivities.ItemAlbumActivity;
 import com.example.testgallery.R;
 import com.example.testgallery.models.Album;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +23,14 @@ import java.util.List;
 public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder> {
     private List<Album> mListAlbums;
     private Context context;
-
+    private BottomSheetBehavior bottomSheetBehavior;
     public AlbumAdapter(List<Album> mListAlbums, Context context) {
         this.mListAlbums = mListAlbums;
         this.context = context;
+    }
+
+    public void setBottomSheetBehavior(BottomSheetBehavior bottomSheetBehavior) {
+        this.bottomSheetBehavior = bottomSheetBehavior;
     }
 
     public void setData(List<Album> mListAlbums) {
@@ -85,6 +90,15 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
                     intent.putExtra("name", ref.getName());
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
+                }
+            });
+            img_album.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    if(bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    }
+                    return true;
                 }
             });
 

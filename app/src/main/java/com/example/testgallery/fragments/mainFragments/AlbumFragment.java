@@ -3,11 +3,11 @@ package com.example.testgallery.fragments.mainFragments;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.testgallery.models.Image;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 public class AlbumFragment extends Fragment {
     private RecyclerView ryc_album;
@@ -35,6 +36,8 @@ public class AlbumFragment extends Fragment {
     private View view;
     private androidx.appcompat.widget.Toolbar toolbar_album;
     private List<Album> listAlbum;
+    private LinearLayout layout_bottom;
+    private BottomSheetBehavior bottomSheet;
     public AlbumFragment(List<Image> data) {
         this.listImage = data;
     }
@@ -44,6 +47,7 @@ public class AlbumFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_album, container,false);
         toolbar_album = view.findViewById(R.id.toolbar_album);
+        layout_bottom = view.findViewById(R.id.layout_bottom);
 
         toolBarEvents();
         mappingControls();
@@ -100,6 +104,13 @@ public class AlbumFragment extends Fragment {
     private void events() {
         MyAsyncTask myAsyncTask = new MyAsyncTask();
         myAsyncTask.execute();
+        
+        bottomSheetEvents();
+
+    }
+
+    private void bottomSheetEvents() {
+        bottomSheet = BottomSheetBehavior.from(layout_bottom);
     }
 
 
@@ -115,7 +126,9 @@ public class AlbumFragment extends Fragment {
 
     private void setViewRyc() {
         ryc_album.setLayoutManager(new GridLayoutManager(view.getContext(), 2));
-        ryc_album.setAdapter(new AlbumAdapter(listAlbum, getContext()));
+        AlbumAdapter albumAdapter = new AlbumAdapter(listAlbum, getContext());
+        albumAdapter.setBottomSheetBehavior(bottomSheet);
+        ryc_album.setAdapter(albumAdapter);
     }
     @NonNull
     private List<Album> getListAlbum(List<Image> listImage) {

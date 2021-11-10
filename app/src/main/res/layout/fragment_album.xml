@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <include
-        android:id="@+id/toolbar_album"
-        layout="@layout/layout_toolbar" />
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="30dp"
-        android:layout_gravity="center"
-        android:id="@+id/ryc_album"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent" />
-</LinearLayout>
+        android:id="@+id/content_album"
+        layout="@layout/content_fragment_album"/>
+    <include
+        app:layout_anchor="@id/content_album"
+        layout="@layout/layout_bottom_sheet_album"/>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
