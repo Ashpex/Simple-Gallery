@@ -5,7 +5,9 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -14,10 +16,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.example.testgallery.R;
 import com.example.testgallery.activities.mainActivities.ItemAlbumActivity;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 
 import java.io.File;
@@ -33,10 +37,10 @@ public class SecretFragment extends Fragment {
     EditText enterPass;
     String password;
     SharedPreferences settings;
+    private androidx.appcompat.widget.Toolbar toolbar_album;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         settings = getActivity().getSharedPreferences("PREFS",0);
         password = settings.getString("password","");
 
@@ -50,9 +54,37 @@ public class SecretFragment extends Fragment {
             mappingEnterPass();
             eventEnterPass();
         }
-
-
+        toolbar_album = view.findViewById(R.id.toolbar_album);
+        toolBarEvents();
         return view;
+    }
+    private void toolBarEvents() {
+        toolbar_album.inflateMenu(R.menu.menu_album_secret);
+        toolbar_album.setTitle("Secret");
+        toolbar_album.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int id = item.getItemId();
+                switch (id){
+                    case R.id.menuChangePass:
+                        getChangePassFrag();
+                        updatePassword();
+                        break;
+                    case R.id.menuDeleteSecret:
+                        deleteSecret();
+                        //updatePassword();
+                        break;
+                }
+                return true;
+            }
+        });
+    }
+    public void deleteSecret(){
+
+    }
+    public void getChangePassFrag(){
+        BottomSheetDialogFragment changePassFrag = new ChangePassFragment();
+        changePassFrag.show(getChildFragmentManager(),changePassFrag.getTag());
     }
     public  void eventCreatePass(){
         btnCreatePass.setOnClickListener(new View.OnClickListener(){
@@ -74,6 +106,7 @@ public class SecretFragment extends Fragment {
                             mydir.mkdirs();
                         }
                         reload();
+                        updatePassword();
                         accessSecret();
                     }
                     else{
@@ -84,11 +117,13 @@ public class SecretFragment extends Fragment {
         });
 
     }
-
+    public void updatePassword(){
+        password = settings.getString("password","");
+    }
     public void reload(){
         getParentFragmentManager().beginTransaction()
                 .detach(this)
-                .attach(this)
+                .attach(new SecretFragment())
                 .commit();
     }
 

@@ -40,9 +40,9 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
             case 1:
                 return new AlbumFragment(data);
             case 2:
-                return new FavoriteFragment();
-            case 3:
                 return new SecretFragment();
+            case 3:
+                return new FavoriteFragment();
             default:
                 return null;
         }

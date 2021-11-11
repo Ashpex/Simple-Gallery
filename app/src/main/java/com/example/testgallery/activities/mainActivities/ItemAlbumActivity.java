@@ -49,10 +49,6 @@ public class ItemAlbumActivity extends AppCompatActivity {
         btnAddPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(intent.getStringExtra("name").equals("Secret")){
-                    Fragment fragment = new ChangePassFragment();
-                    getSupportFragmentManager().beginTransaction().replace(R.id.container,fragment).commit();
-                };
             }
         });
     }
