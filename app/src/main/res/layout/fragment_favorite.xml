@@ -15,4 +15,5 @@
         android:textColor="@color/black"
         android:text="Favorite Fragment"/>
 
+
 </RelativeLayout>

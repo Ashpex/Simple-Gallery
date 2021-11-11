@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <PreferenceCategory
+        android:title="General">
+        <SwitchPreference
+            android:key="darkMode"
+            android:title="Dark Mode"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="About">
+        <Preference
+            android:key="sourceCode"
+            android:title="Source Code"/>
+        <Preference
+            android:key="contributors"
+            android:title="Contributors"/>
+        <Preference
+            android:key="libraries"
+            android:title="Included Libraries"/>
+
+    </PreferenceCategory>
+</PreferenceScreen>
