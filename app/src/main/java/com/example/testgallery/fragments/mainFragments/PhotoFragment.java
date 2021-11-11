@@ -42,7 +42,7 @@ public class PhotoFragment extends Fragment {
         recyclerView = view.findViewById(R.id.rcv_category);
         toolbar_photo = view.findViewById(R.id.toolbar_photo);
 
-        toolBarEvents();
+        //toolBarEvents();
         setRyc();
 
         return view;
@@ -105,16 +105,24 @@ public class PhotoFragment extends Fragment {
         List<Category> categoryList = new ArrayList<>();
         int categoryCount = 0;
         List<Image> imageList = GetAllPhotoFromGallery.getAllImageFromGallery(getContext());
-        categoryList.add(new Category(imageList.get(0).getDateTaken(),new ArrayList<>()));
-        categoryList.get(categoryCount).addListGirl(imageList.get(0));
-        for(int i=1;i<imageList.size();i++){
-            if(!imageList.get(i).getDateTaken().equals(imageList.get(i-1).getDateTaken())){
-                categoryList.add(new Category(imageList.get(i).getDateTaken(),new ArrayList<>()));
-                categoryCount++;
+
+        Toast.makeText(getContext(), "" + imageList.size(), Toast.LENGTH_LONG).show();
+
+        try {
+            categoryList.add(new Category(imageList.get(0).getDateTaken(),new ArrayList<>()));
+            categoryList.get(categoryCount).addListGirl(imageList.get(0));
+            for(int i=1;i<imageList.size();i++){
+                if(!imageList.get(i).getDateTaken().equals(imageList.get(i-1).getDateTaken())){
+                    categoryList.add(new Category(imageList.get(i).getDateTaken(),new ArrayList<>()));
+                    categoryCount++;
+                }
+                categoryList.get(categoryCount).addListGirl(imageList.get(i));
             }
-            categoryList.get(categoryCount).addListGirl(imageList.get(i));
+            return categoryList;
+        } catch (Exception e){
+            return null;
         }
-        return categoryList;
+
     }
 
 }

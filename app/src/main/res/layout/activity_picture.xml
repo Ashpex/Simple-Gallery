@@ -42,12 +42,11 @@
             android:src="@drawable/ic_info" />
     </LinearLayout>
 
-
-    <ImageView
-        android:layout_centerInParent="true"
+    <com.github.chrisbanes.photoview.PhotoView
         android:id="@+id/imgPicture"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
         android:src="@drawable/anh1" />
 
     <!--    <LinearLayout-->
