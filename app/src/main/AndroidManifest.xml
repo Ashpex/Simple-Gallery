@@ -18,9 +18,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TestGallery">
         <activity
-            android:name=".activities.mainActivities.CameraActivity"
-            android:exported="false" />
-        <activity
             android:name=".activities.mainActivities.ItemAlbumActivity"
             android:exported="true" />
         <activity
