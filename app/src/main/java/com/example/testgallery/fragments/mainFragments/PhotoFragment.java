@@ -42,7 +42,7 @@ public class PhotoFragment extends Fragment {
         recyclerView = view.findViewById(R.id.rcv_category);
         toolbar_photo = view.findViewById(R.id.toolbar_photo);
 
-        //toolBarEvents();
+        toolBarEvents();
         setRyc();
 
         return view;

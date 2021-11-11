@@ -64,15 +64,16 @@ public class MainActivity extends AppCompatActivity {
                         viewPager.setCurrentItem(1);
                         break;
 
-                    case R.id.favorite:
+                    case R.id.scret:
 
                         viewPager.setCurrentItem(2);
                         break;
 
-                    case R.id.scret:
+                    case R.id.favorite:
 
                         viewPager.setCurrentItem(3);
                         break;
+
                 }
                 return true;
             }
@@ -110,11 +111,11 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case 2:
 
-                        bottomNavigationView.getMenu().findItem(R.id.favorite).setChecked(true);
+                        bottomNavigationView.getMenu().findItem(R.id.scret).setChecked(true);
                         break;
                     case 3:
 
-                        bottomNavigationView.getMenu().findItem(R.id.scret).setChecked(true);
+                        bottomNavigationView.getMenu().findItem(R.id.favorite).setChecked(true);
                         break;
                 }
             }
