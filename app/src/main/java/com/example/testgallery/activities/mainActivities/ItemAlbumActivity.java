@@ -8,11 +8,14 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.testgallery.R;
 import com.example.testgallery.adapters.ItemAlbumAdapter;
+import com.example.testgallery.fragments.mainFragments.ChangePassFragment;
 import com.example.testgallery.models.Album;
 
 import java.util.ArrayList;
@@ -24,6 +27,7 @@ public class ItemAlbumActivity extends AppCompatActivity {
     private ImageButton btnBack;
     private RecyclerView ryc_list_album;
     private Intent intent;
+    private  ImageButton btnAddPhoto;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +46,15 @@ public class ItemAlbumActivity extends AppCompatActivity {
                 finish();
             }
         });
+        btnAddPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(intent.getStringExtra("name").equals("Secret")){
+                    Fragment fragment = new ChangePassFragment();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.container,fragment).commit();
+                };
+            }
+        });
     }
 
     private void setData() {
@@ -58,5 +71,6 @@ public class ItemAlbumActivity extends AppCompatActivity {
         ryc_list_album = findViewById(R.id.ryc_list_album);
         btnBack = findViewById(R.id.btnBack);
         txtName_list_album = findViewById(R.id.txtName_list_album);
+        btnAddPhoto = findViewById(R.id.ic_add_photo);
     }
 }
