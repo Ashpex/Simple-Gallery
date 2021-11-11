@@ -1,6 +1,9 @@
 package com.example.testgallery.fragments.mainFragments;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,12 +14,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.testgallery.R;
-import com.example.testgallery.models.Album;
-import com.example.testgallery.models.Image;
+import com.example.testgallery.activities.mainActivities.ItemAlbumActivity;
+
+
+import java.io.File;
+import java.util.ArrayList;
 
 public class SecretFragment extends Fragment {
 
@@ -63,7 +68,13 @@ public class SecretFragment extends Fragment {
                         SharedPreferences.Editor editor = settings.edit();
                         editor.putString("password",createText);
                         editor.apply();
-                        accessSecret(R.id.frag_createpass);
+                        File mydir = getContext().getDir("secret", getContext().MODE_PRIVATE);
+                        if (!mydir.exists())
+                        {
+                            mydir.mkdirs();
+                        }
+                        reload();
+                        accessSecret();
                     }
                     else{
                         Toast.makeText(getActivity(),"Password doesn't match", Toast.LENGTH_SHORT).show();
@@ -73,6 +84,14 @@ public class SecretFragment extends Fragment {
         });
 
     }
+
+    public void reload(){
+        getParentFragmentManager().beginTransaction()
+                .detach(this)
+                .attach(this)
+                .commit();
+    }
+
     public  void eventEnterPass(){
         btnEnterPass.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -80,7 +99,7 @@ public class SecretFragment extends Fragment {
                 String enterText = enterPass.getText().toString();
                 if(enterText.equals(password)){
                     Toast.makeText(getActivity(),"Password correct", Toast.LENGTH_SHORT).show();
-                    accessSecret(R.id.frag_enterpass);
+                    accessSecret();
                 }
                 else{
                     Toast.makeText(getActivity(),"Wrong password", Toast.LENGTH_SHORT).show();
@@ -98,6 +117,30 @@ public class SecretFragment extends Fragment {
         enterPass = view.findViewById(R.id.enterPass);
         btnEnterPass = view.findViewById(R.id.btnEnterPass);
     }
-    public void accessSecret(int container){
+    public void accessSecret(){
+        Intent intent = new Intent(this.getContext(), ItemAlbumActivity.class);
+        ArrayList<String> list = getListImg();
+
+        intent.putStringArrayListExtra("data", list);
+        intent.putExtra("name", "Secret");
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        this.getContext().startActivity(intent);
+    }
+    public ArrayList<String> getListImg(){
+        File mydir = getContext().getDir("secret", getContext().MODE_PRIVATE);
+        if (!mydir.exists())
+        {
+            Toast.makeText(getActivity(),"Secret doesn't exist", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+        else{
+            ArrayList<String> listPath = new ArrayList<>();
+            File list[] = mydir.listFiles();
+            for(File file:list){
+                listPath.add(file.getPath());
+            }
+            return listPath;
+        }
+
     }
 }

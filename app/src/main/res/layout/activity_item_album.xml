@@ -35,7 +35,8 @@
             android:layout_marginBottom="2.5dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@drawable/ic_add_photo_list_album"/>
+            android:background="@drawable/ic_add_photo_list_album"
+            android:id="@+id/ic_add_photo"/>
         <ImageButton
             android:layout_marginTop="2.5dp"
             android:layout_marginBottom="2.5dp"
@@ -47,10 +48,16 @@
             android:backgroundTint="@color/black"
             android:background="@drawable/ic_delete"/>
     </LinearLayout>
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </FrameLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/ryc_list_album"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:layout_marginTop="15dp"/>
+
 </LinearLayout>
