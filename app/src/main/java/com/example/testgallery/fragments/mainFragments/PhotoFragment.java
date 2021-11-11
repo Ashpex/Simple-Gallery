@@ -77,10 +77,8 @@ public class PhotoFragment extends Fragment {
                         //eventSearch(item);
                         break;
                     case R.id.menuCamera:
-
                         takenImg();
-
-
+                        //reset fragment -> chua xu li
 
                         break;
                     case R.id.menuAdd:
@@ -91,13 +89,9 @@ public class PhotoFragment extends Fragment {
             }
         });
     }
-    //
-
-
+    //Camera
     private static final int CAMERA_REQUEST = 1888;
-
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
-
     private static final int PICTURE_RESULT = 1;
     private Uri imageUri;
     private String imageurl;
@@ -149,7 +143,7 @@ public class PhotoFragment extends Fragment {
         switch (requestCode) {
 
             case PICTURE_RESULT:
-                if (requestCode == PICTURE_RESULT)
+                if (requestCode == PICTURE_RESULT){
                     if (resultCode == Activity.RESULT_OK) {
                         try {
                             thumbnail = MediaStore.Images.Media.getBitmap(
@@ -162,6 +156,7 @@ public class PhotoFragment extends Fragment {
 
 
                     }
+                }
         }
     }
 

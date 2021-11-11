@@ -1,28 +1,36 @@
 package com.example.testgallery.activities.mainActivities;
 
 import android.annotation.SuppressLint;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.ParcelFileDescriptor;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import com.bumptech.glide.Glide;
 import com.example.testgallery.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.navigation.NavigationBarView;
 
 import org.w3c.dom.Text;
 
@@ -32,7 +40,8 @@ public class PictureActivity extends AppCompatActivity {
     ImageView imgViewBack;
     ImageView imgViewInfo;
 
-
+    BottomNavigationView bottomNavigationView;
+    String urlImg ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +53,7 @@ public class PictureActivity extends AppCompatActivity {
         Intent intent = getIntent();
         String thumb = intent.getStringExtra("imgSrc");
         Glide.with(this).load(thumb).into(imageView);
-
+        urlImg=thumb;
 
 
         imgViewInfo.setOnClickListener(new View.OnClickListener() {
@@ -67,14 +76,36 @@ public class PictureActivity extends AppCompatActivity {
         });
 
 
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.deletePic: //4
+
+
+                        File file = new File(urlImg);
+
+
+                        Toast.makeText(PictureActivity.this, "Xóa chưa làm đc", Toast.LENGTH_SHORT).show();
+
+                        break;
+
+
+                }
+                return true;
+            }
+        });
+
     }
+
+
+
+
 
     void showExif(Uri photoUri){
         if(photoUri != null){
 
             ParcelFileDescriptor parcelFileDescriptor = null;
-
-
 
             try {
                 parcelFileDescriptor = getContentResolver().openFileDescriptor(photoUri, "r");
@@ -148,6 +179,6 @@ public class PictureActivity extends AppCompatActivity {
         imageView = findViewById(R.id.imgPicture);
         imgViewBack = findViewById(R.id.imgViewBack);
         imgViewInfo = findViewById(R.id.imgViewInfo);
-
+        bottomNavigationView = findViewById(R.id.bottom_picture);
     }
 }

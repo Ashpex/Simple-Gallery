@@ -4,7 +4,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.util.Log;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -41,16 +43,30 @@ public class GetAllPhotoFromGallery {
         Calendar myCal = Calendar.getInstance();
         SimpleDateFormat formatter = new SimpleDateFormat("EEE, dd-MM");
         while (cursor.moveToNext()) {
-            absolutePathImage = cursor.getString(columnIndexData);
+            try {
+                absolutePathImage = cursor.getString(columnIndexData);
+                File file = new File(absolutePathImage);
+                if(!file.canRead()){
+                    continue;
+                }
+            }catch (Exception e){
+                continue;
+            }
+
             thumbnail = cursor.getString(thumb);
             dateTaken = cursor.getLong(dateIndex);
             myCal.setTimeInMillis(dateTaken);
             String dateText = formatter.format(myCal.getTime());
             Image image = new Image();
             image.setPath(absolutePathImage);
+
             image.setThumb(thumbnail);
             image.setDateTaken(dateText);
-
+            if(image.getPath()==""){
+                continue;
+            }
+            Log.d("Path",image.getPath());
+            Log.d("Path",listImage.size()+"");
             listImage.add(image);
         }
         return listImage;

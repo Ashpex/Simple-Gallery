@@ -13,7 +13,7 @@
         android:title="@string/share"
         android:icon="@drawable/ic_star"/>
 
-    <item android:id="@+id/gallery"
-        android:title="@string/gallery"
+    <item android:id="@+id/deletePic"
+        android:title="Xóa Ảnh"
         android:icon="@drawable/ic_delete"/>
 </menu>
