@@ -79,7 +79,8 @@ public class PhotoFragment extends Fragment {
                     case R.id.menuCamera:
                         takenImg();
                         //reset fragment -> chua xu li
-
+//                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                        startActivity(intent);
                         break;
                     case R.id.menuAdd:
                         Toast.makeText(getContext(),"main",Toast.LENGTH_SHORT).show();
@@ -214,4 +215,9 @@ public class PhotoFragment extends Fragment {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        setRyc();
+    }
 }
