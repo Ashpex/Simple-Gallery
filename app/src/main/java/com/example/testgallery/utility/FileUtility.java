@@ -22,10 +22,10 @@ public class FileUtility {
 
         fileOrDirectory.delete();
     }
-    public void deleteFile(String inputPath, String inputFile) {
+    public void deleteFile(String Path) {
         try {
             // delete the original file
-            new File(inputPath + inputFile).delete();
+            new File(Path).delete();
         }
         catch (Exception e) {
             Log.e("tag", e.getMessage());

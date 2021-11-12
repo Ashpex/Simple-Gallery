@@ -57,6 +57,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
             public void onClick(View view) {
                 Intent intent = new Intent(context, PictureActivity.class);
                 intent.putExtra("imgSrc", image.getThumb());
+                intent.putExtra("imgPath", image.getPath());
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(intent);
 

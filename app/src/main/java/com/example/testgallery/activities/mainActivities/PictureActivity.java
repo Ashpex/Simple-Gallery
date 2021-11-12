@@ -28,6 +28,7 @@ import java.io.IOException;
 
 import com.bumptech.glide.Glide;
 import com.example.testgallery.R;
+import com.example.testgallery.utility.FileUtility;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.navigation.NavigationBarView;
@@ -42,6 +43,7 @@ public class PictureActivity extends AppCompatActivity {
 
     BottomNavigationView bottomNavigationView;
     String urlImg ;
+    String imgPath;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +56,7 @@ public class PictureActivity extends AppCompatActivity {
         String thumb = intent.getStringExtra("imgSrc");
         Glide.with(this).load(thumb).into(imageView);
         urlImg=thumb;
-
+        imgPath = intent.getStringExtra("imgPath");
 
         imgViewInfo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,13 +83,10 @@ public class PictureActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.deletePic: //4
-
-
-                        File file = new File(urlImg);
-
-
-                        Toast.makeText(PictureActivity.this, "Xóa chưa làm đc", Toast.LENGTH_SHORT).show();
-
+                        File file = new File(imgPath);
+                        file.delete();
+                        Toast.makeText(PictureActivity.this, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                        finish();
                         break;
 
 
