@@ -36,7 +36,6 @@ public class GetAllPhotoFromGallery {
 
 
         cursor = context.getApplicationContext().getContentResolver().query(uri, projection, null, null, orderBy + " DESC");
-
         columnIndexData = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
         thumb = cursor.getColumnIndexOrThrow(MediaStore.Images.Thumbnails.DATA);
         dateIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_TAKEN);
@@ -52,7 +51,6 @@ public class GetAllPhotoFromGallery {
             }catch (Exception e){
                 continue;
             }
-
             thumbnail = cursor.getString(thumb);
             dateTaken = cursor.getLong(dateIndex);
             myCal.setTimeInMillis(dateTaken);
