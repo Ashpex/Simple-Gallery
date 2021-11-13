@@ -196,8 +196,6 @@ public class PhotoFragment extends Fragment {
         int categoryCount = 0;
         List<Image> imageList = GetAllPhotoFromGallery.getAllImageFromGallery(getContext());
 
-        Toast.makeText(getContext(), "" + imageList.size(), Toast.LENGTH_LONG).show();
-
         try {
             categoryList.add(new Category(imageList.get(0).getDateTaken(),new ArrayList<>()));
             categoryList.get(categoryCount).addListGirl(imageList.get(0));
@@ -213,11 +211,5 @@ public class PhotoFragment extends Fragment {
             return null;
         }
 
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        setRyc();
     }
 }

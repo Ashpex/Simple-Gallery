@@ -44,6 +44,8 @@ public class PictureActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     String urlImg ;
     String imgPath;
+
+    private boolean flag = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +94,24 @@ public class PictureActivity extends AppCompatActivity {
 
                 }
                 return true;
+            }
+        });
+
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!flag){
+                    bottomNavigationView.setVisibility(View.INVISIBLE);
+                    imgViewBack.setVisibility(View.INVISIBLE);
+                    imgViewInfo.setVisibility(View.INVISIBLE);
+                    flag = true;
+                }else{
+                    bottomNavigationView.setVisibility(View.VISIBLE);
+                    imgViewBack.setVisibility(View.VISIBLE);
+                    imgViewInfo.setVisibility(View.VISIBLE);
+                    flag = false;
+                }
+
             }
         });
 
