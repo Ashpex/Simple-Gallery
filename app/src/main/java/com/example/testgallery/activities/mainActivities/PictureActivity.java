@@ -70,8 +70,8 @@ public class PictureActivity extends AppCompatActivity {
 
         // Show back button
 
-        setSupportActionBar(toolbar_picture);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //setSupportActionBar(toolbar_picture);
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
 
