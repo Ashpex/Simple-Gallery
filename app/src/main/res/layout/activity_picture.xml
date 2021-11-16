@@ -8,9 +8,11 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal"
-        android:padding="10dp"
-        android:layout_marginTop="10dp"
         android:translationZ="90dp">
+
+        <include
+            android:id="@+id/toolbar_picture"
+            layout="@layout/layout_toolbar" />
 
         <ImageView
             android:id="@+id/imgViewBack"

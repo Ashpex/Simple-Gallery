@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/picture"
-        android:title="@string/picture"
-        android:icon="@drawable/ic_back"/>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/search"
-        android:title="@string/search"
-        android:icon="@drawable/ic_share"/>
+    <item android:id="@+id/menuInfo"
+        android:title="Thông tin"
+        android:icon="@drawable/ic_info"
+        app:showAsAction="always"/>
 </menu>

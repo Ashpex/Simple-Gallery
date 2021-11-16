@@ -15,11 +15,13 @@ import android.view.View;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.ParcelFileDescriptor;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
 
 import java.io.File;
 import java.io.FileDescriptor;
@@ -40,7 +42,7 @@ public class PictureActivity extends AppCompatActivity {
     ImageView imageView;
     ImageView imgViewBack;
     ImageView imgViewInfo;
-
+    Toolbar toolbar_picture;
     BottomNavigationView bottomNavigationView;
     String urlImg ;
     String imgPath;
@@ -53,22 +55,43 @@ public class PictureActivity extends AppCompatActivity {
 
         viewMapping();
 
-
         Intent intent = getIntent();
         String thumb = intent.getStringExtra("imgSrc");
+        String imageName = thumb.substring(thumb.lastIndexOf('/') + 1);
         Glide.with(this).load(thumb).into(imageView);
         urlImg=thumb;
         imgPath = intent.getStringExtra("imgPath");
 
-        imgViewInfo.setOnClickListener(new View.OnClickListener() {
+        // Toolbar events
+
+        toolbar_picture.inflateMenu(R.menu.menu_top_picture);
+        toolbar_picture.setTitle(imageName);
+
+
+        // Show back button
+
+        setSupportActionBar(toolbar_picture);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
+
+        toolbar_picture.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
-            public void onClick(View view) {
-                Uri targetUri = Uri.parse("file://" + thumb);
-                if(targetUri != null){
-                    showExif(targetUri);
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                int id = menuItem.getItemId();
+                switch (id){
+                    case R.id.menuInfo:
+                        Uri targetUri = Uri.parse("file://" + thumb);
+                        if(targetUri != null){
+                            showExif(targetUri);
+                        }
+
                 }
+
+                return true;
             }
         });
+
 
 //        imageView.setImageResource(src);
 
@@ -97,18 +120,20 @@ public class PictureActivity extends AppCompatActivity {
             }
         });
 
+
+
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (!flag){
                     bottomNavigationView.setVisibility(View.INVISIBLE);
                     imgViewBack.setVisibility(View.INVISIBLE);
-                    imgViewInfo.setVisibility(View.INVISIBLE);
+                    toolbar_picture.setVisibility(View.INVISIBLE);
                     flag = true;
                 }else{
                     bottomNavigationView.setVisibility(View.VISIBLE);
                     imgViewBack.setVisibility(View.VISIBLE);
-                    imgViewInfo.setVisibility(View.VISIBLE);
+                    toolbar_picture.setVisibility(View.VISIBLE);
                     flag = false;
                 }
 
@@ -117,10 +142,11 @@ public class PictureActivity extends AppCompatActivity {
 
     }
 
-
-
-
-
+    @Override
+    public boolean onSupportNavigateUp(){
+        onBackPressed();
+        return true;
+    }
     void showExif(Uri photoUri){
         if(photoUri != null){
 
@@ -194,10 +220,12 @@ public class PictureActivity extends AppCompatActivity {
         }
     }*/
 
+
     void viewMapping(){
         imageView = findViewById(R.id.imgPicture);
         imgViewBack = findViewById(R.id.imgViewBack);
         imgViewInfo = findViewById(R.id.imgViewInfo);
         bottomNavigationView = findViewById(R.id.bottom_picture);
+        toolbar_picture = findViewById(R.id.toolbar_picture);
     }
 }

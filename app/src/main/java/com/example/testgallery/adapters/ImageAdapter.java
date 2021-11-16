@@ -82,5 +82,11 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         }
     }
 
+
+    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object){
+
+        // Remove view
+        container.removeView((View) object);
+    }
 }
 
