@@ -14,16 +14,6 @@
             android:id="@+id/toolbar_picture"
             layout="@layout/layout_toolbar" />
 
-        <ImageView
-            android:id="@+id/imgViewBack"
-            android:layout_width="0dp"
-            android:layout_marginTop="2.5dp"
-            android:layout_marginBottom="2.5dp"
-            android:layout_weight="0.1"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:src="@drawable/ic_back"
-            android:foregroundTint="@color/black" />
 
         <View
             android:layout_width="0dp"
@@ -31,17 +21,6 @@
             android:layout_weight="0.9"
             android:layout_gravity="center"/>
 
-
-        <ImageView
-            android:id="@+id/imgViewInfo"
-            android:layout_gravity="end"
-            android:layout_width="0dp"
-            android:layout_marginTop="2.5dp"
-            android:layout_marginBottom="2.5dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.1"
-
-            android:src="@drawable/ic_info" />
     </LinearLayout>
 
     <com.github.chrisbanes.photoview.PhotoView

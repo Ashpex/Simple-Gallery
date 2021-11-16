@@ -68,13 +68,17 @@ public class PictureActivity extends AppCompatActivity {
         toolbar_picture.setTitle(imageName);
 
 
+        toolbar_picture.setNavigationIcon(R.drawable.abc_ic_ab_back_material);
+
         // Show back button
+        toolbar_picture.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
 
-        //setSupportActionBar(toolbar_picture);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-
-
+        // Show info
         toolbar_picture.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
@@ -95,12 +99,6 @@ public class PictureActivity extends AppCompatActivity {
 
 //        imageView.setImageResource(src);
 
-        imgViewBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
 
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -127,12 +125,10 @@ public class PictureActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (!flag){
                     bottomNavigationView.setVisibility(View.INVISIBLE);
-                    imgViewBack.setVisibility(View.INVISIBLE);
                     toolbar_picture.setVisibility(View.INVISIBLE);
                     flag = true;
                 }else{
                     bottomNavigationView.setVisibility(View.VISIBLE);
-                    imgViewBack.setVisibility(View.VISIBLE);
                     toolbar_picture.setVisibility(View.VISIBLE);
                     flag = false;
                 }
@@ -223,8 +219,6 @@ public class PictureActivity extends AppCompatActivity {
 
     void viewMapping(){
         imageView = findViewById(R.id.imgPicture);
-        imgViewBack = findViewById(R.id.imgViewBack);
-        imgViewInfo = findViewById(R.id.imgViewInfo);
         bottomNavigationView = findViewById(R.id.bottom_picture);
         toolbar_picture = findViewById(R.id.toolbar_picture);
     }
