@@ -40,12 +40,13 @@ import org.w3c.dom.Text;
 
 public class PictureActivity extends AppCompatActivity {
     ImageView imageView;
-    ImageView imgViewBack;
-    ImageView imgViewInfo;
+
+
     Toolbar toolbar_picture;
     BottomNavigationView bottomNavigationView;
     String urlImg ;
     String imgPath;
+    String imageName;
 
     private boolean flag = false;
     @Override
@@ -57,7 +58,7 @@ public class PictureActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         String thumb = intent.getStringExtra("imgSrc");
-        String imageName = thumb.substring(thumb.lastIndexOf('/') + 1);
+        imageName = thumb.substring(thumb.lastIndexOf('/') + 1);
         Glide.with(this).load(thumb).into(imageView);
         urlImg=thumb;
         imgPath = intent.getStringExtra("imgPath");
@@ -169,7 +170,9 @@ public class PictureActivity extends AppCompatActivity {
                 TextView txtInfoFocalLength = (TextView) infoDialogView.findViewById(R.id.txtInfoFocalLength);
                 TextView txtInfoAuthor = (TextView) infoDialogView.findViewById(R.id.txtInfoAuthor);
                 TextView txtInfoTime = (TextView) infoDialogView.findViewById(R.id.txtInfoTime);
+                TextView txtInfoName = (TextView) infoDialogView.findViewById(R.id.txtInfoName);
 
+                txtInfoName.setText(imageName);
                 txtInfoProducer.setText(exifInterface.getAttribute(ExifInterface.TAG_MAKE));
                 txtInfoSize.setText(exifInterface.getAttribute(ExifInterface.TAG_IMAGE_LENGTH) + "x" + exifInterface.getAttribute(ExifInterface.TAG_IMAGE_WIDTH));
                 txtInfoModel.setText(exifInterface.getAttribute(ExifInterface.TAG_MODEL));
