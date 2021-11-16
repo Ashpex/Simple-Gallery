@@ -2,8 +2,10 @@ package com.example.testgallery.activities.mainActivities;
 
 
 import android.content.Intent;
-import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -108,11 +110,15 @@ public class PictureActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
 
                     case R.id.sharePic:
-                        Intent shareIntent = new Intent(PictureActivity.this, Intent.ACTION_SEND.getClass());
-                        intent.setType("image/*");
-                        shareIntent.putExtra(Intent.EXTRA_STREAM, targetUri);
-                        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                        startActivity(Intent.createChooser(shareIntent,"Share image using"));
+                        Drawable mDrawable = imageView.getDrawable();
+                        Bitmap mBitmap = ((BitmapDrawable) mDrawable).getBitmap();
+                        String path = MediaStore.Images.Media.insertImage(getContentResolver(), mBitmap, "Image Description", null);
+                        Uri uri = Uri.parse(path);
+                        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                        shareIntent.setType("image/*");
+                        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+                        startActivity(Intent.createChooser(shareIntent, "Share Image"));
+
                         break;
 
                     case R.id.editPic:
@@ -134,6 +140,8 @@ public class PictureActivity extends AppCompatActivity {
 
                     case R.id.starPic:
                         Toast.makeText(PictureActivity.this, "Thêm ảnh yêu thích", Toast.LENGTH_SHORT).show();
+
+
                         break;
 
                     case R.id.deletePic: //4
