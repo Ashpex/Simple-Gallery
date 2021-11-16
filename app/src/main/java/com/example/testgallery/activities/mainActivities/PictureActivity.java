@@ -1,22 +1,20 @@
 package com.example.testgallery.activities.mainActivities;
 
-import android.annotation.SuppressLint;
-import android.content.ContentResolver;
-import android.content.Context;
+
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
+
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.ParcelFileDescriptor;
 import android.widget.LinearLayout;
@@ -33,12 +31,11 @@ import com.bumptech.glide.Glide;
 import com.dsphotoeditor.sdk.activity.DsPhotoEditorActivity;
 import com.dsphotoeditor.sdk.utils.DsPhotoEditorConstants;
 import com.example.testgallery.R;
-import com.example.testgallery.utility.FileUtility;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.navigation.NavigationBarView;
 
-import org.w3c.dom.Text;
+
 
 
 public class PictureActivity extends AppCompatActivity {
@@ -88,7 +85,7 @@ public class PictureActivity extends AppCompatActivity {
                 int id = menuItem.getItemId();
                 switch (id){
                     case R.id.menuInfo:
-                        Uri targetUri = Uri.parse("file://" + thumb);
+                        Uri targetUri = Uri.parse("file://" + urlImg);
                         if(targetUri != null){
                             showExif(targetUri);
                         }
@@ -107,33 +104,48 @@ public class PictureActivity extends AppCompatActivity {
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                Uri targetUri = Uri.parse("file://" + urlImg);
                 switch (item.getItemId()) {
 
+                    case R.id.sharePic:
+                        Intent shareIntent = new Intent(PictureActivity.this, Intent.ACTION_SEND.getClass());
+                        intent.setType("image/*");
+                        shareIntent.putExtra(Intent.EXTRA_STREAM, targetUri);
+                        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        startActivity(Intent.createChooser(shareIntent,"Share image using"));
+                        break;
+
                     case R.id.editPic:
-                        Toast.makeText(PictureActivity.this, "Chỉnh sửa ảnh", Toast.LENGTH_SHORT).show();
                         Intent editIntent = new Intent(PictureActivity.this, DsPhotoEditorActivity.class);
 
                         // Set data
-                        Uri targetUri = Uri.parse("file://" + thumb);
                         editIntent.setData(targetUri);
 
                         // Set output directory
                         editIntent.putExtra(DsPhotoEditorConstants.DS_PHOTO_EDITOR_OUTPUT_DIRECTORY,"EditedImages");
                         // Set toolbar color
-                        //editIntent.putExtra(DsPhotoEditorConstants.DS_TOOL_BAR_BACKGROUND_COLOR, Color.parseColor("#F2F6F7"));
+                        editIntent.putExtra(DsPhotoEditorConstants.DS_TOOL_BAR_BACKGROUND_COLOR, Color.parseColor("#FF000000"));
                         // Set background color
-                        editIntent.putExtra(DsPhotoEditorConstants.DS_MAIN_BACKGROUND_COLOR, Color.parseColor("#FFFFFFFF"));
+                        editIntent.putExtra(DsPhotoEditorConstants.DS_MAIN_BACKGROUND_COLOR, Color.parseColor("#FF000000"));
                         // Start activity
-                        startActivityForResult(editIntent,100);
+                        startActivity(editIntent);
 
                         break;
 
                     case R.id.deletePic: //4
-                        File file = new File(imgPath);
-                        file.delete();
-                        Toast.makeText(PictureActivity.this, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                        File file = new File(targetUri.getPath());
+
+                        if (file.exists()){
+                            file.delete();
+                            if(file.delete()){
+                                Toast.makeText(PictureActivity.this, "Xóa thành công: " + targetUri.getPath(), Toast.LENGTH_SHORT).show();
+                            }
+                            else Toast.makeText(PictureActivity.this, "Xóa không thành công: " + targetUri.getPath(), Toast.LENGTH_SHORT).show();
+                        }
                         finish();
                         break;
+
+
 
                 }
                 return true;
@@ -246,4 +258,6 @@ public class PictureActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottom_picture);
         toolbar_picture = findViewById(R.id.toolbar_picture);
     }
+
+
 }
