@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -29,6 +30,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import com.bumptech.glide.Glide;
+import com.dsphotoeditor.sdk.activity.DsPhotoEditorActivity;
+import com.dsphotoeditor.sdk.utils.DsPhotoEditorConstants;
 import com.example.testgallery.R;
 import com.example.testgallery.utility.FileUtility;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -44,9 +47,10 @@ public class PictureActivity extends AppCompatActivity {
 
     Toolbar toolbar_picture;
     BottomNavigationView bottomNavigationView;
-    String urlImg ;
+    String urlImg;
     String imgPath;
     String imageName;
+    String thumb;
 
     private boolean flag = false;
     @Override
@@ -57,21 +61,19 @@ public class PictureActivity extends AppCompatActivity {
         viewMapping();
 
         Intent intent = getIntent();
-        String thumb = intent.getStringExtra("imgSrc");
+        thumb = intent.getStringExtra("imgSrc");
+        // Get image name
         imageName = thumb.substring(thumb.lastIndexOf('/') + 1);
         Glide.with(this).load(thumb).into(imageView);
         urlImg=thumb;
         imgPath = intent.getStringExtra("imgPath");
 
         // Toolbar events
-
         toolbar_picture.inflateMenu(R.menu.menu_top_picture);
         toolbar_picture.setTitle(imageName);
 
-
-        toolbar_picture.setNavigationIcon(R.drawable.abc_ic_ab_back_material);
-
         // Show back button
+        toolbar_picture.setNavigationIcon(R.drawable.abc_ic_ab_back_material);
         toolbar_picture.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,7 +92,7 @@ public class PictureActivity extends AppCompatActivity {
                         if(targetUri != null){
                             showExif(targetUri);
                         }
-
+                        break;
                 }
 
                 return true;
@@ -106,6 +108,26 @@ public class PictureActivity extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
+
+                    case R.id.editPic:
+                        Toast.makeText(PictureActivity.this, "Chỉnh sửa ảnh", Toast.LENGTH_SHORT).show();
+                        Intent editIntent = new Intent(PictureActivity.this, DsPhotoEditorActivity.class);
+
+                        // Set data
+                        Uri targetUri = Uri.parse("file://" + thumb);
+                        editIntent.setData(targetUri);
+
+                        // Set output directory
+                        editIntent.putExtra(DsPhotoEditorConstants.DS_PHOTO_EDITOR_OUTPUT_DIRECTORY,"EditedImages");
+                        // Set toolbar color
+                        //editIntent.putExtra(DsPhotoEditorConstants.DS_TOOL_BAR_BACKGROUND_COLOR, Color.parseColor("#F2F6F7"));
+                        // Set background color
+                        editIntent.putExtra(DsPhotoEditorConstants.DS_MAIN_BACKGROUND_COLOR, Color.parseColor("#FFFFFFFF"));
+                        // Start activity
+                        startActivityForResult(editIntent,100);
+
+                        break;
+
                     case R.id.deletePic: //4
                         File file = new File(imgPath);
                         file.delete();
@@ -113,10 +135,10 @@ public class PictureActivity extends AppCompatActivity {
                         finish();
                         break;
 
-
                 }
                 return true;
             }
+
         });
 
 
@@ -154,7 +176,6 @@ public class PictureActivity extends AppCompatActivity {
                 FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
 
                 ExifInterface exifInterface = new ExifInterface(fileDescriptor);
-                //String exif="Exif: " + fileDescriptor.toString();
 
                 BottomSheetDialog infoDialog = new BottomSheetDialog(this,R.style.BottomSheetDialogTheme);
                 View infoDialogView = LayoutInflater.from(getApplicationContext())

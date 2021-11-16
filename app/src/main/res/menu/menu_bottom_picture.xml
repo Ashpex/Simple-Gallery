@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/picture"
-        android:title="@string/picture"
+        android:id="@+id/sharePic"
+        android:title="Chia sẻ"
         android:icon="@drawable/ic_share"/>
 
-    <item android:id="@+id/search"
-        android:title="@string/search"
+    <item android:id="@+id/editPic"
+        android:title="Chỉnh sửa ảnh"
         android:icon="@drawable/ic_edit"/>
 
-    <item android:id="@+id/share"
-        android:title="@string/share"
+    <item android:id="@+id/starPic"
+        android:title="Yêu thích"
         android:icon="@drawable/ic_star"/>
 
     <item android:id="@+id/deletePic"

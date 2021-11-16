@@ -13,6 +13,10 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // Editor sdk
+        renderscriptTargetApi 21
+        renderscriptSupportModeEnabled true
     }
 
     buildTypes {
@@ -46,5 +50,14 @@ dependencies {
     implementation 'com.github.smarteist:autoimageslider:1.4.0'
 
     implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+
+
+    // DS Photo Editor SDK
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation(name:'ds-photo-editor-sdk-v10', ext:'aar')
+    // SDK related dependencies
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.0'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
 
 }
