@@ -132,6 +132,10 @@ public class PictureActivity extends AppCompatActivity {
 
                         break;
 
+                    case R.id.starPic:
+                        Toast.makeText(PictureActivity.this, "Thêm ảnh yêu thích", Toast.LENGTH_SHORT).show();
+                        break;
+
                     case R.id.deletePic: //4
                         File file = new File(targetUri.getPath());
 
@@ -144,7 +148,6 @@ public class PictureActivity extends AppCompatActivity {
                         }
                         finish();
                         break;
-
 
 
                 }
@@ -178,6 +181,7 @@ public class PictureActivity extends AppCompatActivity {
         onBackPressed();
         return true;
     }
+
     void showExif(Uri photoUri){
         if(photoUri != null){
 
