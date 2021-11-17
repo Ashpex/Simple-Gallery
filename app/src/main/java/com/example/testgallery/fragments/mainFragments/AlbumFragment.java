@@ -48,18 +48,22 @@ public class AlbumFragment extends Fragment {
         toolbar_album = view.findViewById(R.id.toolbar_album);
         layout_bottom = view.findViewById(R.id.layout_bottom);
 
+        getDataFromGallery();
+
         toolBarEvents();
         mappingControls();
         events();
+        setViewRyc();
+        albumAdapter.setData(listAlbum);
+
         return view;
     }
 
-    @Override
-    public void onResume() {
+    private void getDataFromGallery() {
         listImage = GetAllPhotoFromGallery.getAllImageFromGallery(view.getContext());
-        albumAdapter.setData(getListAlbum(listImage));
-        super.onResume();
+        listAlbum = getListAlbum(listImage);
     }
+
 
     private void toolBarEvents() {
         toolbar_album.inflateMenu(R.menu.menu_top_album);
@@ -108,7 +112,12 @@ public class AlbumFragment extends Fragment {
         myAsyncTask.execute();
     }
 
-
+    @Override
+    public void onStart() {
+        super.onStart();
+        MyAsyncTask myAsyncTask = new MyAsyncTask();
+        myAsyncTask.execute();
+    }
 
     private void openCreateAlbumActivity() {
         Intent _intent = new Intent(view.getContext(), CreateAlbumActivity.class);
@@ -151,6 +160,7 @@ public class AlbumFragment extends Fragment {
 
         @Override
         protected Void doInBackground(Void... voids) {
+            listImage = GetAllPhotoFromGallery.getAllImageFromGallery(view.getContext());
             listAlbum = getListAlbum(listImage);
             return null;
         }
@@ -158,7 +168,7 @@ public class AlbumFragment extends Fragment {
         @Override
         protected void onPostExecute(Void unused) {
             super.onPostExecute(unused);
-            setViewRyc();
+            albumAdapter.setData(listAlbum);
         }
     }
 }

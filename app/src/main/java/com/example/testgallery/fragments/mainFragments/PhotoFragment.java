@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
@@ -42,6 +43,8 @@ public class PhotoFragment extends Fragment {
     private RecyclerView recyclerView;
     private CategoryAdapter categoryAdapter;
     private androidx.appcompat.widget.Toolbar toolbar_photo;
+    private Boolean flag = false;
+    private List<Category> listImg;
 
     @Nullable
     @Override
@@ -63,6 +66,7 @@ public class PhotoFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         categoryAdapter.setData(getListCategory());
         recyclerView.setAdapter(categoryAdapter);
+
     }
 
     private void toolBarEvents() {
@@ -92,9 +96,18 @@ public class PhotoFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        categoryAdapter.setData(getListCategory());
-        super.onResume();
+    public void onStart() {
+        super.onStart();
+        if(flag) {
+            MyAsyncTask myAsyncTask = new MyAsyncTask();
+            myAsyncTask.execute();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        flag = true;
     }
 
     //Camera
@@ -218,5 +231,20 @@ public class PhotoFragment extends Fragment {
             return null;
         }
 
+    }
+    public class MyAsyncTask extends AsyncTask<Void, Integer, Void> {
+
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            listImg = getListCategory();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            super.onPostExecute(unused);
+            categoryAdapter.setData(listImg);
+        }
     }
 }
