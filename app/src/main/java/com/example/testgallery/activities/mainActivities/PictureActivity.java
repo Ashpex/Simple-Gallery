@@ -148,7 +148,7 @@ public class PictureActivity extends AppCompatActivity {
                         File file = new File(targetUri.getPath());
 
                         if (file.exists()){
-                            file.delete();
+
                             if(file.delete()){
                                 Toast.makeText(PictureActivity.this, "Xóa thành công: " + targetUri.getPath(), Toast.LENGTH_SHORT).show();
                             }
