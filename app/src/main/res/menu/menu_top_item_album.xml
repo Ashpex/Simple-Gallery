@@ -5,7 +5,8 @@
         android:id="@+id/album_item_search"
         android:title="Tìm kiếm"
         android:icon="@drawable/ic_searchmin"
-        app:showAsAction="always"/>
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"/>
 
     <item android:id="@+id/album_item_slideshow"
         android:title="Slideshow"

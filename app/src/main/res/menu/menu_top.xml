@@ -12,7 +12,8 @@
     <item android:id="@+id/menuSearch"
         android:title="@string/search"
         android:icon="@drawable/ic_searchmin"
-        app:showAsAction="ifRoom|collapseActionView"/>
+        app:showAsAction="ifRoom|collapseActionView"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"/>
 
     <item
         android:id="@+id/menuSlideshow"
