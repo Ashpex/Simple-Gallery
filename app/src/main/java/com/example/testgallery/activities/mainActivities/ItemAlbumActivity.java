@@ -9,6 +9,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -80,6 +81,10 @@ public class ItemAlbumActivity extends AppCompatActivity {
                     case R.id.album_item_delete:
                         Toast.makeText(ItemAlbumActivity.this, "Xóa", Toast.LENGTH_SHORT).show();
                         break;
+
+                    case R.id.album_item_slideshow:
+                        slideShowEvents();
+                        break;
                 }
 
                 return true;
@@ -90,7 +95,13 @@ public class ItemAlbumActivity extends AppCompatActivity {
 
 
 
-
+    private void slideShowEvents() {
+        Intent intent = new Intent(ItemAlbumActivity.this, SlideShowActivity.class);
+        intent.putStringArrayListExtra("data_slide", myAlbum);
+        intent.putExtra("name",album_name);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        ItemAlbumActivity.this.startActivity(intent);
+    }
 
     private void setData() {
         myAlbum = intent.getStringArrayListExtra("data");
