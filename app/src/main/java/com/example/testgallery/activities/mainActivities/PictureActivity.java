@@ -128,7 +128,7 @@ public class PictureActivity extends AppCompatActivity {
                         editIntent.setData(targetUri);
 
                         // Set output directory
-                        editIntent.putExtra(DsPhotoEditorConstants.DS_PHOTO_EDITOR_OUTPUT_DIRECTORY,"EditedImages");
+                        editIntent.putExtra(DsPhotoEditorConstants.DS_PHOTO_EDITOR_OUTPUT_DIRECTORY,"Simple Gallery");
                         // Set toolbar color
                         editIntent.putExtra(DsPhotoEditorConstants.DS_TOOL_BAR_BACKGROUND_COLOR, Color.parseColor("#FF000000"));
                         // Set background color

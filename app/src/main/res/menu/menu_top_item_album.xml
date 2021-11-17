@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/album_item_search"
+        android:title="Tìm kiếm"
+        android:icon="@drawable/ic_searchmin"
+        app:showAsAction="always"/>
+
+    <item android:id="@+id/album_item_slideshow"
+        android:title="Slideshow"
+        android:icon="@drawable/ic_add"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/album_item_add"
+        android:title="Thêm ảnh"
+        android:icon="@drawable/ic_add"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/album_item_delete"
+        android:title="Xóa ảnh"
+        android:icon="@drawable/ic_add"
+        app:showAsAction="never"/>
+</menu>

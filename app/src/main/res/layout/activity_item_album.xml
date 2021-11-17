@@ -5,49 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal"
-        android:padding="10dp">
+    <include
+        android:id="@+id/toolbar_item_album"
+        layout="@layout/layout_toolbar" />
 
-        <ImageButton
-            android:id="@+id/btnBack"
-            android:layout_width="0dp"
-            android:layout_marginTop="2.5dp"
-            android:layout_marginBottom="2.5dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/ic_back" />
-
-        <TextView
-            android:id="@+id/txtName_list_album"
-            android:text="List album"
-            android:textColor="@color/black"
-            android:layout_marginStart="10dp"
-            android:textSize="24sp"
-            android:layout_width="0dp"
-            android:layout_weight="10"
-            android:layout_height="match_parent"/>
-        <ImageButton
-            android:layout_width="0dp"
-            android:layout_marginTop="2.5dp"
-            android:layout_marginBottom="2.5dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/ic_add_photo_list_album"
-            android:id="@+id/ic_add_photo"/>
-        <ImageButton
-            android:layout_marginTop="2.5dp"
-            android:layout_marginBottom="2.5dp"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:padding="10dp"
-            android:layout_marginStart="10dp"
-            android:layout_weight="1.2"
-            android:backgroundTint="@color/black"
-            android:background="@drawable/ic_delete"/>
-    </LinearLayout>
     <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
