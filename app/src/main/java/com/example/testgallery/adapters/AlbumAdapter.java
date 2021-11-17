@@ -2,12 +2,14 @@ package com.example.testgallery.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,11 +17,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.testgallery.activities.mainActivities.ItemAlbumActivity;
 import com.example.testgallery.R;
+import com.example.testgallery.activities.mainActivities.PictureActivity;
 import com.example.testgallery.activities.mainActivities.SlideShowActivity;
 import com.example.testgallery.models.Album;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +40,9 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
         this.mListAlbums = mListAlbums;
         notifyDataSetChanged();
     }
-
+    public void notifyData() {
+        notifyDataSetChanged();
+    }
     @NonNull
     @Override
     public AlbumAdapter.AlbumViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -48,7 +54,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
 
     @Override
     public void onBindViewHolder(@NonNull AlbumAdapter.AlbumViewHolder holder, int position) {
-        holder.onBind(mListAlbums.get(position));
+        holder.onBind(mListAlbums.get(position), position);
     }
 
     @Override
@@ -64,7 +70,6 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
         private final TextView txtName_album;
         private final TextView txtCount_item_album;
         private Context context;
-        private LinearLayout layout_bottom_share;
         private LinearLayout layout_bottom_delete;
         private LinearLayout layout_bottom_slide_show;
 
@@ -76,7 +81,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
             context = itemView.getContext();
         }
 
-        public void onBind(Album ref) {
+        public void onBind(Album ref, int pos) {
             bindData(ref);
 
             img_album.setOnClickListener(new View.OnClickListener() {
@@ -108,13 +113,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
                     layout_bottom_delete.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            deleteEvents(ref);
-                        }
-                    });
-                    layout_bottom_share.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            shareEvents(ref);
+                            deleteEvents(ref, pos);
                         }
                     });
                     return true;
@@ -138,15 +137,23 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
             intent.putStringArrayListExtra("data_slide", list);
             intent.putExtra("name", ref.getName());
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            bottomSheetDialog.cancel();
             context.startActivity(intent);
         }
-        private void deleteEvents(Album ref) {
-        }
-        private void shareEvents(Album ref) {
+        private void deleteEvents(Album ref, int pos) {
+            for(int i=0;i<ref.getList().size();i++) {
+                Uri targetUri = Uri.parse("file://" + ref.getList().get(i).getPath());
+                File file = new File(targetUri.getPath());
+                if (file.exists()){
+                    file.delete();
+                }
+            }
+            mListAlbums.remove(pos);
+            notifyDataSetChanged();
+            bottomSheetDialog.cancel();
         }
         private void openBottomDialog() {
             View viewDialog = LayoutInflater.from(context).inflate(R.layout.layout_bottom_sheet_album, null);
-            layout_bottom_share = viewDialog.findViewById(R.id.layout_bottom_share);
             layout_bottom_delete = viewDialog.findViewById(R.id.layout_bottom_delete);
             layout_bottom_slide_show = viewDialog.findViewById(R.id.layout_bottom_slide_show);
 

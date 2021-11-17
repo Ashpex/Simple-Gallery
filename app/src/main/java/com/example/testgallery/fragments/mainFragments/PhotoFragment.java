@@ -90,6 +90,13 @@ public class PhotoFragment extends Fragment {
             }
         });
     }
+
+    @Override
+    public void onResume() {
+        categoryAdapter.setData(getListCategory());
+        super.onResume();
+    }
+
     //Camera
     private static final int CAMERA_REQUEST = 1888;
     private static final int MY_CAMERA_PERMISSION_CODE = 100;

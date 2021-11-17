@@ -38,7 +38,7 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
             case 0:
                 return new PhotoFragment();
             case 1:
-                return new AlbumFragment(data);
+                return new AlbumFragment();
             case 2:
                 return new SecretFragment();
             case 3:

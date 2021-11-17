@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.testgallery.models.Image;
+import com.example.testgallery.utility.GetAllPhotoFromGallery;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
 public class AlbumFragment extends Fragment {
@@ -37,14 +38,13 @@ public class AlbumFragment extends Fragment {
     private androidx.appcompat.widget.Toolbar toolbar_album;
     private List<Album> listAlbum;
     private LinearLayout layout_bottom;
-    public AlbumFragment(List<Image> data) {
-        this.listImage = data;
-    }
+    private AlbumAdapter albumAdapter;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_album, container,false);
+        listImage = GetAllPhotoFromGallery.getAllImageFromGallery(view.getContext());
         toolbar_album = view.findViewById(R.id.toolbar_album);
         layout_bottom = view.findViewById(R.id.layout_bottom);
 
@@ -53,6 +53,14 @@ public class AlbumFragment extends Fragment {
         events();
         return view;
     }
+
+    @Override
+    public void onResume() {
+        listImage = GetAllPhotoFromGallery.getAllImageFromGallery(view.getContext());
+        albumAdapter.setData(getListAlbum(listImage));
+        super.onResume();
+    }
+
     private void toolBarEvents() {
         toolbar_album.inflateMenu(R.menu.menu_top_album);
         toolbar_album.setTitle("Album");
@@ -98,8 +106,6 @@ public class AlbumFragment extends Fragment {
     private void events() {
         MyAsyncTask myAsyncTask = new MyAsyncTask();
         myAsyncTask.execute();
-
-
     }
 
 
@@ -116,7 +122,7 @@ public class AlbumFragment extends Fragment {
 
     private void setViewRyc() {
         ryc_album.setLayoutManager(new GridLayoutManager(view.getContext(), 2));
-        AlbumAdapter albumAdapter = new AlbumAdapter(listAlbum, getContext());
+        albumAdapter = new AlbumAdapter(listAlbum, getContext());
         ryc_album.setAdapter(albumAdapter);
     }
     @NonNull

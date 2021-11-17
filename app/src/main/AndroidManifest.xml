@@ -24,15 +24,19 @@
         android:theme="@style/Theme.TestGallery">
         <activity
             android:name=".activities.mainActivities.ItemAlbumActivity"
+            android:screenOrientation="portrait"
             android:exported="true" />
         <activity
             android:name=".activities.mainActivities.SlideShowActivity"
+            android:screenOrientation="portrait"
             android:exported="true" />
         <activity
             android:name=".activities.mainActivities.PictureActivity"
+            android:screenOrientation="portrait"
             android:exported="true" />
         <activity
             android:name=".activities.mainActivities.CreateAlbumActivity"
+            android:screenOrientation="portrait"
             android:exported="true" />
         <activity
             android:name=".activities.mainActivities.MainActivity"
