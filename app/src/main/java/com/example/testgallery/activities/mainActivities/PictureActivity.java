@@ -114,7 +114,7 @@ public class PictureActivity extends AppCompatActivity {
                         Drawable mDrawable = imageView.getDrawable();
                         Bitmap mBitmap = ((BitmapDrawable) mDrawable).getBitmap();
                         String path = MediaStore.Images.Media.insertImage(getContentResolver(), mBitmap, "Image Description", null);
-                        Uri uri = Uri.parse("file://" + path);
+                        Uri uri = Uri.parse(path);
                         Intent shareIntent = new Intent(Intent.ACTION_SEND);
                         shareIntent.setType("image/*");
                         shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
