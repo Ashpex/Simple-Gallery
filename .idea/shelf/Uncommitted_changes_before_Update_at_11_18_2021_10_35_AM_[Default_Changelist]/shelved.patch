@@ -1,0 +1,1667 @@
+Index: app/src/main/java/com/example/testgallery/activities/mainActivities/PictureActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.testgallery.activities.mainActivities;\r\n\r\n\r\nimport android.content.Intent;\r\nimport android.graphics.Bitmap;\r\nimport android.graphics.Color;\r\nimport android.graphics.drawable.BitmapDrawable;\r\nimport android.graphics.drawable.Drawable;\r\nimport android.media.ExifInterface;\r\nimport android.net.Uri;\r\nimport android.os.Bundle;\r\n\r\nimport android.provider.MediaStore;\r\nimport android.util.Log;\r\nimport android.view.LayoutInflater;\r\nimport android.view.MenuItem;\r\nimport android.view.View;\r\nimport android.widget.ImageView;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\nimport android.os.ParcelFileDescriptor;\r\nimport android.widget.LinearLayout;\r\nimport android.widget.TextView;\r\nimport android.widget.Toast;\r\nimport androidx.appcompat.widget.Toolbar;\r\n\r\nimport java.io.File;\r\nimport java.io.FileDescriptor;\r\nimport java.io.FileNotFoundException;\r\nimport java.io.IOException;\r\n\r\nimport com.bumptech.glide.Glide;\r\nimport com.dsphotoeditor.sdk.activity.DsPhotoEditorActivity;\r\nimport com.dsphotoeditor.sdk.utils.DsPhotoEditorConstants;\r\nimport com.example.testgallery.R;\r\nimport com.google.android.material.bottomnavigation.BottomNavigationView;\r\nimport com.google.android.material.bottomsheet.BottomSheetDialog;\r\nimport com.google.android.material.navigation.NavigationBarView;\r\n\r\n\r\n\r\n\r\npublic class PictureActivity extends AppCompatActivity {\r\n    ImageView imageView;\r\n\r\n\r\n    Toolbar toolbar_picture;\r\n    BottomNavigationView bottomNavigationView;\r\n    String urlImg;\r\n    String imgPath;\r\n    String imageName;\r\n    String thumb;\r\n\r\n    private boolean flag = false;\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_picture);\r\n\r\n        viewMapping();\r\n\r\n        Intent intent = getIntent();\r\n        thumb = intent.getStringExtra(\"imgSrc\");\r\n        // Get image name\r\n        imageName = thumb.substring(thumb.lastIndexOf('/') + 1);\r\n        Glide.with(this).load(thumb).into(imageView);\r\n        urlImg=thumb;\r\n        imgPath = intent.getStringExtra(\"imgPath\");\r\n\r\n        // Toolbar events\r\n        toolbar_picture.inflateMenu(R.menu.menu_top_picture);\r\n        toolbar_picture.setTitle(imageName);\r\n\r\n        // Show back button\r\n        toolbar_picture.setNavigationIcon(R.drawable.abc_ic_ab_back_material);\r\n        toolbar_picture.setNavigationOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                finish();\r\n            }\r\n        });\r\n\r\n        // Show info\r\n        toolbar_picture.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {\r\n            @Override\r\n            public boolean onMenuItemClick(MenuItem menuItem) {\r\n                int id = menuItem.getItemId();\r\n                switch (id){\r\n                    case R.id.menuInfo:\r\n                        Uri targetUri = Uri.parse(\"file://\" + urlImg);\r\n                        if(targetUri != null){\r\n                            showExif(targetUri);\r\n                        }\r\n                        break;\r\n                }\r\n\r\n                return true;\r\n            }\r\n        });\r\n\r\n\r\n//        imageView.setImageResource(src);\r\n\r\n\r\n\r\n        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {\r\n            @Override\r\n            public boolean onNavigationItemSelected(@NonNull MenuItem item) {\r\n                Uri targetUri = Uri.parse(\"file://\" + urlImg);\r\n                switch (item.getItemId()) {\r\n\r\n                    case R.id.sharePic:\r\n                        Drawable mDrawable = imageView.getDrawable();\r\n                        Bitmap mBitmap = ((BitmapDrawable) mDrawable).getBitmap();\r\n                        String path = MediaStore.Images.Media.insertImage(getContentResolver(), mBitmap, \"Image Description\", null);\r\n                        Uri uri = Uri.parse(\"file://\" + path);\r\n                        Intent shareIntent = new Intent(Intent.ACTION_SEND);\r\n                        shareIntent.setType(\"image/*\");\r\n                        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);\r\n                        startActivity(Intent.createChooser(shareIntent, \"Share Image\"));\r\n                        break;\r\n\r\n                    case R.id.editPic:\r\n                        Intent editIntent = new Intent(PictureActivity.this, DsPhotoEditorActivity.class);\r\n\r\n                        // Set data\r\n                        editIntent.setData(targetUri);\r\n\r\n                        // Set output directory\r\n                        editIntent.putExtra(DsPhotoEditorConstants.DS_PHOTO_EDITOR_OUTPUT_DIRECTORY,\"EditedImages\");\r\n                        // Set toolbar color\r\n                        editIntent.putExtra(DsPhotoEditorConstants.DS_TOOL_BAR_BACKGROUND_COLOR, Color.parseColor(\"#FF000000\"));\r\n                        // Set background color\r\n                        editIntent.putExtra(DsPhotoEditorConstants.DS_MAIN_BACKGROUND_COLOR, Color.parseColor(\"#FF000000\"));\r\n                        // Start activity\r\n                        startActivity(editIntent);\r\n\r\n                        break;\r\n\r\n                    case R.id.starPic:\r\n                        Toast.makeText(PictureActivity.this, \"Thêm ảnh yêu thích\", Toast.LENGTH_SHORT).show();\r\n\r\n\r\n                        break;\r\n\r\n                    case R.id.deletePic: //4\r\n                        File file = new File(targetUri.getPath());\r\n\r\n                        if (file.exists()){\r\n                            file.delete();\r\n                            if(file.delete()){\r\n                                Toast.makeText(PictureActivity.this, \"Xóa thành công: \" + targetUri.getPath(), Toast.LENGTH_SHORT).show();\r\n                            }\r\n                            else Toast.makeText(PictureActivity.this, \"Xóa không thành công: \" + targetUri.getPath(), Toast.LENGTH_SHORT).show();\r\n                        }\r\n                        finish();\r\n                        break;\r\n\r\n\r\n                }\r\n                return true;\r\n            }\r\n\r\n        });\r\n\r\n\r\n\r\n        imageView.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                if (!flag){\r\n                    bottomNavigationView.setVisibility(View.INVISIBLE);\r\n                    toolbar_picture.setVisibility(View.INVISIBLE);\r\n                    flag = true;\r\n                }else{\r\n                    bottomNavigationView.setVisibility(View.VISIBLE);\r\n                    toolbar_picture.setVisibility(View.VISIBLE);\r\n                    flag = false;\r\n                }\r\n\r\n            }\r\n        });\r\n\r\n    }\r\n\r\n    @Override\r\n    public boolean onSupportNavigateUp(){\r\n        onBackPressed();\r\n        return true;\r\n    }\r\n\r\n    void showExif(Uri photoUri){\r\n        if(photoUri != null){\r\n\r\n            ParcelFileDescriptor parcelFileDescriptor = null;\r\n\r\n            try {\r\n                parcelFileDescriptor = getContentResolver().openFileDescriptor(photoUri, \"r\");\r\n                FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();\r\n\r\n                ExifInterface exifInterface = new ExifInterface(fileDescriptor);\r\n\r\n                BottomSheetDialog infoDialog = new BottomSheetDialog(this,R.style.BottomSheetDialogTheme);\r\n                View infoDialogView = LayoutInflater.from(getApplicationContext())\r\n                        .inflate(\r\n                                R.layout.layout_info,\r\n                                (LinearLayout) findViewById(R.id.infoContainer),\r\n                                false\r\n                        );\r\n                TextView txtInfoProducer = (TextView) infoDialogView.findViewById(R.id.txtInfoProducer);\r\n                TextView txtInfoSize = (TextView) infoDialogView.findViewById(R.id.txtInfoSize);\r\n                TextView txtInfoModel = (TextView) infoDialogView.findViewById(R.id.txtInfoModel);\r\n                TextView txtInfoFlash = (TextView) infoDialogView.findViewById(R.id.txtInfoFlash);\r\n                TextView txtInfoFocalLength = (TextView) infoDialogView.findViewById(R.id.txtInfoFocalLength);\r\n                TextView txtInfoAuthor = (TextView) infoDialogView.findViewById(R.id.txtInfoAuthor);\r\n                TextView txtInfoTime = (TextView) infoDialogView.findViewById(R.id.txtInfoTime);\r\n                TextView txtInfoName = (TextView) infoDialogView.findViewById(R.id.txtInfoName);\r\n\r\n                txtInfoName.setText(imageName);\r\n                txtInfoProducer.setText(exifInterface.getAttribute(ExifInterface.TAG_MAKE));\r\n                txtInfoSize.setText(exifInterface.getAttribute(ExifInterface.TAG_IMAGE_LENGTH) + \"x\" + exifInterface.getAttribute(ExifInterface.TAG_IMAGE_WIDTH));\r\n                txtInfoModel.setText(exifInterface.getAttribute(ExifInterface.TAG_MODEL));\r\n                txtInfoFlash.setText(exifInterface.getAttribute(ExifInterface.TAG_FLASH));\r\n                txtInfoFocalLength.setText(exifInterface.getAttribute(ExifInterface.TAG_FOCAL_LENGTH));\r\n                txtInfoAuthor.setText(exifInterface.getAttribute(ExifInterface.TAG_ARTIST));\r\n                txtInfoTime.setText(exifInterface.getAttribute(ExifInterface.TAG_DATETIME));\r\n\r\n                infoDialog.setContentView(infoDialogView);\r\n                infoDialog.show();\r\n\r\n\r\n                parcelFileDescriptor.close();\r\n\r\n\r\n            } catch (FileNotFoundException e) {\r\n                e.printStackTrace();\r\n                Toast.makeText(getApplicationContext(),\r\n                        \"Something wrong:\\n\" + e.toString(),\r\n                        Toast.LENGTH_LONG).show();\r\n            } catch (IOException e) {\r\n                e.printStackTrace();\r\n                Toast.makeText(getApplicationContext(),\r\n                        \"Something wrong:\\n\" + e.toString(),\r\n                        Toast.LENGTH_LONG).show();\r\n            }\r\n\r\n\r\n\r\n        }else{\r\n            Toast.makeText(getApplicationContext(),\r\n                    \"photoUri == null\",\r\n                    Toast.LENGTH_LONG).show();\r\n        }\r\n    };\r\n\r\n/*    @Override\r\n    public boolean onOptionsItemSelected(MenuItem item) {\r\n        switch (item.getItemId()) {\r\n            case R.id.menu_album:\r\n                Toast.makeText(this,\"test\",Toast.LENGTH_SHORT);\r\n            default:\r\n                return super.onOptionsItemSelected(item);\r\n        }\r\n    }*/\r\n\r\n\r\n    void viewMapping(){\r\n        imageView = findViewById(R.id.imgPicture);\r\n        bottomNavigationView = findViewById(R.id.bottom_picture);\r\n        toolbar_picture = findViewById(R.id.toolbar_picture);\r\n    }\r\n\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/testgallery/activities/mainActivities/PictureActivity.java b/app/src/main/java/com/example/testgallery/activities/mainActivities/PictureActivity.java
+--- a/app/src/main/java/com/example/testgallery/activities/mainActivities/PictureActivity.java	(revision 322acf861ed5c8d44b11db60233a2e1c81446163)
++++ b/app/src/main/java/com/example/testgallery/activities/mainActivities/PictureActivity.java	(date 1637206387930)
+@@ -10,6 +10,7 @@
+ import android.net.Uri;
+ import android.os.Bundle;
+ 
++import android.os.StrictMode;
+ import android.provider.MediaStore;
+ import android.util.Log;
+ import android.view.LayoutInflater;
+@@ -18,103 +19,102 @@
+ import android.widget.ImageView;
+ 
+ import androidx.annotation.NonNull;
++import androidx.annotation.Nullable;
+ import androidx.appcompat.app.AppCompatActivity;
+ import android.os.ParcelFileDescriptor;
+ import android.widget.LinearLayout;
+ import android.widget.TextView;
+ import android.widget.Toast;
+ import androidx.appcompat.widget.Toolbar;
++import androidx.viewpager.widget.ViewPager;
+ 
+ import java.io.File;
+ import java.io.FileDescriptor;
+ import java.io.FileNotFoundException;
+ import java.io.IOException;
++import java.util.ArrayList;
+ 
+ import com.bumptech.glide.Glide;
+ import com.dsphotoeditor.sdk.activity.DsPhotoEditorActivity;
+ import com.dsphotoeditor.sdk.utils.DsPhotoEditorConstants;
+ import com.example.testgallery.R;
++import com.example.testgallery.adapters.SlideImageAdapter;
++import com.example.testgallery.utility.PictureInterface;
+ import com.google.android.material.bottomnavigation.BottomNavigationView;
+ import com.google.android.material.bottomsheet.BottomSheetDialog;
+ import com.google.android.material.navigation.NavigationBarView;
+-
+-
++import com.smarteist.autoimageslider.SliderView;
+ 
+ 
+ public class PictureActivity extends AppCompatActivity {
+-    ImageView imageView;
+-
+-
+-    Toolbar toolbar_picture;
+-    BottomNavigationView bottomNavigationView;
+-    String urlImg;
+-    String imgPath;
+-    String imageName;
+-    String thumb;
+-
++    private ViewPager viewPager_picture;
++    private Toolbar toolbar_picture;
++    private BottomNavigationView bottomNavigationView;
+     private boolean flag = false;
++    private ArrayList<String> imageListThumb;
++    private ArrayList<String> imageListPath;
++    private Intent intent;
++    private int pos;
++    private SlideImageAdapter slideImageAdapter;
++    private PictureInterface activityPicture;
++    private String imgPath;
++    private String imageName;
++    private String thumb;
++    private Drawable mDrawable;
++
+     @Override
+-    protected void onCreate(Bundle savedInstanceState) {
++    protected void onCreate(@Nullable Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+         setContentView(R.layout.activity_picture);
++        //Fix Uri file SDK link: https://stackoverflow.com/questions/48117511/exposed-beyond-app-through-clipdata-item-geturi?answertab=oldest#tab-top
++        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
++        StrictMode.setVmPolicy(builder.build());
+ 
+-        viewMapping();
+ 
+-        Intent intent = getIntent();
+-        thumb = intent.getStringExtra("imgSrc");
+-        // Get image name
+-        imageName = thumb.substring(thumb.lastIndexOf('/') + 1);
+-        Glide.with(this).load(thumb).into(imageView);
+-        urlImg=thumb;
+-        imgPath = intent.getStringExtra("imgPath");
++        mappingControls();
+ 
+-        // Toolbar events
+-        toolbar_picture.inflateMenu(R.menu.menu_top_picture);
+-        toolbar_picture.setTitle(imageName);
++        events();
++    }
+ 
+-        // Show back button
+-        toolbar_picture.setNavigationIcon(R.drawable.abc_ic_ab_back_material);
+-        toolbar_picture.setNavigationOnClickListener(new View.OnClickListener() {
++    private void events() {
++        setDataIntent();
++        setUpToolBar();
++        setUpSilder();
++        bottomNavigationViewEvents();
++
++        viewPager_picture.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+-                finish();
+-            }
+-        });
++                if (!flag) {
++                    bottomNavigationView.setVisibility(View.INVISIBLE);
++                    toolbar_picture.setVisibility(View.INVISIBLE);
++                    flag = true;
++                } else {
++                    bottomNavigationView.setVisibility(View.VISIBLE);
++                    toolbar_picture.setVisibility(View.VISIBLE);
++                    flag = false;
++                }
+ 
+-        // Show info
+-        toolbar_picture.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+-            @Override
+-            public boolean onMenuItemClick(MenuItem menuItem) {
+-                int id = menuItem.getItemId();
+-                switch (id){
+-                    case R.id.menuInfo:
+-                        Uri targetUri = Uri.parse("file://" + urlImg);
+-                        if(targetUri != null){
+-                            showExif(targetUri);
+-                        }
+-                        break;
+-                }
++            }
++        });
++    }
+ 
+-                return true;
+-            }
+-        });
+-
+-
+-//        imageView.setImageResource(src);
+-
+-
+-
++    private void bottomNavigationViewEvents() {
+         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+             @Override
+             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+-                Uri targetUri = Uri.parse("file://" + urlImg);
++                Log.d("alo", thumb);
++                Uri targetUri = Uri.parse("file://" + thumb);
+                 switch (item.getItemId()) {
+ 
+                     case R.id.sharePic:
+-                        Drawable mDrawable = imageView.getDrawable();
++                        /*mDrawable = Drawable.createFromPath(imgPath);
+                         Bitmap mBitmap = ((BitmapDrawable) mDrawable).getBitmap();
+-                        String path = MediaStore.Images.Media.insertImage(getContentResolver(), mBitmap, "Image Description", null);
+-                        Uri uri = Uri.parse("file://" + path);
++                        String path = MediaStore.Images.Media.insertImage(getContentResolver(), mBitmap, "Image Description", null);*/
++                        Log.d("alo alo", imgPath);
++                        thumb = thumb.replaceAll(" ", "");
++                        Log.d("alo alo", thumb);
++                        Uri uri = Uri.parse("file://" + thumb);
+                         Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                         shareIntent.setType("image/*");
+                         shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+@@ -125,10 +125,10 @@
+                         Intent editIntent = new Intent(PictureActivity.this, DsPhotoEditorActivity.class);
+ 
+                         // Set data
+-                        editIntent.setData(targetUri);
+-
++                        Log.d("aloalo", imgPath);
++                        editIntent.setData(Uri.fromFile(new File(imgPath)));
+                         // Set output directory
+-                        editIntent.putExtra(DsPhotoEditorConstants.DS_PHOTO_EDITOR_OUTPUT_DIRECTORY,"EditedImages");
++                        editIntent.putExtra(DsPhotoEditorConstants.DS_PHOTO_EDITOR_OUTPUT_DIRECTORY, "EditedImages");
+                         // Set toolbar color
+                         editIntent.putExtra(DsPhotoEditorConstants.DS_TOOL_BAR_BACKGROUND_COLOR, Color.parseColor("#FF000000"));
+                         // Set background color
+@@ -140,19 +140,17 @@
+ 
+                     case R.id.starPic:
+                         Toast.makeText(PictureActivity.this, "Thêm ảnh yêu thích", Toast.LENGTH_SHORT).show();
+-
+-
+                         break;
+ 
+                     case R.id.deletePic: //4
+                         File file = new File(targetUri.getPath());
+ 
+-                        if (file.exists()){
++                        if (file.exists()) {
+                             file.delete();
+-                            if(file.delete()){
++                            if (file.delete()) {
+                                 Toast.makeText(PictureActivity.this, "Xóa thành công: " + targetUri.getPath(), Toast.LENGTH_SHORT).show();
+-                            }
+-                            else Toast.makeText(PictureActivity.this, "Xóa không thành công: " + targetUri.getPath(), Toast.LENGTH_SHORT).show();
++                            } else
++                                Toast.makeText(PictureActivity.this, "Xóa không thành công: " + targetUri.getPath(), Toast.LENGTH_SHORT).show();
+                         }
+                         finish();
+                         break;
+@@ -163,35 +161,43 @@
+             }
+ 
+         });
++    }
+ 
++    private void setUpToolBar() {
++        // Toolbar events
++        toolbar_picture.inflateMenu(R.menu.menu_top_picture);
++        setTitleToolbar("");
+ 
+-
+-        imageView.setOnClickListener(new View.OnClickListener() {
++        // Show back button
++        toolbar_picture.setNavigationIcon(R.drawable.abc_ic_ab_back_material);
++        toolbar_picture.setNavigationOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+-                if (!flag){
+-                    bottomNavigationView.setVisibility(View.INVISIBLE);
+-                    toolbar_picture.setVisibility(View.INVISIBLE);
+-                    flag = true;
+-                }else{
+-                    bottomNavigationView.setVisibility(View.VISIBLE);
+-                    toolbar_picture.setVisibility(View.VISIBLE);
+-                    flag = false;
+-                }
+-
++                finish();
+             }
+         });
+ 
+-    }
+-
+-    @Override
+-    public boolean onSupportNavigateUp(){
+-        onBackPressed();
+-        return true;
++        // Show info
++        toolbar_picture.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
++            @Override
++            public boolean onMenuItemClick(MenuItem menuItem) {
++                int id = menuItem.getItemId();
++                switch (id) {
++                    case R.id.menuInfo:
++                        Uri targetUri = Uri.parse("file://" + thumb);
++                        if (targetUri != null) {
++                            showExif(targetUri);
++                        }
++                        break;
++                }
++
++                return true;
++            }
++        });
+     }
+ 
+-    void showExif(Uri photoUri){
+-        if(photoUri != null){
++    private void showExif(Uri photoUri) {
++        if (photoUri != null) {
+ 
+             ParcelFileDescriptor parcelFileDescriptor = null;
+ 
+@@ -201,7 +207,7 @@
+ 
+                 ExifInterface exifInterface = new ExifInterface(fileDescriptor);
+ 
+-                BottomSheetDialog infoDialog = new BottomSheetDialog(this,R.style.BottomSheetDialogTheme);
++                BottomSheetDialog infoDialog = new BottomSheetDialog(this, R.style.BottomSheetDialogTheme);
+                 View infoDialogView = LayoutInflater.from(getApplicationContext())
+                         .inflate(
+                                 R.layout.layout_info,
+@@ -246,30 +252,64 @@
+             }
+ 
+ 
+-
+-        }else{
++        } else {
+             Toast.makeText(getApplicationContext(),
+                     "photoUri == null",
+                     Toast.LENGTH_LONG).show();
+         }
+-    };
++    }
++
++    ;
++
++    private void setUpSilder() {
++
++        slideImageAdapter = new SlideImageAdapter();
++        slideImageAdapter.setData(imageListThumb, imageListPath);
++        slideImageAdapter.setContext(getApplicationContext());
++        viewPager_picture.setAdapter(slideImageAdapter);
++        viewPager_picture.setCurrentItem(pos);
++
++        viewPager_picture.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
++            @Override
++            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
++                thumb = imageListThumb.get(position);
++                imgPath = imageListPath.get(position);
++                setTitleToolbar(thumb.substring(thumb.lastIndexOf('/') + 1));
++            }
++
++            @Override
++            public void onPageSelected(int position) {
+ 
+-/*    @Override
+-    public boolean onOptionsItemSelected(MenuItem item) {
+-        switch (item.getItemId()) {
+-            case R.id.menu_album:
+-                Toast.makeText(this,"test",Toast.LENGTH_SHORT);
+-            default:
+-                return super.onOptionsItemSelected(item);
+-        }
+-    }*/
++            }
+ 
++            @Override
++            public void onPageScrollStateChanged(int state) {
+ 
+-    void viewMapping(){
+-        imageView = findViewById(R.id.imgPicture);
++            }
++        });
++
++    }
++
++    private void setDataIntent() {
++        intent = getIntent();
++        imageListPath = intent.getStringArrayListExtra("data_list_path");
++        imageListThumb = intent.getStringArrayListExtra("data_list_thumb");
++        pos = intent.getIntExtra("pos", 0);
++
++
++    }
++
++    private void mappingControls() {
++        viewPager_picture = findViewById(R.id.viewPager_picture);
+         bottomNavigationView = findViewById(R.id.bottom_picture);
+         toolbar_picture = findViewById(R.id.toolbar_picture);
+     }
+ 
+ 
++    public void setTitleToolbar(String imageName) {
++        this.imageName = imageName;
++        toolbar_picture.setTitle(imageName);
++    }
++
++
+ }
+\ No newline at end of file
+Index: app/src/main/res/layout/activity_picture.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<RelativeLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\">\r\n\r\n    <LinearLayout\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"50dp\"\r\n        android:orientation=\"horizontal\"\r\n        android:translationZ=\"90dp\">\r\n\r\n        <include\r\n            android:id=\"@+id/toolbar_picture\"\r\n            layout=\"@layout/layout_toolbar\" />\r\n\r\n\r\n        <View\r\n            android:layout_width=\"0dp\"\r\n            android:layout_height=\"match_parent\"\r\n            android:layout_weight=\"0.9\"\r\n            android:layout_gravity=\"center\"/>\r\n\r\n    </LinearLayout>\r\n\r\n    <com.github.chrisbanes.photoview.PhotoView\r\n        android:id=\"@+id/imgPicture\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_centerInParent=\"true\"\r\n        android:src=\"@drawable/anh1\" />\r\n\r\n    <!--    <LinearLayout-->\r\n    <!--        android:layout_width=\"match_parent\"-->\r\n    <!--        android:layout_height=\"wrap_content\"-->\r\n    <!--        android:layout_alignParentBottom=\"true\"-->\r\n    <!--        android:orientation=\"horizontal\">-->\r\n\r\n    <!--        <ImageButton-->\r\n    <!--            android:layout_width=\"wrap_content\"-->\r\n    <!--            android:layout_height=\"wrap_content\"-->\r\n    <!--            android:src=\"@drawable/delete\" />-->\r\n\r\n    <!--    </LinearLayout>-->\r\n\r\n<!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->\r\n<!--        android:id=\"@+id/top_picture\"-->\r\n<!--        android:layout_width=\"match_parent\"-->\r\n<!--        android:layout_height=\"wrap_content\"-->\r\n<!--        android:layout_alignParentTop=\"true\"-->\r\n<!--        app:itemBackground=\"@color/white\"        -->\r\n<!--        app:itemIconTint=\"@color/black\"-->\r\n<!--        app:itemTextColor=\"@color/custom_color_bottom_nav\"-->\r\n<!--        app:labelVisibilityMode=\"unlabeled\"-->\r\n<!--        app:menu=\"@menu/menu_top_picture\" />-->\r\n\r\n\r\n    <com.google.android.material.bottomnavigation.BottomNavigationView\r\n        android:id=\"@+id/bottom_picture\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_alignParentBottom=\"true\"\r\n        app:itemBackground=\"@color/white\"\r\n        app:itemIconTint=\"@color/black\"\r\n        app:itemTextColor=\"@color/custom_color_bottom_nav\"\r\n        app:labelVisibilityMode=\"unlabeled\"\r\n        app:menu=\"@menu/menu_bottom_picture\" />\r\n\r\n</RelativeLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/activity_picture.xml b/app/src/main/res/layout/activity_picture.xml
+--- a/app/src/main/res/layout/activity_picture.xml	(revision 322acf861ed5c8d44b11db60233a2e1c81446163)
++++ b/app/src/main/res/layout/activity_picture.xml	(date 1637204554673)
+@@ -23,12 +23,10 @@
+ 
+     </LinearLayout>
+ 
+-    <com.github.chrisbanes.photoview.PhotoView
+-        android:id="@+id/imgPicture"
++    <androidx.viewpager.widget.ViewPager
++        android:id="@+id/viewPager_picture"
+         android:layout_width="match_parent"
+-        android:layout_height="wrap_content"
+-        android:layout_centerInParent="true"
+-        android:src="@drawable/anh1" />
++        android:layout_height="match_parent"/>
+ 
+     <!--    <LinearLayout-->
+     <!--        android:layout_width="match_parent"-->
+Index: app/src/main/java/com/example/testgallery/adapters/CategoryAdapter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.testgallery.adapters;\r\n\r\nimport android.content.Context;\r\nimport android.view.LayoutInflater;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.widget.TextView;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.recyclerview.widget.GridLayoutManager;\r\nimport androidx.recyclerview.widget.RecyclerView;\r\n\r\nimport com.example.testgallery.R;\r\nimport com.example.testgallery.models.Category;\r\n\r\nimport java.util.List;\r\n\r\npublic class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>{\r\n    private Context context;\r\n    private List<Category> listCategory;\r\n\r\n    public CategoryAdapter(Context context) {\r\n        this.context = context;\r\n    }\r\n\r\n    public void setData(List<Category> listCategory){\r\n        this.listCategory = listCategory;\r\n        notifyDataSetChanged();\r\n    }\r\n\r\n    @NonNull\r\n    @Override\r\n    public CategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {\r\n        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_category, parent, false);\r\n        return new CategoryViewHolder(view);\r\n    }\r\n\r\n    @Override\r\n    public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {\r\n        Category category = listCategory.get(position);\r\n        if (category == null)\r\n            return;\r\n\r\n        holder.tvNameCategory.setText(category.getNameCategory());\r\n\r\n        GridLayoutManager gridLayoutManager = new GridLayoutManager(context, 3);\r\n        holder.rcvPictures.setLayoutManager(gridLayoutManager);\r\n\r\n        ImageAdapter girlAdapter = new ImageAdapter(context.getApplicationContext());\r\n        girlAdapter.setData(category.getListGirl());\r\n        holder.rcvPictures.setAdapter(girlAdapter);\r\n    }\r\n\r\n    @Override\r\n    public int getItemCount() {\r\n        if (listCategory != null){\r\n            return listCategory.size();\r\n        }\r\n        return 0;\r\n    }\r\n\r\n    public class CategoryViewHolder extends RecyclerView.ViewHolder{\r\n        private TextView tvNameCategory;\r\n        private RecyclerView rcvPictures;\r\n\r\n        public CategoryViewHolder(@NonNull View itemView) {\r\n            super(itemView);\r\n\r\n            tvNameCategory = itemView.findViewById(R.id.tvNameCategory);\r\n            rcvPictures = itemView.findViewById(R.id.rcvPictures);\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/testgallery/adapters/CategoryAdapter.java b/app/src/main/java/com/example/testgallery/adapters/CategoryAdapter.java
+--- a/app/src/main/java/com/example/testgallery/adapters/CategoryAdapter.java	(revision 322acf861ed5c8d44b11db60233a2e1c81446163)
++++ b/app/src/main/java/com/example/testgallery/adapters/CategoryAdapter.java	(date 1637156955357)
+@@ -48,7 +48,10 @@
+ 
+         ImageAdapter girlAdapter = new ImageAdapter(context.getApplicationContext());
+         girlAdapter.setData(category.getListGirl());
++        girlAdapter.setListCategory(listCategory);
+         holder.rcvPictures.setAdapter(girlAdapter);
++
++
+     }
+ 
+     @Override
+Index: app/src/main/java/com/example/testgallery/adapters/ImageAdapter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.testgallery.adapters;\r\n\r\nimport android.content.Context;\r\nimport android.content.Intent;\r\nimport android.view.LayoutInflater;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.widget.ImageView;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.recyclerview.widget.RecyclerView;\r\n\r\nimport com.bumptech.glide.Glide;\r\nimport com.example.testgallery.activities.mainActivities.PictureActivity;\r\nimport com.example.testgallery.R;\r\nimport com.example.testgallery.models.Image;\r\n\r\nimport java.util.List;\r\n\r\npublic class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHolder> {\r\n\r\n    private List<Image> listImages;\r\n    private Context context;\r\n\r\n    public ImageAdapter(Context context) {\r\n        this.context = context;\r\n    }\r\n\r\n    public ImageAdapter() {\r\n    }\r\n\r\n    public void setData(List<Image> listImages) {\r\n        this.listImages = listImages;\r\n        notifyDataSetChanged();\r\n    }\r\n\r\n    @NonNull\r\n    @Override\r\n    public ImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {\r\n        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_picture, parent, false);\r\n\r\n        return new ImageViewHolder(view);\r\n    }\r\n\r\n    @Override\r\n    public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {\r\n        Image image = listImages.get(position);\r\n        if (image == null) {\r\n            return;\r\n        }\r\n\r\n        // set ảnh cho imgPhoto bằng thư viện Glide\r\n        Glide.with(context).load(image.getThumb()).into(holder.imgPhoto);\r\n\r\n        holder.imgPhoto.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                Intent intent = new Intent(context, PictureActivity.class);\r\n                intent.putExtra(\"imgSrc\", image.getThumb());\r\n                intent.putExtra(\"imgPath\", image.getPath());\r\n                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);\r\n                context.startActivity(intent);\r\n\r\n            }\r\n        });\r\n\r\n    }\r\n\r\n    @Override\r\n    public int getItemCount() {\r\n        if (listImages != null)\r\n            return listImages.size();\r\n        return 0;\r\n    }\r\n\r\n    public class ImageViewHolder extends RecyclerView.ViewHolder {\r\n        private ImageView imgPhoto;\r\n\r\n        public ImageViewHolder(@NonNull View itemView) {\r\n            super(itemView);\r\n            imgPhoto = itemView.findViewById(R.id.imgPhoto);\r\n        }\r\n    }\r\n\r\n\r\n    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object){\r\n\r\n        // Remove view\r\n        container.removeView((View) object);\r\n    }\r\n}\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/testgallery/adapters/ImageAdapter.java b/app/src/main/java/com/example/testgallery/adapters/ImageAdapter.java
+--- a/app/src/main/java/com/example/testgallery/adapters/ImageAdapter.java	(revision 322acf861ed5c8d44b11db60233a2e1c81446163)
++++ b/app/src/main/java/com/example/testgallery/adapters/ImageAdapter.java	(date 1637160590821)
+@@ -1,7 +1,10 @@
+ package com.example.testgallery.adapters;
+ 
++import android.annotation.SuppressLint;
+ import android.content.Context;
+ import android.content.Intent;
++import android.os.AsyncTask;
++import android.util.Log;
+ import android.view.LayoutInflater;
+ import android.view.View;
+ import android.view.ViewGroup;
+@@ -13,22 +16,33 @@
+ import com.bumptech.glide.Glide;
+ import com.example.testgallery.activities.mainActivities.PictureActivity;
+ import com.example.testgallery.R;
++import com.example.testgallery.models.Category;
+ import com.example.testgallery.models.Image;
++import com.example.testgallery.utility.GetAllPhotoFromGallery;
+ 
++import java.util.ArrayList;
+ import java.util.List;
+ 
+ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHolder> {
+ 
+     private List<Image> listImages;
+     private Context context;
+-
++    private List<Category> listCategory;
++    private Intent intent;
++    private ArrayList<String> listPath ;
++    private ArrayList<String> listThumb ;
+     public ImageAdapter(Context context) {
+         this.context = context;
+     }
+ 
++
+     public ImageAdapter() {
+     }
+ 
++    public void setListCategory(List<Category> listCategory) {
++        this.listCategory = listCategory;
++    }
++
+     public void setData(List<Image> listImages) {
+         this.listImages = listImages;
+         notifyDataSetChanged();
+@@ -43,7 +57,7 @@
+     }
+ 
+     @Override
+-    public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
++    public void onBindViewHolder(@NonNull ImageViewHolder holder, @SuppressLint("RecyclerView") int position) {
+         Image image = listImages.get(position);
+         if (image == null) {
+             return;
+@@ -55,12 +69,11 @@
+         holder.imgPhoto.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+-                Intent intent = new Intent(context, PictureActivity.class);
+-                intent.putExtra("imgSrc", image.getThumb());
+-                intent.putExtra("imgPath", image.getPath());
+-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+-                context.startActivity(intent);
++                intent = new Intent(context, PictureActivity.class);
+ 
++                MyAsyncTask myAsyncTask = new MyAsyncTask();
++                myAsyncTask.setPos(position);
++                myAsyncTask.execute();
+             }
+         });
+ 
+@@ -88,5 +101,36 @@
+         // Remove view
+         container.removeView((View) object);
+     }
++    public class MyAsyncTask extends AsyncTask<Void, Integer, Void> {
++        public int pos;
++
++        public void setPos(int pos) {
++            this.pos = pos;
++        }
++
++        @Override
++        protected Void doInBackground(Void... voids) {
++            listPath = new ArrayList<>();
++            listThumb = new ArrayList<>();
++            for(int i = 0;i<listCategory.size();i++) {
++                List<Image> listGirl = listCategory.get(i).getListGirl();
++                for (int j = 0; j < listGirl.size(); j++) {
++                    listPath.add(listGirl.get(j).getPath());
++                    listThumb.add(listGirl.get(j).getThumb());
++                }
++            }
++            return null;
++        }
++
++        @Override
++        protected void onPostExecute(Void unused) {
++            super.onPostExecute(unused);
++            intent.putStringArrayListExtra("data_list_path", listPath);
++            intent.putStringArrayListExtra("data_list_thumb", listThumb);
++            intent.putExtra("pos", listPath.indexOf(listImages.get(pos).getPath()));
++            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
++            context.startActivity(intent);
++        }
++    }
+ }
+ 
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_11_10_2021_11_25_PM_[Default_Changelist]/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_11_10_2021_11_25_PM_[Default_Changelist]/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Update_at_11_10_2021_11_25_PM_[Default_Changelist]/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Update_at_11_10_2021_11_25_PM_[Default_Changelist]/shelved.patch	(revision 322acf861ed5c8d44b11db60233a2e1c81446163)
++++ /dev/null	(revision 322acf861ed5c8d44b11db60233a2e1c81446163)
+@@ -1,134 +0,0 @@
+-Index: app/src/main/AndroidManifest.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    package=\"com.example.testgallery\">\r\n\r\n    <uses-permission android:name=\"android.permission.READ_EXTERNAL_STORAGE\" />\r\n\r\n    <application\r\n        android:allowBackup=\"true\"\r\n        android:icon=\"@mipmap/ic_launcher\"\r\n        android:label=\"@string/app_name\"\r\n        android:roundIcon=\"@mipmap/ic_launcher_round\"\r\n        android:supportsRtl=\"true\"\r\n        android:theme=\"@style/Theme.TestGallery\">\r\n        <activity\r\n            android:name=\".activities.mainActivities.SlideShowActivity\"\r\n            android:exported=\"true\" />\r\n        <activity\r\n            android:name=\".activities.mainActivities.PictureActivity\"\r\n            android:exported=\"true\" />\r\n        <activity\r\n            android:name=\".activities.mainActivities.CreateAlbumActivity\"\r\n            android:exported=\"true\" />\r\n        <activity\r\n            android:name=\".activities.mainActivities.MainActivity\"\r\n            android:exported=\"true\">\r\n            <intent-filter>\r\n                <action android:name=\"android.intent.action.MAIN\" />\r\n\r\n                <category android:name=\"android.intent.category.LAUNCHER\" />\r\n            </intent-filter>\r\n        </activity>\r\n    </application>\r\n\r\n</manifest>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
+---- a/app/src/main/AndroidManifest.xml	(revision e96b90a25116ea595d78f8b3e6e4d17d42a13ba1)
+-+++ b/app/src/main/AndroidManifest.xml	(date 1636517809397)
+-@@ -4,6 +4,11 @@
+- 
+-     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+- 
+-+    <uses-feature android:name="android.hardware.camera"
+-+        android:required="true" />
+-+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+-+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+-+
+-     <application
+-         android:allowBackup="true"
+-         android:icon="@mipmap/ic_launcher"
+-@@ -29,6 +34,16 @@
+-                 <category android:name="android.intent.category.LAUNCHER" />
+-             </intent-filter>
+-         </activity>
+-+
+-+        <provider
+-+            android:name="androidx.core.content.FileProvider"
+-+            android:authorities="com.example.fileprovider"
+-+            android:exported="false"
+-+            android:grantUriPermissions="true">
+-+            <meta-data
+-+                android:name="android.support.FILE_PROVIDER_PATHS"
+-+                android:resource="@xml/file_paths"></meta-data>
+-+        </provider>
+-     </application>
+- 
+- </manifest>
+-\ No newline at end of file
+-Index: app/src/main/res/layout/activity_main.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<RelativeLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\">\r\n\r\n    <include\r\n        android:id=\"@+id/toolbar\"\r\n        layout=\"@layout/layout_toolbar\"/>\r\n\r\n    <FrameLayout\r\n        android:id=\"@+id/frlayout\"\r\n        android:layout_above=\"@id/bottom_nav\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_marginTop=\"55dp\"\r\n        android:layout_height=\"match_parent\">\r\n        <androidx.viewpager2.widget.ViewPager2\r\n            android:id=\"@+id/view_pager\"\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"match_parent\"/>\r\n    </FrameLayout>\r\n\r\n\r\n    <com.google.android.material.bottomnavigation.BottomNavigationView\r\n        android:id=\"@+id/bottom_nav\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_alignParentBottom=\"true\"\r\n        app:menu=\"@menu/menu_bottom_nav\"\r\n        app:itemBackground=\"@color/background\"\r\n        app:itemIconTint=\"@color/custom_color_bottom_nav\"\r\n        app:itemTextColor=\"@color/custom_color_bottom_nav\"\r\n        app:labelVisibilityMode=\"labeled\"/>\r\n\r\n</RelativeLayout>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/res/layout/activity_main.xml b/app/src/main/res/layout/activity_main.xml
+---- a/app/src/main/res/layout/activity_main.xml	(revision e96b90a25116ea595d78f8b3e6e4d17d42a13ba1)
+-+++ b/app/src/main/res/layout/activity_main.xml	(date 1636514285983)
+-@@ -11,8 +11,8 @@
+-     <FrameLayout
+-         android:id="@+id/frlayout"
+-         android:layout_above="@id/bottom_nav"
+--        android:layout_width="match_parent"
+-         android:layout_marginTop="55dp"
+-+        android:layout_width="match_parent"
+-         android:layout_height="match_parent">
+-         <androidx.viewpager2.widget.ViewPager2
+-             android:id="@+id/view_pager"
+-Index: app/src/main/res/xml/file_paths.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/res/xml/file_paths.xml b/app/src/main/res/xml/file_paths.xml
+-new file mode 100644
+---- /dev/null	(date 1636518088608)
+-+++ b/app/src/main/res/xml/file_paths.xml	(date 1636518088608)
+-@@ -0,0 +1,4 @@
+-+<?xml version="1.0" encoding="utf-8"?>
+-+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+-+    <external-files-path name="my_images" path="Pictures" />
+-+</paths>
+-\ No newline at end of file
+-Index: .idea/misc.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"DesignSurface\">\r\n    <option name=\"filePathToZoomLevelMap\">\r\n      <map>\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable-v24/ic_launcher_foreground.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_add_photo_list_album.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_albums.xml\" value=\"0.2755208333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_back.xml\" value=\"0.19212962962962962\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_delete.xml\" value=\"0.19212962962962962\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_delete_list_album.xml\" value=\"0.19212962962962962\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_edit.xml\" value=\"0.19212962962962962\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_gallery.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_info.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_launcher_background.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_new_album.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_photos.xml\" value=\"0.2755208333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_picture.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_search.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_share.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_star.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/activity_main.xml\" value=\"0.1721014492753623\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/activity_picture.xml\" value=\"0.16032608695652173\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_album.xml\" value=\"0.23233695652173914\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_albums.xml\" value=\"0.176\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_favorite.xml\" value=\"0.23233695652173914\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_gallery.xml\" value=\"0.16032608695652173\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_list_album.xml\" value=\"0.41021897810218977\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_photo.xml\" value=\"0.23233695652173914\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_picture.xml\" value=\"0.16032608695652173\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_search.xml\" value=\"0.16032608695652173\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_share.xml\" value=\"0.16032608695652173\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/item_album.xml\" value=\"0.6\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/item_category.xml\" value=\"0.23233695652173914\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/item_picture.xml\" value=\"0.23233695652173914\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/menu/menu_bottom_nav.xml\" value=\"0.14375\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/menu/menu_bottom_picture.xml\" value=\"0.25\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/menu/menu_top_picture.xml\" value=\"0.25\" />\r\n        <entry key=\"app/src/main/res/drawable-v24/bottom_sheet_background.xml\" value=\"0.4601851851851852\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_albums.xml\" value=\"0.4601851851851852\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_gallery.xml\" value=\"0.4601851851851852\" />\r\n        <entry key=\"app/src/main/res/layout/activity_create_album.xml\" value=\"0.44212962962962965\" />\r\n        <entry key=\"app/src/main/res/layout/activity_main.xml\" value=\"0.350462962962963\" />\r\n        <entry key=\"app/src/main/res/layout/activity_picture.xml\" value=\"0.4316123188405797\" />\r\n        <entry key=\"app/src/main/res/layout/activity_slide_show.xml\" value=\"0.25277777777777777\" />\r\n        <entry key=\"app/src/main/res/layout/fragment_album.xml\" value=\"0.4316123188405797\" />\r\n        <entry key=\"app/src/main/res/layout/fragment_favorite.xml\" value=\"0.3745471014492754\" />\r\n        <entry key=\"app/src/main/res/layout/fragment_list_album.xml\" value=\"0.2148964896489649\" />\r\n        <entry key=\"app/src/main/res/layout/fragment_photo.xml\" value=\"0.3745471014492754\" />\r\n        <entry key=\"app/src/main/res/layout/fragment_secret_createpass.xml\" value=\"0.350462962962963\" />\r\n        <entry key=\"app/src/main/res/layout/fragment_secret_enterpass.xml\" value=\"0.350462962962963\" />\r\n        <entry key=\"app/src/main/res/layout/fragment_share.xml\" value=\"0.3745471014492754\" />\r\n        <entry key=\"app/src/main/res/layout/item_album.xml\" value=\"0.4316123188405797\" />\r\n        <entry key=\"app/src/main/res/layout/item_category.xml\" value=\"0.25277777777777777\" />\r\n        <entry key=\"app/src/main/res/layout/item_picture.xml\" value=\"0.25277777777777777\" />\r\n        <entry key=\"app/src/main/res/layout/item_slide_show.xml\" value=\"0.25277777777777777\" />\r\n        <entry key=\"app/src/main/res/layout/layout_info.xml\" value=\"0.44212962962962965\" />\r\n        <entry key=\"app/src/main/res/layout/layout_toolbar.xml\" value=\"0.25277777777777777\" />\r\n        <entry key=\"app/src/main/res/menu/menu_bottom_nav.xml\" value=\"0.25277777777777777\" />\r\n        <entry key=\"app/src/main/res/menu/menu_bottom_picture.xml\" value=\"0.25277777777777777\" />\r\n        <entry key=\"app/src/main/res/menu/menu_top.xml\" value=\"0.25277777777777777\" />\r\n        <entry key=\"app/src/main/res/menu/menu_top_picture.xml\" value=\"0.25972222222222224\" />\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_11\" default=\"true\" project-jdk-name=\"11\" project-jdk-type=\"JavaSDK\" />\r\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/.idea/misc.xml b/.idea/misc.xml
+---- a/.idea/misc.xml	(revision e96b90a25116ea595d78f8b3e6e4d17d42a13ba1)
+-+++ b/.idea/misc.xml	(date 1636518064124)
+-@@ -36,30 +36,30 @@
+-         <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/menu/menu_bottom_nav.xml" value="0.14375" />
+-         <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/menu/menu_bottom_picture.xml" value="0.25" />
+-         <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/menu/menu_top_picture.xml" value="0.25" />
+-+        <entry key="..\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/activity_create_album.xml" value="0.13020833333333334" />
+-+        <entry key="..\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/activity_main.xml" value="0.13020833333333334" />
+-+        <entry key="..\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/activity_picture.xml" value="0.13020833333333334" />
+-+        <entry key="..\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/activity_slide_show.xml" value="0.13020833333333334" />
+-+        <entry key="..\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/fragment_album.xml" value="0.13020833333333334" />
+-+        <entry key="..\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/fragment_favorite.xml" value="0.13020833333333334" />
+-+        <entry key="..\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/fragment_list_album.xml" value="0.13020833333333334" />
+-+        <entry key="..\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/fragment_photo.xml" value="0.4" />
+-+        <entry key="..\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/fragment_share.xml" value="0.13020833333333334" />
+-+        <entry key="..\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/item_album.xml" value="0.176" />
+-+        <entry key="..\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/item_category.xml" value="0.13020833333333334" />
+-+        <entry key="..\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/item_favorite_picture.xml" value="0.264" />
+-+        <entry key="..\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/item_picture.xml" value="0.4" />
+-+        <entry key="..\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/item_slide_show.xml" value="0.13020833333333334" />
+-+        <entry key="..\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/layout_info.xml" value="0.13020833333333334" />
+-+        <entry key="..\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/layout_toolbar.xml" value="0.13020833333333334" />
+-+        <entry key="..\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/menu/menu_bottom_picture.xml" value="0.13020833333333334" />
+-+        <entry key="..\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/xml/file_paths.xml" value="0.1265625" />
+-         <entry key="app/src/main/res/drawable-v24/bottom_sheet_background.xml" value="0.4601851851851852" />
+--        <entry key="app/src/main/res/drawable/ic_albums.xml" value="0.4601851851851852" />
+--        <entry key="app/src/main/res/drawable/ic_gallery.xml" value="0.4601851851851852" />
+--        <entry key="app/src/main/res/layout/activity_create_album.xml" value="0.44212962962962965" />
+--        <entry key="app/src/main/res/layout/activity_main.xml" value="0.350462962962963" />
+-         <entry key="app/src/main/res/layout/activity_picture.xml" value="0.4316123188405797" />
+--        <entry key="app/src/main/res/layout/activity_slide_show.xml" value="0.25277777777777777" />
+-         <entry key="app/src/main/res/layout/fragment_album.xml" value="0.4316123188405797" />
+--        <entry key="app/src/main/res/layout/fragment_favorite.xml" value="0.3745471014492754" />
+-         <entry key="app/src/main/res/layout/fragment_list_album.xml" value="0.2148964896489649" />
+--        <entry key="app/src/main/res/layout/fragment_photo.xml" value="0.3745471014492754" />
+--        <entry key="app/src/main/res/layout/fragment_secret_createpass.xml" value="0.350462962962963" />
+--        <entry key="app/src/main/res/layout/fragment_secret_enterpass.xml" value="0.350462962962963" />
+--        <entry key="app/src/main/res/layout/fragment_share.xml" value="0.3745471014492754" />
+-         <entry key="app/src/main/res/layout/item_album.xml" value="0.4316123188405797" />
+--        <entry key="app/src/main/res/layout/item_category.xml" value="0.25277777777777777" />
+--        <entry key="app/src/main/res/layout/item_picture.xml" value="0.25277777777777777" />
+--        <entry key="app/src/main/res/layout/item_slide_show.xml" value="0.25277777777777777" />
+-         <entry key="app/src/main/res/layout/layout_info.xml" value="0.44212962962962965" />
+--        <entry key="app/src/main/res/layout/layout_toolbar.xml" value="0.25277777777777777" />
+--        <entry key="app/src/main/res/menu/menu_bottom_nav.xml" value="0.25277777777777777" />
+--        <entry key="app/src/main/res/menu/menu_bottom_picture.xml" value="0.25277777777777777" />
+--        <entry key="app/src/main/res/menu/menu_top.xml" value="0.25277777777777777" />
+--        <entry key="app/src/main/res/menu/menu_top_picture.xml" value="0.25972222222222224" />
+-       </map>
+-     </option>
+-   </component>
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_11_11_2021_2_06_AM_[Default_Changelist]/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_11_11_2021_2_06_AM_[Default_Changelist]/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Update_at_11_11_2021_2_06_AM_[Default_Changelist]/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Update_at_11_11_2021_2_06_AM_[Default_Changelist]/shelved.patch	(revision 322acf861ed5c8d44b11db60233a2e1c81446163)
++++ /dev/null	(revision 322acf861ed5c8d44b11db60233a2e1c81446163)
+@@ -1,328 +0,0 @@
+-Index: app/src/main/java/com/example/testgallery/activities/mainActivities/CameraActivity.java
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/java/com/example/testgallery/activities/mainActivities/CameraActivity.java b/app/src/main/java/com/example/testgallery/activities/mainActivities/CameraActivity.java
+-new file mode 100644
+---- /dev/null	(date 1636570305237)
+-+++ b/app/src/main/java/com/example/testgallery/activities/mainActivities/CameraActivity.java	(date 1636570305237)
+-@@ -0,0 +1,120 @@
+-+package com.example.testgallery.activities.mainActivities;
+-+
+-+import androidx.annotation.NonNull;
+-+import androidx.appcompat.app.AppCompatActivity;
+-+
+-+import android.Manifest;
+-+import android.app.Activity;
+-+import android.content.Intent;
+-+import android.content.pm.PackageManager;
+-+import android.graphics.Bitmap;
+-+import android.graphics.drawable.BitmapDrawable;
+-+import android.net.Uri;
+-+import android.os.Bundle;
+-+import android.os.Environment;
+-+import android.view.View;
+-+import android.widget.Button;
+-+import android.widget.ImageView;
+-+import android.widget.Toast;
+-+
+-+import com.example.testgallery.R;
+-+
+-+import java.io.File;
+-+import java.io.FileNotFoundException;
+-+import java.io.FileOutputStream;
+-+import java.io.IOException;
+-+import java.util.Random;
+-+
+-+public class CameraActivity extends AppCompatActivity {
+-+
+-+    private static final int CAMERA_REQUEST = 1888;
+-+    private ImageView imageView;
+-+    private static final int MY_CAMERA_PERMISSION_CODE = 100;
+-+    private Button photoButton;
+-+    private Button saveImg;
+-+    @Override
+-+    protected void onCreate(Bundle savedInstanceState) {
+-+        super.onCreate(savedInstanceState);
+-+        setContentView(R.layout.activity_camera);
+-+        this.imageView = (ImageView)this.findViewById(R.id.imageView1);
+-+        photoButton = (Button) this.findViewById(R.id.button1);
+-+        saveImg =(Button)this.findViewById(R.id.button2);
+-+        photoButton.setOnClickListener(new View.OnClickListener()
+-+        {
+-+            @Override
+-+            public void onClick(View v)
+-+            {
+-+                if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+-+                {
+-+                    requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE);
+-+                }
+-+                else
+-+                {
+-+                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+-+                    startActivityForResult(cameraIntent, CAMERA_REQUEST);
+-+                }
+-+            }
+-+        });
+-+        saveImg.setOnClickListener(new View.OnClickListener() {
+-+            @Override
+-+            public void onClick(View v) {
+-+                saveImage(v);
+-+            }
+-+        });
+-+    }
+-+    @Override
+-+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+-+    {
+-+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+-+        if (requestCode == MY_CAMERA_PERMISSION_CODE)
+-+        {
+-+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+-+            {
+-+                Toast.makeText(this, "camera permission granted", Toast.LENGTH_LONG).show();
+-+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+-+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+-+            }
+-+            else
+-+            {
+-+                Toast.makeText(this, "camera permission denied", Toast.LENGTH_LONG).show();
+-+            }
+-+        }
+-+    }
+-+
+-+    @Override
+-+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+-+        super.onActivityResult(requestCode, resultCode, data);
+-+        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
+-+            Bitmap photo = (Bitmap) data.getExtras().get("data");
+-+            imageView.setImageBitmap(photo);
+-+
+-+        }
+-+    }
+-+
+-+    public void saveImage(View view)  {
+-+        BitmapDrawable draw = (BitmapDrawable) imageView.getDrawable();
+-+        Bitmap bitmap = draw.getBitmap();
+-+
+-+        FileOutputStream outStream = null;
+-+        File sdCard = Environment.getExternalStorageDirectory();
+-+        File dir = new File(sdCard.getAbsolutePath() + "/Pictures");
+-+        dir.mkdirs();
+-+        String fileName = String.format("%d.jpg", System.currentTimeMillis());
+-+        File outFile = new File(dir, fileName);
+-+        try {
+-+            outStream = new FileOutputStream(outFile);
+-+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
+-+            outStream.flush();
+-+            outStream.close();
+-+        } catch (FileNotFoundException e) {
+-+            e.printStackTrace();
+-+        } catch (IOException e) {
+-+            e.printStackTrace();
+-+        }
+-+
+-+
+-+        Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+-+        intent.setData(Uri.fromFile(outFile));
+-+        sendBroadcast(intent);
+-+    }
+-+}
+-\ No newline at end of file
+-Index: app/src/main/AndroidManifest.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    package=\"com.example.testgallery\">\r\n\r\n    <uses-permission android:name=\"android.permission.READ_EXTERNAL_STORAGE\" />\r\n\r\n    <application\r\n        android:allowBackup=\"true\"\r\n        android:icon=\"@mipmap/ic_launcher\"\r\n        android:label=\"@string/app_name\"\r\n        android:roundIcon=\"@mipmap/ic_launcher_round\"\r\n        android:supportsRtl=\"true\"\r\n        android:theme=\"@style/Theme.TestGallery\">\r\n        <activity\r\n            android:name=\".activities.mainActivities.ItemAlbumActivity\"\r\n            android:exported=\"true\" />\r\n        <activity\r\n            android:name=\".activities.mainActivities.SlideShowActivity\"\r\n            android:exported=\"true\" />\r\n        <activity\r\n            android:name=\".activities.mainActivities.PictureActivity\"\r\n            android:exported=\"true\" />\r\n        <activity\r\n            android:name=\".activities.mainActivities.CreateAlbumActivity\"\r\n            android:exported=\"true\" />\r\n        <activity\r\n            android:name=\".activities.mainActivities.MainActivity\"\r\n            android:exported=\"true\">\r\n            <intent-filter>\r\n                <action android:name=\"android.intent.action.MAIN\" />\r\n\r\n                <category android:name=\"android.intent.category.LAUNCHER\" />\r\n            </intent-filter>\r\n        </activity>\r\n    </application>\r\n\r\n</manifest>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/AndroidManifest.xml b/app/src/main/AndroidManifest.xml
+---- a/app/src/main/AndroidManifest.xml	(revision 7f63d42db05d54b7f7e04c5899026d208edc1f40)
+-+++ b/app/src/main/AndroidManifest.xml	(date 1636568445649)
+-@@ -3,6 +3,12 @@
+-     package="com.example.testgallery">
+- 
+-     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+-+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+-+    <uses-permission android:name="android.permission.CAMERA" />
+-+    <uses-feature android:name="android.hardware.camera" android:required="false"></uses-feature>
+-+    <uses-feature
+-+        android:name="android.hardware.camera"
+-+        android:required="false" />
+- 
+-     <application
+-         android:allowBackup="true"
+-@@ -11,6 +17,9 @@
+-         android:roundIcon="@mipmap/ic_launcher_round"
+-         android:supportsRtl="true"
+-         android:theme="@style/Theme.TestGallery">
+-+        <activity
+-+            android:name=".activities.mainActivities.CameraActivity"
+-+            android:exported="false" />
+-         <activity
+-             android:name=".activities.mainActivities.ItemAlbumActivity"
+-             android:exported="true" />
+-Index: app/src/main/res/layout/activity_camera.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/res/layout/activity_camera.xml b/app/src/main/res/layout/activity_camera.xml
+-new file mode 100644
+---- /dev/null	(date 1636570534939)
+-+++ b/app/src/main/res/layout/activity_camera.xml	(date 1636570534939)
+-@@ -0,0 +1,29 @@
+-+<?xml version="1.0" encoding="utf-8"?>
+-+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+-+    android:orientation="vertical"
+-+    android:layout_width="fill_parent"
+-+    android:layout_height="fill_parent">
+-+    <LinearLayout
+-+        android:layout_width="match_parent"
+-+        android:layout_height="wrap_content">
+-+        <Button
+-+            android:id="@+id/button1"
+-+            android:layout_width="wrap_content"
+-+            android:layout_height="wrap_content"
+-+            android:layout_weight="1"
+-+            android:layout_margin="10dp"
+-+            android:text="chụp ảnh"></Button>
+-+        <Button
+-+            android:id="@+id/button2"
+-+            android:layout_width="wrap_content"
+-+            android:layout_height="wrap_content"
+-+            android:layout_weight="1"
+-+            android:layout_margin="10dp"
+-+            android:text="lưu"></Button>
+-+    </LinearLayout>
+-+    <ImageView
+-+        android:id="@+id/imageView1"
+-+        android:layout_height="match_parent"
+-+        android:layout_width="match_parent"></ImageView>
+-+
+-+</LinearLayout>
+-\ No newline at end of file
+-Index: app/src/main/java/com/example/testgallery/fragments/mainFragments/PhotoFragment.java
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>package com.example.testgallery.fragments.mainFragments;\r\n\r\nimport android.content.Intent;\r\nimport android.os.Bundle;\r\nimport android.util.Log;\r\nimport android.view.LayoutInflater;\r\nimport android.view.Menu;\r\nimport android.view.MenuInflater;\r\nimport android.view.MenuItem;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.widget.SearchView;\r\nimport android.widget.Toast;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.annotation.Nullable;\r\nimport androidx.appcompat.widget.Toolbar;\r\nimport androidx.fragment.app.Fragment;\r\nimport androidx.recyclerview.widget.LinearLayoutManager;\r\nimport androidx.recyclerview.widget.RecyclerView;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\nimport com.example.testgallery.utility.GetAllPhotoFromGallery;\r\nimport com.example.testgallery.R;\r\nimport com.example.testgallery.models.Category;\r\nimport com.example.testgallery.adapters.CategoryAdapter;\r\nimport com.example.testgallery.models.Image;\r\n\r\npublic class PhotoFragment extends Fragment {\r\n    private RecyclerView recyclerView;\r\n    private CategoryAdapter categoryAdapter;\r\n    private androidx.appcompat.widget.Toolbar toolbar_photo;\r\n\r\n    @Nullable\r\n    @Override\r\n    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {\r\n        View view = inflater.inflate(R.layout.fragment_photo, container,false);\r\n\r\n        recyclerView = view.findViewById(R.id.rcv_category);\r\n        toolbar_photo = view.findViewById(R.id.toolbar_photo);\r\n\r\n        toolBarEvents();\r\n        setRyc();\r\n\r\n        return view;\r\n    }\r\n\r\n    private void setRyc() {\r\n        categoryAdapter = new CategoryAdapter(getContext());\r\n        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);\r\n        recyclerView.setLayoutManager(linearLayoutManager);\r\n        categoryAdapter.setData(getListCategory());\r\n        recyclerView.setAdapter(categoryAdapter);\r\n    }\r\n\r\n    private void toolBarEvents() {\r\n        toolbar_photo.inflateMenu(R.menu.menu_top);\r\n        toolbar_photo.setTitle(\"Photo\");\r\n        toolbar_photo.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {\r\n            @Override\r\n            public boolean onMenuItemClick(MenuItem item) {\r\n                int id = item.getItemId();\r\n                switch (id){\r\n                    case R.id.menuSearch:\r\n                        //eventSearch(item);\r\n                        break;\r\n                    case R.id.menuCamera:\r\n                        Intent intent = new Intent(\"android.media.action.IMAGE_CAPTURE\");\r\n                        startActivity(intent);\r\n                        break;\r\n                    case R.id.menuAdd:\r\n                        Toast.makeText(getContext(),\"main\",Toast.LENGTH_SHORT).show();\r\n                        break;\r\n                }\r\n                return true;\r\n            }\r\n        });\r\n    }\r\n\r\n    private void eventSearch(@NonNull MenuItem item) {\r\n        Toast.makeText(getContext(),\"Search\",Toast.LENGTH_SHORT).show();\r\n\r\n        SearchView searchView = (SearchView) item.getActionView();\r\n        searchView.setQueryHint(\"Type to search\");\r\n        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {\r\n            @Override\r\n            public boolean onQueryTextSubmit(String s) {\r\n                return false;\r\n            }\r\n\r\n            @Override\r\n            public boolean onQueryTextChange(String s) {\r\n                return false;\r\n            }\r\n        });\r\n    }\r\n\r\n    @NonNull\r\n    private List<Category> getListCategory() {\r\n        List<Category> categoryList = new ArrayList<>();\r\n        int categoryCount = 0;\r\n        List<Image> imageList = GetAllPhotoFromGallery.getAllImageFromGallery(getContext());\r\n        categoryList.add(new Category(imageList.get(0).getDateTaken(),new ArrayList<>()));\r\n        categoryList.get(categoryCount).addListGirl(imageList.get(0));\r\n        for(int i=1;i<imageList.size();i++){\r\n            if(!imageList.get(i).getDateTaken().equals(imageList.get(i-1).getDateTaken())){\r\n                categoryList.add(new Category(imageList.get(i).getDateTaken(),new ArrayList<>()));\r\n                categoryCount++;\r\n            }\r\n            categoryList.get(categoryCount).addListGirl(imageList.get(i));\r\n        }\r\n        return categoryList;\r\n    }\r\n\r\n}
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/java/com/example/testgallery/fragments/mainFragments/PhotoFragment.java b/app/src/main/java/com/example/testgallery/fragments/mainFragments/PhotoFragment.java
+---- a/app/src/main/java/com/example/testgallery/fragments/mainFragments/PhotoFragment.java	(revision 7f63d42db05d54b7f7e04c5899026d208edc1f40)
+-+++ b/app/src/main/java/com/example/testgallery/fragments/mainFragments/PhotoFragment.java	(date 1636568713091)
+-@@ -22,6 +22,7 @@
+- import java.util.ArrayList;
+- import java.util.List;
+- 
+-+import com.example.testgallery.activities.mainActivities.CameraActivity;
+- import com.example.testgallery.utility.GetAllPhotoFromGallery;
+- import com.example.testgallery.R;
+- import com.example.testgallery.models.Category;
+-@@ -67,8 +68,10 @@
+-                         //eventSearch(item);
+-                         break;
+-                     case R.id.menuCamera:
+--                        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+--                        startActivity(intent);
+-+//                        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+-+//                        startActivity(intent);
+-+                        Intent myIntent = new Intent(getActivity().getApplicationContext(), CameraActivity.class);
+-+                        getActivity().startActivity(myIntent);
+-                         break;
+-                     case R.id.menuAdd:
+-                         Toast.makeText(getContext(),"main",Toast.LENGTH_SHORT).show();
+-Index: .idea/misc.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"DesignSurface\">\r\n    <option name=\"filePathToZoomLevelMap\">\r\n      <map>\r\n        <entry key=\"..\\:/Coding/SimpleGallery/app/src/main/res/menu/menu_top_album.xml\" value=\"0.1\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/drawable/ic_add_photo_list_album.xml\" value=\"0.2755208333333333\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/drawable/ic_share.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/drawable/ic_slide_show.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/activity_create_album.xml\" value=\"0.264\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/activity_item_album.xml\" value=\"0.14375\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/activity_main.xml\" value=\"0.16485507246376813\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/activity_picture.xml\" value=\"0.16485507246376813\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/activity_slide_show.xml\" value=\"0.16485507246376813\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/fragment_album.xml\" value=\"0.16485507246376813\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/fragment_favorite.xml\" value=\"0.16485507246376813\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/fragment_list_album.xml\" value=\"0.264\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/fragment_photo.xml\" value=\"0.16485507246376813\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/fragment_secret_createpass.xml\" value=\"0.22871376811594202\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/fragment_secret_enterpass.xml\" value=\"0.16485507246376813\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/fragment_share.xml\" value=\"0.22871376811594202\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/item_album.xml\" value=\"0.22871376811594202\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/item_picture.xml\" value=\"0.22871376811594202\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/item_slide_show.xml\" value=\"0.16485507246376813\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/layout_bottom_sheet_album.xml\" value=\"0.6\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/layout_toolbar.xml\" value=\"0.16485507246376813\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/menu/menu_bottom_nav.xml\" value=\"0.259375\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/menu/menu_bottom_picture.xml\" value=\"0.259375\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/menu/menu_effect_slide.xml\" value=\"0.2359375\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/menu/menu_top.xml\" value=\"0.259375\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/menu/menu_top_picture.xml\" value=\"0.259375\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable-v24/ic_launcher_foreground.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_add_photo_list_album.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_albums.xml\" value=\"0.2755208333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_back.xml\" value=\"0.19212962962962962\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_delete.xml\" value=\"0.19212962962962962\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_delete_list_album.xml\" value=\"0.19212962962962962\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_edit.xml\" value=\"0.19212962962962962\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_gallery.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_info.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_launcher_background.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_new_album.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_photos.xml\" value=\"0.2755208333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_picture.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_search.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_share.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_star.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/activity_main.xml\" value=\"0.1721014492753623\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/activity_picture.xml\" value=\"0.16032608695652173\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_album.xml\" value=\"0.23233695652173914\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_albums.xml\" value=\"0.176\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_favorite.xml\" value=\"0.23233695652173914\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_gallery.xml\" value=\"0.16032608695652173\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_list_album.xml\" value=\"0.41021897810218977\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_photo.xml\" value=\"0.23233695652173914\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_picture.xml\" value=\"0.16032608695652173\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_search.xml\" value=\"0.16032608695652173\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_share.xml\" value=\"0.16032608695652173\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/item_album.xml\" value=\"0.6\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/item_category.xml\" value=\"0.23233695652173914\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/item_picture.xml\" value=\"0.23233695652173914\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/menu/menu_bottom_nav.xml\" value=\"0.14375\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/menu/menu_bottom_picture.xml\" value=\"0.25\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/menu/menu_top_picture.xml\" value=\"0.25\" />\r\n        <entry key=\"app/src/main/res/drawable-v24/bottom_sheet_background.xml\" value=\"0.4601851851851852\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_albums.xml\" value=\"0.4601851851851852\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_gallery.xml\" value=\"0.4601851851851852\" />\r\n        <entry key=\"app/src/main/res/layout/activity_create_album.xml\" value=\"0.44212962962962965\" />\r\n        <entry key=\"app/src/main/res/layout/activity_main.xml\" value=\"0.350462962962963\" />\r\n        <entry key=\"app/src/main/res/layout/activity_picture.xml\" value=\"0.4316123188405797\" />\r\n        <entry key=\"app/src/main/res/layout/activity_slide_show.xml\" value=\"0.25277777777777777\" />\r\n        <entry key=\"app/src/main/res/layout/fragment_album.xml\" value=\"0.4316123188405797\" />\r\n        <entry key=\"app/src/main/res/layout/fragment_favorite.xml\" value=\"0.3745471014492754\" />\r\n        <entry key=\"app/src/main/res/layout/fragment_list_album.xml\" value=\"0.2148964896489649\" />\r\n        <entry key=\"app/src/main/res/layout/fragment_photo.xml\" value=\"0.3745471014492754\" />\r\n        <entry key=\"app/src/main/res/layout/fragment_secret_createpass.xml\" value=\"0.350462962962963\" />\r\n        <entry key=\"app/src/main/res/layout/fragment_secret_enterpass.xml\" value=\"0.350462962962963\" />\r\n        <entry key=\"app/src/main/res/layout/fragment_share.xml\" value=\"0.3745471014492754\" />\r\n        <entry key=\"app/src/main/res/layout/item_album.xml\" value=\"0.4316123188405797\" />\r\n        <entry key=\"app/src/main/res/layout/item_category.xml\" value=\"0.25277777777777777\" />\r\n        <entry key=\"app/src/main/res/layout/item_picture.xml\" value=\"0.25277777777777777\" />\r\n        <entry key=\"app/src/main/res/layout/item_slide_show.xml\" value=\"0.25277777777777777\" />\r\n        <entry key=\"app/src/main/res/layout/layout_info.xml\" value=\"0.44212962962962965\" />\r\n        <entry key=\"app/src/main/res/layout/layout_toolbar.xml\" value=\"0.25277777777777777\" />\r\n        <entry key=\"app/src/main/res/menu/menu_bottom_nav.xml\" value=\"0.25277777777777777\" />\r\n        <entry key=\"app/src/main/res/menu/menu_bottom_picture.xml\" value=\"0.25277777777777777\" />\r\n        <entry key=\"app/src/main/res/menu/menu_top.xml\" value=\"0.25277777777777777\" />\r\n        <entry key=\"app/src/main/res/menu/menu_top_picture.xml\" value=\"0.25972222222222224\" />\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_11\" default=\"true\" project-jdk-name=\"11\" project-jdk-type=\"JavaSDK\" />\r\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/.idea/misc.xml b/.idea/misc.xml
+---- a/.idea/misc.xml	(revision 7f63d42db05d54b7f7e04c5899026d208edc1f40)
+-+++ b/.idea/misc.xml	(date 1636568087691)
+-@@ -3,32 +3,6 @@
+-   <component name="DesignSurface">
+-     <option name="filePathToZoomLevelMap">
+-       <map>
+--        <entry key="..\:/Coding/SimpleGallery/app/src/main/res/menu/menu_top_album.xml" value="0.1" />
+--        <entry key="..\:/SimpleGallery/app/src/main/res/drawable/ic_add_photo_list_album.xml" value="0.2755208333333333" />
+--        <entry key="..\:/SimpleGallery/app/src/main/res/drawable/ic_share.xml" value="0.2911458333333333" />
+--        <entry key="..\:/SimpleGallery/app/src/main/res/drawable/ic_slide_show.xml" value="0.2911458333333333" />
+--        <entry key="..\:/SimpleGallery/app/src/main/res/layout/activity_create_album.xml" value="0.264" />
+--        <entry key="..\:/SimpleGallery/app/src/main/res/layout/activity_item_album.xml" value="0.14375" />
+--        <entry key="..\:/SimpleGallery/app/src/main/res/layout/activity_main.xml" value="0.16485507246376813" />
+--        <entry key="..\:/SimpleGallery/app/src/main/res/layout/activity_picture.xml" value="0.16485507246376813" />
+--        <entry key="..\:/SimpleGallery/app/src/main/res/layout/activity_slide_show.xml" value="0.16485507246376813" />
+--        <entry key="..\:/SimpleGallery/app/src/main/res/layout/fragment_album.xml" value="0.16485507246376813" />
+--        <entry key="..\:/SimpleGallery/app/src/main/res/layout/fragment_favorite.xml" value="0.16485507246376813" />
+--        <entry key="..\:/SimpleGallery/app/src/main/res/layout/fragment_list_album.xml" value="0.264" />
+--        <entry key="..\:/SimpleGallery/app/src/main/res/layout/fragment_photo.xml" value="0.16485507246376813" />
+--        <entry key="..\:/SimpleGallery/app/src/main/res/layout/fragment_secret_createpass.xml" value="0.22871376811594202" />
+--        <entry key="..\:/SimpleGallery/app/src/main/res/layout/fragment_secret_enterpass.xml" value="0.16485507246376813" />
+--        <entry key="..\:/SimpleGallery/app/src/main/res/layout/fragment_share.xml" value="0.22871376811594202" />
+--        <entry key="..\:/SimpleGallery/app/src/main/res/layout/item_album.xml" value="0.22871376811594202" />
+--        <entry key="..\:/SimpleGallery/app/src/main/res/layout/item_picture.xml" value="0.22871376811594202" />
+--        <entry key="..\:/SimpleGallery/app/src/main/res/layout/item_slide_show.xml" value="0.16485507246376813" />
+--        <entry key="..\:/SimpleGallery/app/src/main/res/layout/layout_bottom_sheet_album.xml" value="0.6" />
+--        <entry key="..\:/SimpleGallery/app/src/main/res/layout/layout_toolbar.xml" value="0.16485507246376813" />
+--        <entry key="..\:/SimpleGallery/app/src/main/res/menu/menu_bottom_nav.xml" value="0.259375" />
+--        <entry key="..\:/SimpleGallery/app/src/main/res/menu/menu_bottom_picture.xml" value="0.259375" />
+--        <entry key="..\:/SimpleGallery/app/src/main/res/menu/menu_effect_slide.xml" value="0.2359375" />
+--        <entry key="..\:/SimpleGallery/app/src/main/res/menu/menu_top.xml" value="0.259375" />
+--        <entry key="..\:/SimpleGallery/app/src/main/res/menu/menu_top_picture.xml" value="0.259375" />
+-         <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2911458333333333" />
+-         <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_add_photo_list_album.xml" value="0.2911458333333333" />
+-         <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_albums.xml" value="0.2755208333333333" />
+-@@ -62,30 +36,31 @@
+-         <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/menu/menu_bottom_nav.xml" value="0.14375" />
+-         <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/menu/menu_bottom_picture.xml" value="0.25" />
+-         <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/menu/menu_top_picture.xml" value="0.25" />
+-+        <entry key="..\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/activity_camera.xml" value="0.1265625" />
+-+        <entry key="..\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/activity_create_album.xml" value="0.13020833333333334" />
+-+        <entry key="..\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/activity_main.xml" value="0.13020833333333334" />
+-+        <entry key="..\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/activity_picture.xml" value="0.13020833333333334" />
+-+        <entry key="..\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/activity_slide_show.xml" value="0.13020833333333334" />
+-+        <entry key="..\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/fragment_album.xml" value="0.13020833333333334" />
+-+        <entry key="..\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/fragment_favorite.xml" value="0.13020833333333334" />
+-+        <entry key="..\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/fragment_list_album.xml" value="0.13020833333333334" />
+-+        <entry key="..\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/fragment_photo.xml" value="0.4" />
+-+        <entry key="..\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/fragment_share.xml" value="0.13020833333333334" />
+-+        <entry key="..\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/item_album.xml" value="0.176" />
+-+        <entry key="..\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/item_category.xml" value="0.13020833333333334" />
+-+        <entry key="..\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/item_favorite_picture.xml" value="0.264" />
+-+        <entry key="..\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/item_picture.xml" value="0.4" />
+-+        <entry key="..\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/item_slide_show.xml" value="0.13020833333333334" />
+-+        <entry key="..\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/layout_info.xml" value="0.13020833333333334" />
+-+        <entry key="..\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/layout_toolbar.xml" value="0.13020833333333334" />
+-+        <entry key="..\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/menu/menu_bottom_picture.xml" value="0.13020833333333334" />
+-+        <entry key="..\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/xml/file_paths.xml" value="0.1265625" />
+-         <entry key="app/src/main/res/drawable-v24/bottom_sheet_background.xml" value="0.4601851851851852" />
+--        <entry key="app/src/main/res/drawable/ic_albums.xml" value="0.4601851851851852" />
+--        <entry key="app/src/main/res/drawable/ic_gallery.xml" value="0.4601851851851852" />
+--        <entry key="app/src/main/res/layout/activity_create_album.xml" value="0.44212962962962965" />
+--        <entry key="app/src/main/res/layout/activity_main.xml" value="0.350462962962963" />
+-         <entry key="app/src/main/res/layout/activity_picture.xml" value="0.4316123188405797" />
+--        <entry key="app/src/main/res/layout/activity_slide_show.xml" value="0.25277777777777777" />
+-         <entry key="app/src/main/res/layout/fragment_album.xml" value="0.4316123188405797" />
+--        <entry key="app/src/main/res/layout/fragment_favorite.xml" value="0.3745471014492754" />
+-         <entry key="app/src/main/res/layout/fragment_list_album.xml" value="0.2148964896489649" />
+--        <entry key="app/src/main/res/layout/fragment_photo.xml" value="0.3745471014492754" />
+--        <entry key="app/src/main/res/layout/fragment_secret_createpass.xml" value="0.350462962962963" />
+--        <entry key="app/src/main/res/layout/fragment_secret_enterpass.xml" value="0.350462962962963" />
+--        <entry key="app/src/main/res/layout/fragment_share.xml" value="0.3745471014492754" />
+-         <entry key="app/src/main/res/layout/item_album.xml" value="0.4316123188405797" />
+--        <entry key="app/src/main/res/layout/item_category.xml" value="0.25277777777777777" />
+--        <entry key="app/src/main/res/layout/item_picture.xml" value="0.25277777777777777" />
+--        <entry key="app/src/main/res/layout/item_slide_show.xml" value="0.25277777777777777" />
+-         <entry key="app/src/main/res/layout/layout_info.xml" value="0.44212962962962965" />
+--        <entry key="app/src/main/res/layout/layout_toolbar.xml" value="0.25277777777777777" />
+--        <entry key="app/src/main/res/menu/menu_bottom_nav.xml" value="0.25277777777777777" />
+--        <entry key="app/src/main/res/menu/menu_bottom_picture.xml" value="0.25277777777777777" />
+--        <entry key="app/src/main/res/menu/menu_top.xml" value="0.25277777777777777" />
+--        <entry key="app/src/main/res/menu/menu_top_picture.xml" value="0.25972222222222224" />
+-       </map>
+-     </option>
+-   </component>
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_11_10_2021_9_21_PM_[Default_Changelist]/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_11_10_2021_9_21_PM_[Default_Changelist]/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Update_at_11_10_2021_9_21_PM_[Default_Changelist]/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Update_at_11_10_2021_9_21_PM_[Default_Changelist]/shelved.patch	(revision 322acf861ed5c8d44b11db60233a2e1c81446163)
++++ /dev/null	(revision 322acf861ed5c8d44b11db60233a2e1c81446163)
+@@ -1,81 +0,0 @@
+-Index: app/src/main/java/com/example/testgallery/fragments/mainFragments/AlbumFragment.java
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>package com.example.testgallery.fragments.mainFragments;\r\n\r\nimport android.content.Intent;\r\nimport android.os.AsyncTask;\r\nimport android.os.Bundle;\r\nimport android.view.LayoutInflater;\r\nimport android.view.MenuItem;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.widget.LinearLayout;\r\nimport android.widget.SearchView;\r\nimport android.widget.Toast;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.annotation.Nullable;\r\nimport androidx.appcompat.widget.Toolbar;\r\nimport androidx.fragment.app.Fragment;\r\nimport androidx.recyclerview.widget.GridLayoutManager;\r\nimport androidx.recyclerview.widget.RecyclerView;\r\n\r\nimport com.example.testgallery.activities.mainActivities.CreateAlbumActivity;\r\nimport com.example.testgallery.R;\r\nimport com.example.testgallery.activities.mainActivities.SlideShowActivity;\r\nimport com.example.testgallery.adapters.AlbumAdapter;\r\nimport com.example.testgallery.models.Album;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\nimport com.example.testgallery.models.Image;\r\nimport com.google.android.material.bottomsheet.BottomSheetBehavior;\r\n\r\npublic class AlbumFragment extends Fragment {\r\n    private RecyclerView ryc_album;\r\n    private List<Image> listImage;\r\n    private View view;\r\n    private androidx.appcompat.widget.Toolbar toolbar_album;\r\n    private List<Album> listAlbum;\r\n    private LinearLayout layout_bottom;\r\n    public AlbumFragment(List<Image> data) {\r\n        this.listImage = data;\r\n    }\r\n\r\n    @Nullable\r\n    @Override\r\n    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {\r\n        view = inflater.inflate(R.layout.fragment_album, container,false);\r\n        toolbar_album = view.findViewById(R.id.toolbar_album);\r\n        layout_bottom = view.findViewById(R.id.layout_bottom);\r\n\r\n        toolBarEvents();\r\n        mappingControls();\r\n        events();\r\n        return view;\r\n    }\r\n    private void toolBarEvents() {\r\n        toolbar_album.inflateMenu(R.menu.menu_top);\r\n        toolbar_album.setTitle(\"Album\");\r\n        toolbar_album.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {\r\n            @Override\r\n            public boolean onMenuItemClick(MenuItem item) {\r\n                int id = item.getItemId();\r\n                switch (id){\r\n                    case R.id.menuSearch:\r\n                        //eventSearch(item);\r\n                        break;\r\n                    case R.id.menuCamera:\r\n                        Intent intent = new Intent(\"android.media.action.IMAGE_CAPTURE\");\r\n                        startActivity(intent);\r\n                        break;\r\n                    case R.id.menuAdd:\r\n                        openCreateAlbumActivity();\r\n                        break;\r\n                    case R.id.menuSlideshow:\r\n                        Intent intentSlider = new Intent(view.getContext(), SlideShowActivity.class);\r\n                        intentSlider.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);\r\n                        view.getContext().startActivity(intentSlider);\r\n                        break;\r\n                }\r\n                return true;\r\n            }\r\n        });\r\n    }\r\n\r\n    private void eventSearch(@NonNull MenuItem item) {\r\n        Toast.makeText(getContext(),\"Search\",Toast.LENGTH_SHORT).show();\r\n\r\n        SearchView searchView = (SearchView) item.getActionView();\r\n        searchView.setQueryHint(\"Type to search\");\r\n        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {\r\n            @Override\r\n            public boolean onQueryTextSubmit(String s) {\r\n                return false;\r\n            }\r\n\r\n            @Override\r\n            public boolean onQueryTextChange(String s) {\r\n                return false;\r\n            }\r\n        });\r\n    }\r\n\r\n    private void events() {\r\n        MyAsyncTask myAsyncTask = new MyAsyncTask();\r\n        myAsyncTask.execute();\r\n\r\n\r\n    }\r\n\r\n\r\n\r\n    private void openCreateAlbumActivity() {\r\n        Intent _intent = new Intent(view.getContext(), CreateAlbumActivity.class);\r\n        _intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);\r\n        view.getContext().startActivity(_intent);\r\n    }\r\n\r\n    private void mappingControls() {\r\n        ryc_album = view.findViewById(R.id.ryc_album);\r\n    }\r\n\r\n    private void setViewRyc() {\r\n        ryc_album.setLayoutManager(new GridLayoutManager(view.getContext(), 2));\r\n        AlbumAdapter albumAdapter = new AlbumAdapter(listAlbum, getContext());\r\n        ryc_album.setAdapter(albumAdapter);\r\n    }\r\n    @NonNull\r\n    private List<Album> getListAlbum(List<Image> listImage) {\r\n        List<String> ref = new ArrayList<>();\r\n        List<Album> listAlbum = new ArrayList<>();\r\n\r\n        for(int i = 0; i< listImage.size();i++) {\r\n            String[] _array = listImage.get(i).getThumb().split(\"/\");\r\n            String _name = _array[_array.length -2];\r\n            if(!ref.contains(_name)) {\r\n                ref.add(_name);\r\n                Album token = new Album(listImage.get(i), _name);\r\n                token.addItem(listImage.get(i));\r\n                listAlbum.add(token);\r\n            }\r\n            else {\r\n                listAlbum.get(ref.indexOf(_name)).addItem(listImage.get(i));\r\n            }\r\n        }\r\n\r\n        return listAlbum;\r\n    }\r\n    public class MyAsyncTask extends AsyncTask<Void, Integer, Void> {\r\n\r\n\r\n        @Override\r\n        protected Void doInBackground(Void... voids) {\r\n            listAlbum = getListAlbum(listImage);\r\n            return null;\r\n        }\r\n\r\n        @Override\r\n        protected void onPostExecute(Void unused) {\r\n            super.onPostExecute(unused);\r\n            setViewRyc();\r\n        }\r\n    }\r\n}\r\n\r\n\r\n
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/java/com/example/testgallery/fragments/mainFragments/AlbumFragment.java b/app/src/main/java/com/example/testgallery/fragments/mainFragments/AlbumFragment.java
+---- a/app/src/main/java/com/example/testgallery/fragments/mainFragments/AlbumFragment.java	(revision d77153370dbcf41261d0cc641a0b26965a67415b)
+-+++ b/app/src/main/java/com/example/testgallery/fragments/mainFragments/AlbumFragment.java	(date 1636553900801)
+-@@ -54,7 +54,7 @@
+-         return view;
+-     }
+-     private void toolBarEvents() {
+--        toolbar_album.inflateMenu(R.menu.menu_top);
+-+        toolbar_album.inflateMenu(R.menu.menu_top_album);
+-         toolbar_album.setTitle("Album");
+-         toolbar_album.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+-             @Override
+-@@ -71,11 +71,6 @@
+-                     case R.id.menuAdd:
+-                         openCreateAlbumActivity();
+-                         break;
+--                    case R.id.menuSlideshow:
+--                        Intent intentSlider = new Intent(view.getContext(), SlideShowActivity.class);
+--                        intentSlider.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+--                        view.getContext().startActivity(intentSlider);
+--                        break;
+-                 }
+-                 return true;
+-             }
+-Index: .idea/misc.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"DesignSurface\">\r\n    <option name=\"filePathToZoomLevelMap\">\r\n      <map>\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/drawable/ic_add_photo_list_album.xml\" value=\"0.2755208333333333\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/drawable/ic_share.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/drawable/ic_slide_show.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/activity_create_album.xml\" value=\"0.264\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/activity_item_album.xml\" value=\"0.14375\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/activity_main.xml\" value=\"0.16485507246376813\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/activity_picture.xml\" value=\"0.16485507246376813\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/activity_slide_show.xml\" value=\"0.16485507246376813\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/content_fragment_album.xml\" value=\"0.24954710144927536\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/fragment_album.xml\" value=\"0.16485507246376813\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/fragment_favorite.xml\" value=\"0.16485507246376813\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/fragment_list_album.xml\" value=\"0.264\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/fragment_photo.xml\" value=\"0.16485507246376813\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/fragment_secret_createpass.xml\" value=\"0.22871376811594202\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/fragment_secret_enterpass.xml\" value=\"0.16485507246376813\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/fragment_share.xml\" value=\"0.22871376811594202\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/item_album.xml\" value=\"0.22871376811594202\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/item_picture.xml\" value=\"0.22871376811594202\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/item_slide_show.xml\" value=\"0.16485507246376813\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/layout_bottom_sheet_album.xml\" value=\"0.6\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/layout_toolbar.xml\" value=\"0.16485507246376813\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/menu/menu_bottom_nav.xml\" value=\"0.259375\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/menu/menu_bottom_picture.xml\" value=\"0.259375\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/menu/menu_effect_slide.xml\" value=\"0.2359375\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/menu/menu_top.xml\" value=\"0.259375\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/menu/menu_top_picture.xml\" value=\"0.259375\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable-v24/ic_launcher_foreground.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_add_photo_list_album.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_albums.xml\" value=\"0.2755208333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_back.xml\" value=\"0.19212962962962962\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_delete.xml\" value=\"0.19212962962962962\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_delete_list_album.xml\" value=\"0.19212962962962962\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_edit.xml\" value=\"0.19212962962962962\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_gallery.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_info.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_launcher_background.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_new_album.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_photos.xml\" value=\"0.2755208333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_picture.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_search.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_share.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_star.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/activity_main.xml\" value=\"0.1721014492753623\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/activity_picture.xml\" value=\"0.16032608695652173\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_album.xml\" value=\"0.23233695652173914\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_albums.xml\" value=\"0.176\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_favorite.xml\" value=\"0.23233695652173914\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_gallery.xml\" value=\"0.16032608695652173\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_list_album.xml\" value=\"0.41021897810218977\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_photo.xml\" value=\"0.23233695652173914\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_picture.xml\" value=\"0.16032608695652173\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_search.xml\" value=\"0.16032608695652173\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_share.xml\" value=\"0.16032608695652173\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/item_album.xml\" value=\"0.6\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/item_category.xml\" value=\"0.23233695652173914\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/item_picture.xml\" value=\"0.23233695652173914\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/menu/menu_bottom_nav.xml\" value=\"0.14375\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/menu/menu_bottom_picture.xml\" value=\"0.25\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/menu/menu_top_picture.xml\" value=\"0.25\" />\r\n        <entry key=\"app/src/main/res/drawable-v24/bottom_sheet_background.xml\" value=\"0.4601851851851852\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_albums.xml\" value=\"0.4601851851851852\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_gallery.xml\" value=\"0.4601851851851852\" />\r\n        <entry key=\"app/src/main/res/layout/activity_create_album.xml\" value=\"0.44212962962962965\" />\r\n        <entry key=\"app/src/main/res/layout/activity_main.xml\" value=\"0.350462962962963\" />\r\n        <entry key=\"app/src/main/res/layout/activity_picture.xml\" value=\"0.4316123188405797\" />\r\n        <entry key=\"app/src/main/res/layout/activity_slide_show.xml\" value=\"0.25277777777777777\" />\r\n        <entry key=\"app/src/main/res/layout/fragment_album.xml\" value=\"0.4316123188405797\" />\r\n        <entry key=\"app/src/main/res/layout/fragment_favorite.xml\" value=\"0.3745471014492754\" />\r\n        <entry key=\"app/src/main/res/layout/fragment_list_album.xml\" value=\"0.2148964896489649\" />\r\n        <entry key=\"app/src/main/res/layout/fragment_photo.xml\" value=\"0.3745471014492754\" />\r\n        <entry key=\"app/src/main/res/layout/fragment_secret_createpass.xml\" value=\"0.350462962962963\" />\r\n        <entry key=\"app/src/main/res/layout/fragment_secret_enterpass.xml\" value=\"0.350462962962963\" />\r\n        <entry key=\"app/src/main/res/layout/fragment_share.xml\" value=\"0.3745471014492754\" />\r\n        <entry key=\"app/src/main/res/layout/item_album.xml\" value=\"0.4316123188405797\" />\r\n        <entry key=\"app/src/main/res/layout/item_category.xml\" value=\"0.25277777777777777\" />\r\n        <entry key=\"app/src/main/res/layout/item_picture.xml\" value=\"0.25277777777777777\" />\r\n        <entry key=\"app/src/main/res/layout/item_slide_show.xml\" value=\"0.25277777777777777\" />\r\n        <entry key=\"app/src/main/res/layout/layout_info.xml\" value=\"0.44212962962962965\" />\r\n        <entry key=\"app/src/main/res/layout/layout_toolbar.xml\" value=\"0.25277777777777777\" />\r\n        <entry key=\"app/src/main/res/menu/menu_bottom_nav.xml\" value=\"0.25277777777777777\" />\r\n        <entry key=\"app/src/main/res/menu/menu_bottom_picture.xml\" value=\"0.25277777777777777\" />\r\n        <entry key=\"app/src/main/res/menu/menu_top.xml\" value=\"0.25277777777777777\" />\r\n        <entry key=\"app/src/main/res/menu/menu_top_picture.xml\" value=\"0.25972222222222224\" />\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_11\" default=\"true\" project-jdk-name=\"11\" project-jdk-type=\"JavaSDK\" />\r\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/.idea/misc.xml b/.idea/misc.xml
+---- a/.idea/misc.xml	(revision d77153370dbcf41261d0cc641a0b26965a67415b)
+-+++ b/.idea/misc.xml	(date 1636553901160)
+-@@ -3,6 +3,7 @@
+-   <component name="DesignSurface">
+-     <option name="filePathToZoomLevelMap">
+-       <map>
+-+        <entry key="..\:/Coding/SimpleGallery/app/src/main/res/menu/menu_top_album.xml" value="0.1" />
+-         <entry key="..\:/SimpleGallery/app/src/main/res/drawable/ic_add_photo_list_album.xml" value="0.2755208333333333" />
+-         <entry key="..\:/SimpleGallery/app/src/main/res/drawable/ic_share.xml" value="0.2911458333333333" />
+-         <entry key="..\:/SimpleGallery/app/src/main/res/drawable/ic_slide_show.xml" value="0.2911458333333333" />
+-Index: app/src/main/res/menu/menu_top_album.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/res/menu/menu_top_album.xml b/app/src/main/res/menu/menu_top_album.xml
+-new file mode 100644
+---- /dev/null	(date 1636553863117)
+-+++ b/app/src/main/res/menu/menu_top_album.xml	(date 1636553863117)
+-@@ -0,0 +1,21 @@
+-+<?xml version="1.0" encoding="utf-8"?>
+-+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+-+    xmlns:app="http://schemas.android.com/apk/res-auto">
+-+
+-+    <item
+-+        android:id="@+id/menuCamera"
+-+        android:title="Camera"
+-+        android:icon="@drawable/ic_camera"
+-+        app:showAsAction="always"/>
+-+
+-+    <item android:id="@+id/menuSearch"
+-+        android:title="@string/search"
+-+        android:icon="@drawable/ic_searchmin"
+-+        app:showAsAction="ifRoom|collapseActionView"/>
+-+
+-+    <item android:id="@+id/menuAdd"
+-+        android:title="Thêm"
+-+        android:icon="@drawable/ic_add"
+-+        app:showAsAction="never"/>
+-+
+-+</menu>
+-\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_11_10_2021_8_18_PM_[Default_Changelist]/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_11_10_2021_8_18_PM_[Default_Changelist]/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Update_at_11_10_2021_8_18_PM_[Default_Changelist]/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Update_at_11_10_2021_8_18_PM_[Default_Changelist]/shelved.patch	(revision 322acf861ed5c8d44b11db60233a2e1c81446163)
++++ /dev/null	(revision 322acf861ed5c8d44b11db60233a2e1c81446163)
+@@ -1,371 +0,0 @@
+-Index: app/src/main/res/layout/layout_bottom_sheet_album.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<LinearLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    android:id=\"@+id/layout_bottom\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"wrap_content\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    android:orientation=\"vertical\"\r\n    android:paddingStart=\"10dp\"\r\n    app:behavior_hideable = \"true\"\r\n    app:behavior_peekHeight = \"0dp\"\r\n    app:layout_behavior=\"@string/bottom_sheet_behavior\"\r\n    android:background=\"@color/white\">\r\n    <LinearLayout\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"30dp\">\r\n        <ImageView\r\n            android:layout_gravity=\"center\"\r\n            android:layout_marginStart=\"7dp\"\r\n            android:layout_width=\"15dp\"\r\n            android:layout_height=\"15dp\"\r\n            android:background=\"@drawable/ic_share\"/>\r\n        <TextView\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"match_parent\"\r\n            android:text=\"Share\"\r\n            android:gravity=\"left\"\r\n            android:padding=\"8dp\"\r\n            android:layout_marginStart=\"23dp\"\r\n            android:textSize=\"10dp\"\r\n            android:textStyle=\"normal\"\r\n            android:textColor=\"@color/black\"/>\r\n    </LinearLayout>\r\n    <LinearLayout\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"30dp\">\r\n        <ImageView\r\n            android:layout_gravity=\"center\"\r\n            android:layout_marginStart=\"5dp\"\r\n            android:layout_width=\"20dp\"\r\n            android:layout_height=\"20dp\"\r\n            android:background=\"@drawable/ic_slide_show\"/>\r\n        <TextView\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"match_parent\"\r\n            android:text=\"Slide show\"\r\n            android:gravity=\"left\"\r\n            android:padding=\"8dp\"\r\n            android:layout_marginStart=\"20dp\"\r\n            android:textSize=\"10dp\"\r\n            android:textStyle=\"normal\"\r\n            android:textColor=\"@color/black\"/>\r\n    </LinearLayout>\r\n    <LinearLayout\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"30dp\">\r\n        <ImageView\r\n            android:layout_gravity=\"center\"\r\n            android:layout_marginStart=\"5dp\"\r\n            android:layout_width=\"20dp\"\r\n            android:layout_height=\"20dp\"\r\n            android:background=\"@drawable/ic_delete\"/>\r\n        <TextView\r\n            android:layout_width=\"match_parent\"\r\n            android:layout_height=\"match_parent\"\r\n            android:text=\"Delete\"\r\n            android:gravity=\"left\"\r\n            android:padding=\"8dp\"\r\n            android:layout_marginStart=\"20dp\"\r\n            android:textSize=\"10dp\"\r\n            android:textStyle=\"normal\"\r\n            android:textColor=\"@color/black\"/>\r\n    </LinearLayout>\r\n</LinearLayout>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/res/layout/layout_bottom_sheet_album.xml b/app/src/main/res/layout/layout_bottom_sheet_album.xml
+---- a/app/src/main/res/layout/layout_bottom_sheet_album.xml	(revision 9bd4c65625074cf529641af49abbfd65e4c5154c)
+-+++ b/app/src/main/res/layout/layout_bottom_sheet_album.xml	(date 1636549291166)
+-@@ -6,11 +6,9 @@
+-     xmlns:app="http://schemas.android.com/apk/res-auto"
+-     android:orientation="vertical"
+-     android:paddingStart="10dp"
+--    app:behavior_hideable = "true"
+--    app:behavior_peekHeight = "0dp"
+--    app:layout_behavior="@string/bottom_sheet_behavior"
+-     android:background="@color/white">
+-     <LinearLayout
+-+        android:id="@+id/layout_bottom_share"
+-         android:layout_width="match_parent"
+-         android:layout_height="30dp">
+-         <ImageView
+-@@ -31,6 +29,7 @@
+-             android:textColor="@color/black"/>
+-     </LinearLayout>
+-     <LinearLayout
+-+        android:id="@+id/layout_bottom_slide_show"
+-         android:layout_width="match_parent"
+-         android:layout_height="30dp">
+-         <ImageView
+-@@ -51,6 +50,7 @@
+-             android:textColor="@color/black"/>
+-     </LinearLayout>
+-     <LinearLayout
+-+        android:id="@+id/layout_bottom_delete"
+-         android:layout_width="match_parent"
+-         android:layout_height="30dp">
+-         <ImageView
+-Index: app/src/main/java/com/example/testgallery/fragments/mainFragments/AlbumFragment.java
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>package com.example.testgallery.fragments.mainFragments;\r\n\r\nimport android.content.Intent;\r\nimport android.os.AsyncTask;\r\nimport android.os.Bundle;\r\nimport android.view.LayoutInflater;\r\nimport android.view.MenuItem;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.widget.LinearLayout;\r\nimport android.widget.SearchView;\r\nimport android.widget.Toast;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.annotation.Nullable;\r\nimport androidx.appcompat.widget.Toolbar;\r\nimport androidx.fragment.app.Fragment;\r\nimport androidx.recyclerview.widget.GridLayoutManager;\r\nimport androidx.recyclerview.widget.RecyclerView;\r\n\r\nimport com.example.testgallery.activities.mainActivities.CreateAlbumActivity;\r\nimport com.example.testgallery.R;\r\nimport com.example.testgallery.activities.mainActivities.SlideShowActivity;\r\nimport com.example.testgallery.adapters.AlbumAdapter;\r\nimport com.example.testgallery.models.Album;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\nimport com.example.testgallery.models.Image;\r\nimport com.google.android.material.bottomsheet.BottomSheetBehavior;\r\n\r\npublic class AlbumFragment extends Fragment {\r\n    private RecyclerView ryc_album;\r\n    private List<Image> listImage;\r\n    private View view;\r\n    private androidx.appcompat.widget.Toolbar toolbar_album;\r\n    private List<Album> listAlbum;\r\n    private LinearLayout layout_bottom;\r\n    private BottomSheetBehavior bottomSheet;\r\n    public AlbumFragment(List<Image> data) {\r\n        this.listImage = data;\r\n    }\r\n\r\n    @Nullable\r\n    @Override\r\n    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {\r\n        view = inflater.inflate(R.layout.fragment_album, container,false);\r\n        toolbar_album = view.findViewById(R.id.toolbar_album);\r\n        layout_bottom = view.findViewById(R.id.layout_bottom);\r\n\r\n        toolBarEvents();\r\n        mappingControls();\r\n        events();\r\n        return view;\r\n    }\r\n    private void toolBarEvents() {\r\n        toolbar_album.inflateMenu(R.menu.menu_top);\r\n        toolbar_album.setTitle(\"Album\");\r\n        toolbar_album.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {\r\n            @Override\r\n            public boolean onMenuItemClick(MenuItem item) {\r\n                int id = item.getItemId();\r\n                switch (id){\r\n                    case R.id.menuSearch:\r\n                        //eventSearch(item);\r\n                        break;\r\n                    case R.id.menuCamera:\r\n                        Intent intent = new Intent(\"android.media.action.IMAGE_CAPTURE\");\r\n                        startActivity(intent);\r\n                        break;\r\n                    case R.id.menuAdd:\r\n                        openCreateAlbumActivity();\r\n                        break;\r\n                    case R.id.menuSlideshow:\r\n                        Intent intentSlider = new Intent(view.getContext(), SlideShowActivity.class);\r\n                        intentSlider.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);\r\n                        view.getContext().startActivity(intentSlider);\r\n                        break;\r\n                }\r\n                return true;\r\n            }\r\n        });\r\n    }\r\n\r\n    private void eventSearch(@NonNull MenuItem item) {\r\n        Toast.makeText(getContext(),\"Search\",Toast.LENGTH_SHORT).show();\r\n\r\n        SearchView searchView = (SearchView) item.getActionView();\r\n        searchView.setQueryHint(\"Type to search\");\r\n        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {\r\n            @Override\r\n            public boolean onQueryTextSubmit(String s) {\r\n                return false;\r\n            }\r\n\r\n            @Override\r\n            public boolean onQueryTextChange(String s) {\r\n                return false;\r\n            }\r\n        });\r\n    }\r\n\r\n    private void events() {\r\n        MyAsyncTask myAsyncTask = new MyAsyncTask();\r\n        myAsyncTask.execute();\r\n        \r\n        bottomSheetEvents();\r\n\r\n    }\r\n\r\n    private void bottomSheetEvents() {\r\n        bottomSheet = BottomSheetBehavior.from(layout_bottom);\r\n    }\r\n\r\n\r\n    private void openCreateAlbumActivity() {\r\n        Intent _intent = new Intent(view.getContext(), CreateAlbumActivity.class);\r\n        _intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);\r\n        view.getContext().startActivity(_intent);\r\n    }\r\n\r\n    private void mappingControls() {\r\n        ryc_album = view.findViewById(R.id.ryc_album);\r\n    }\r\n\r\n    private void setViewRyc() {\r\n        ryc_album.setLayoutManager(new GridLayoutManager(view.getContext(), 2));\r\n        AlbumAdapter albumAdapter = new AlbumAdapter(listAlbum, getContext());\r\n        albumAdapter.setBottomSheetBehavior(bottomSheet);\r\n        ryc_album.setAdapter(albumAdapter);\r\n    }\r\n    @NonNull\r\n    private List<Album> getListAlbum(List<Image> listImage) {\r\n        List<String> ref = new ArrayList<>();\r\n        List<Album> listAlbum = new ArrayList<>();\r\n\r\n        for(int i = 0; i< listImage.size();i++) {\r\n            String[] _array = listImage.get(i).getThumb().split(\"/\");\r\n            String _name = _array[_array.length -2];\r\n            if(!ref.contains(_name)) {\r\n                ref.add(_name);\r\n                Album token = new Album(listImage.get(i), _name);\r\n                token.addItem(listImage.get(i));\r\n                listAlbum.add(token);\r\n            }\r\n            else {\r\n                listAlbum.get(ref.indexOf(_name)).addItem(listImage.get(i));\r\n            }\r\n        }\r\n\r\n        return listAlbum;\r\n    }\r\n    public class MyAsyncTask extends AsyncTask<Void, Integer, Void> {\r\n\r\n\r\n        @Override\r\n        protected Void doInBackground(Void... voids) {\r\n            listAlbum = getListAlbum(listImage);\r\n            return null;\r\n        }\r\n\r\n        @Override\r\n        protected void onPostExecute(Void unused) {\r\n            super.onPostExecute(unused);\r\n            setViewRyc();\r\n        }\r\n    }\r\n}\r\n\r\n\r\n
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/java/com/example/testgallery/fragments/mainFragments/AlbumFragment.java b/app/src/main/java/com/example/testgallery/fragments/mainFragments/AlbumFragment.java
+---- a/app/src/main/java/com/example/testgallery/fragments/mainFragments/AlbumFragment.java	(revision 9bd4c65625074cf529641af49abbfd65e4c5154c)
+-+++ b/app/src/main/java/com/example/testgallery/fragments/mainFragments/AlbumFragment.java	(date 1636549991211)
+-@@ -37,7 +37,6 @@
+-     private androidx.appcompat.widget.Toolbar toolbar_album;
+-     private List<Album> listAlbum;
+-     private LinearLayout layout_bottom;
+--    private BottomSheetBehavior bottomSheet;
+-     public AlbumFragment(List<Image> data) {
+-         this.listImage = data;
+-     }
+-@@ -104,14 +103,10 @@
+-     private void events() {
+-         MyAsyncTask myAsyncTask = new MyAsyncTask();
+-         myAsyncTask.execute();
+--        
+--        bottomSheetEvents();
+-+
+- 
+-     }
+- 
+--    private void bottomSheetEvents() {
+--        bottomSheet = BottomSheetBehavior.from(layout_bottom);
+--    }
+- 
+- 
+-     private void openCreateAlbumActivity() {
+-@@ -127,7 +122,6 @@
+-     private void setViewRyc() {
+-         ryc_album.setLayoutManager(new GridLayoutManager(view.getContext(), 2));
+-         AlbumAdapter albumAdapter = new AlbumAdapter(listAlbum, getContext());
+--        albumAdapter.setBottomSheetBehavior(bottomSheet);
+-         ryc_album.setAdapter(albumAdapter);
+-     }
+-     @NonNull
+-Index: app/src/main/res/layout/fragment_album.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\">\r\n    <include\r\n        android:id=\"@+id/content_album\"\r\n        layout=\"@layout/content_fragment_album\"/>\r\n    <include\r\n        app:layout_anchor=\"@id/content_album\"\r\n        layout=\"@layout/layout_bottom_sheet_album\"/>\r\n</androidx.coordinatorlayout.widget.CoordinatorLayout>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/res/layout/fragment_album.xml b/app/src/main/res/layout/fragment_album.xml
+---- a/app/src/main/res/layout/fragment_album.xml	(revision 9bd4c65625074cf529641af49abbfd65e4c5154c)
+-+++ b/app/src/main/res/layout/fragment_album.xml	(date 1636520800294)
+-@@ -1,12 +1,15 @@
+- <?xml version="1.0" encoding="utf-8"?>
+--<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+-+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+-     android:layout_width="match_parent"
+-     android:layout_height="match_parent"
+--    xmlns:app="http://schemas.android.com/apk/res-auto">
+-+    android:orientation="vertical">
+-     <include
+--        android:id="@+id/content_album"
+--        layout="@layout/content_fragment_album"/>
+--    <include
+--        app:layout_anchor="@id/content_album"
+--        layout="@layout/layout_bottom_sheet_album"/>
+--</androidx.coordinatorlayout.widget.CoordinatorLayout>
+-\ No newline at end of file
+-+        android:id="@+id/toolbar_album"
+-+        layout="@layout/layout_toolbar" />
+-+    <androidx.recyclerview.widget.RecyclerView
+-+        android:layout_marginTop="30dp"
+-+        android:layout_gravity="center"
+-+        android:id="@+id/ryc_album"
+-+        android:layout_width="wrap_content"
+-+        android:layout_height="match_parent" />
+-+</LinearLayout>
+-\ No newline at end of file
+-Index: app/src/main/java/com/example/testgallery/activities/mainActivities/SlideShowActivity.java
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>package com.example.testgallery.activities.mainActivities;\r\n\r\nimport androidx.appcompat.app.AppCompatActivity;\r\nimport androidx.appcompat.widget.Toolbar;\r\n\r\nimport android.content.Intent;\r\nimport android.os.Bundle;\r\nimport android.view.ActionMode;\r\nimport android.view.Menu;\r\nimport android.view.MenuItem;\r\nimport android.view.View;\r\nimport android.widget.AbsListView;\r\nimport android.widget.ImageView;\r\n\r\nimport com.example.testgallery.R;\r\nimport com.example.testgallery.adapters.SlideShowAdapter;\r\nimport com.example.testgallery.models.Image;\r\nimport com.example.testgallery.utility.GetAllPhotoFromGallery;\r\nimport com.smarteist.autoimageslider.SliderAnimations;\r\nimport com.smarteist.autoimageslider.SliderView;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\npublic class SlideShowActivity extends AppCompatActivity {\r\n    private SliderView sliderView;\r\n    private ImageView img_back_slide_show;\r\n    private Toolbar toolbar_slide;\r\n    private List<SliderAnimations> effect = new ArrayList<SliderAnimations>();\r\n    @Override\r\n    protected void onCreate(Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_slide_show);\r\n\r\n        mappingControls();\r\n        event();\r\n\r\n    }\r\n\r\n    private void event() {\r\n        addListAnim();\r\n        setUpSlider(0);\r\n        setUpToolBar();\r\n        img_back_slide_show.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                finish();\r\n            }\r\n        });\r\n\r\n    }\r\n\r\n    private void setUpToolBar() {\r\n        toolbar_slide.inflateMenu(R.menu.menu_effect_slide);\r\n        toolbar_slide.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {\r\n            @Override\r\n            public boolean onMenuItemClick(MenuItem item) {\r\n                int id = item.getItemId();\r\n                switch (id){\r\n                    case R.id.menu_effect1:\r\n                        setUpSlider(0);\r\n                        break;\r\n                    case R.id.menu_effect2:\r\n                        setUpSlider(1);\r\n                        break;\r\n                    case R.id.menu_effect3:\r\n                        setUpSlider(2);\r\n                        break;\r\n                }\r\n                return true;\r\n            }\r\n        });\r\n    }\r\n\r\n    private void addListAnim() {\r\n        effect.add(SliderAnimations.HORIZONTALFLIPTRANSFORMATION);\r\n        effect.add(SliderAnimations.ZOOMOUTTRANSFORMATION);\r\n        effect.add(SliderAnimations.DEPTHTRANSFORMATION);\r\n    }\r\n\r\n    private void setUpSlider(int i) {\r\n        List<Image> imageList = GetAllPhotoFromGallery.getAllImageFromGallery(getApplicationContext());\r\n        SlideShowAdapter slideShowAdapter = new SlideShowAdapter();\r\n        slideShowAdapter.setData(imageList);\r\n        sliderView.setSliderAdapter(slideShowAdapter);\r\n        sliderView.startAutoCycle();\r\n        sliderView.setSliderTransformAnimation(effect.get(i));\r\n\r\n    }\r\n\r\n    private void mappingControls() {\r\n        sliderView = findViewById(R.id.sliderView);\r\n        img_back_slide_show = findViewById(R.id.img_back_slide_show);\r\n        toolbar_slide = findViewById(R.id.toolbar_slide);\r\n    }\r\n}
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/java/com/example/testgallery/activities/mainActivities/SlideShowActivity.java b/app/src/main/java/com/example/testgallery/activities/mainActivities/SlideShowActivity.java
+---- a/app/src/main/java/com/example/testgallery/activities/mainActivities/SlideShowActivity.java	(revision 9bd4c65625074cf529641af49abbfd65e4c5154c)
+-+++ b/app/src/main/java/com/example/testgallery/activities/mainActivities/SlideShowActivity.java	(date 1636549932872)
+-@@ -26,12 +26,14 @@
+-     private SliderView sliderView;
+-     private ImageView img_back_slide_show;
+-     private Toolbar toolbar_slide;
+-+    private List<Image> imageList;
+-+    private Intent intent;
+-     private List<SliderAnimations> effect = new ArrayList<SliderAnimations>();
+-     @Override
+-     protected void onCreate(Bundle savedInstanceState) {
+-         super.onCreate(savedInstanceState);
+-         setContentView(R.layout.activity_slide_show);
+--
+-+        intent = getIntent();
+-         mappingControls();
+-         event();
+- 
+-@@ -79,7 +81,7 @@
+-     }
+- 
+-     private void setUpSlider(int i) {
+--        List<Image> imageList = GetAllPhotoFromGallery.getAllImageFromGallery(getApplicationContext());
+-+        ArrayList<String> imageList = intent.getStringArrayListExtra("data_slide");
+-         SlideShowAdapter slideShowAdapter = new SlideShowAdapter();
+-         slideShowAdapter.setData(imageList);
+-         sliderView.setSliderAdapter(slideShowAdapter);
+-Index: app/src/main/java/com/example/testgallery/adapters/SlideShowAdapter.java
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>package com.example.testgallery.adapters;\r\n\r\nimport android.content.Context;\r\nimport android.view.LayoutInflater;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.widget.ImageView;\r\n\r\nimport com.bumptech.glide.Glide;\r\nimport com.example.testgallery.R;\r\nimport com.example.testgallery.models.Image;\r\nimport com.smarteist.autoimageslider.SliderViewAdapter;\r\n\r\nimport java.util.List;\r\n\r\npublic class SlideShowAdapter extends SliderViewAdapter<SlideShowAdapter.SliderViewHolder> {\r\n    private List<Image> imageList;\r\n\r\n    public void setData(List<Image> imageList) {\r\n        this.imageList = imageList;\r\n        notifyDataSetChanged();\r\n    }\r\n    @Override\r\n    public int getCount() {\r\n        return imageList.size();\r\n    }\r\n\r\n    @Override\r\n    public SlideShowAdapter.SliderViewHolder onCreateViewHolder(ViewGroup parent) {\r\n        return new SlideShowAdapter.SliderViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_slide_show, parent, false));\r\n    }\r\n\r\n    @Override\r\n    public void onBindViewHolder(SliderViewHolder viewHolder, int position) {\r\n        viewHolder.onbind(imageList.get(position));\r\n    }\r\n\r\n    public class SliderViewHolder extends SliderViewAdapter.ViewHolder {\r\n        private ImageView img_slide_show;\r\n        private Context context;\r\n        public SliderViewHolder(View itemView) {\r\n            super(itemView);\r\n            img_slide_show = itemView.findViewById(R.id.img_slide_show);\r\n            context = itemView.getContext();\r\n        }\r\n\r\n        public void onbind(Image img) {\r\n            Glide.with(context).load(img.getThumb()).into(img_slide_show);\r\n        }\r\n    }\r\n}\r\n
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/java/com/example/testgallery/adapters/SlideShowAdapter.java b/app/src/main/java/com/example/testgallery/adapters/SlideShowAdapter.java
+---- a/app/src/main/java/com/example/testgallery/adapters/SlideShowAdapter.java	(revision 9bd4c65625074cf529641af49abbfd65e4c5154c)
+-+++ b/app/src/main/java/com/example/testgallery/adapters/SlideShowAdapter.java	(date 1636549932858)
+-@@ -11,12 +11,13 @@
+- import com.example.testgallery.models.Image;
+- import com.smarteist.autoimageslider.SliderViewAdapter;
+- 
+-+import java.util.ArrayList;
+- import java.util.List;
+- 
+- public class SlideShowAdapter extends SliderViewAdapter<SlideShowAdapter.SliderViewHolder> {
+--    private List<Image> imageList;
+-+    private ArrayList<String> imageList;
+- 
+--    public void setData(List<Image> imageList) {
+-+    public void setData(ArrayList<String> imageList) {
+-         this.imageList = imageList;
+-         notifyDataSetChanged();
+-     }
+-@@ -44,8 +45,8 @@
+-             context = itemView.getContext();
+-         }
+- 
+--        public void onbind(Image img) {
+--            Glide.with(context).load(img.getThumb()).into(img_slide_show);
+-+        public void onbind(String img) {
+-+            Glide.with(context).load(img).into(img_slide_show);
+-         }
+-     }
+- }
+-Index: app/src/main/java/com/example/testgallery/adapters/AlbumAdapter.java
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+>package com.example.testgallery.adapters;\r\n\r\nimport android.content.Context;\r\nimport android.content.Intent;\r\nimport android.view.LayoutInflater;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.widget.ImageView;\r\nimport android.widget.TextView;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.recyclerview.widget.RecyclerView;\r\n\r\nimport com.bumptech.glide.Glide;\r\nimport com.example.testgallery.activities.mainActivities.ItemAlbumActivity;\r\nimport com.example.testgallery.R;\r\nimport com.example.testgallery.models.Album;\r\nimport com.google.android.material.bottomsheet.BottomSheetBehavior;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.List;\r\n\r\npublic class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder> {\r\n    private List<Album> mListAlbums;\r\n    private Context context;\r\n    private BottomSheetBehavior bottomSheetBehavior;\r\n    public AlbumAdapter(List<Album> mListAlbums, Context context) {\r\n        this.mListAlbums = mListAlbums;\r\n        this.context = context;\r\n    }\r\n\r\n    public void setBottomSheetBehavior(BottomSheetBehavior bottomSheetBehavior) {\r\n        this.bottomSheetBehavior = bottomSheetBehavior;\r\n    }\r\n\r\n    public void setData(List<Album> mListAlbums) {\r\n        this.mListAlbums = mListAlbums;\r\n        notifyDataSetChanged();\r\n    }\r\n\r\n    @NonNull\r\n    @Override\r\n    public AlbumAdapter.AlbumViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {\r\n        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_album, parent, false);\r\n\r\n\r\n        return new AlbumAdapter.AlbumViewHolder(view);\r\n    }\r\n\r\n    @Override\r\n    public void onBindViewHolder(@NonNull AlbumAdapter.AlbumViewHolder holder, int position) {\r\n        holder.onBind(mListAlbums.get(position));\r\n    }\r\n\r\n    @Override\r\n    public int getItemCount() {\r\n        if (mListAlbums != null) {\r\n            return mListAlbums.size();\r\n        }\r\n        return 0;\r\n    }\r\n\r\n    class AlbumViewHolder extends RecyclerView.ViewHolder {\r\n        private final ImageView img_album;\r\n        private final TextView txtName_album;\r\n        private final TextView txtCount_item_album;\r\n\r\n        public AlbumViewHolder(@NonNull View itemView) {\r\n            super(itemView);\r\n            img_album = itemView.findViewById(R.id.img_album);\r\n            txtName_album = itemView.findViewById(R.id.txtName_album);\r\n            txtCount_item_album = itemView.findViewById(R.id.txtCount_item_album);\r\n        }\r\n\r\n        public void onBind(Album ref) {\r\n            txtName_album.setText(ref.getName());\r\n            txtCount_item_album.setText(String.valueOf(ref.getList().size()) + \" items\");\r\n            Glide.with(context).load(ref.getImg().getThumb()).into(img_album);\r\n\r\n            img_album.setOnClickListener(new View.OnClickListener() {\r\n                @Override\r\n                public void onClick(View view) {\r\n                    Intent intent = new Intent(context, ItemAlbumActivity.class);\r\n                    ArrayList<String> list = new ArrayList<>();\r\n                    for(int i=0;i<ref.getList().size();i++) {\r\n                        list.add(ref.getList().get(i).getThumb());\r\n                    }\r\n\r\n                    intent.putStringArrayListExtra(\"data\", list);\r\n                    intent.putExtra(\"name\", ref.getName());\r\n                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);\r\n                    context.startActivity(intent);\r\n                }\r\n            });\r\n            img_album.setOnLongClickListener(new View.OnLongClickListener() {\r\n                @Override\r\n                public boolean onLongClick(View view) {\r\n                    if(bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {\r\n                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);\r\n                    }\r\n                    return true;\r\n                }\r\n            });\r\n\r\n        }\r\n    }\r\n}\r\n
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/app/src/main/java/com/example/testgallery/adapters/AlbumAdapter.java b/app/src/main/java/com/example/testgallery/adapters/AlbumAdapter.java
+---- a/app/src/main/java/com/example/testgallery/adapters/AlbumAdapter.java	(revision 9bd4c65625074cf529641af49abbfd65e4c5154c)
+-+++ b/app/src/main/java/com/example/testgallery/adapters/AlbumAdapter.java	(date 1636550328927)
+-@@ -6,6 +6,7 @@
+- import android.view.View;
+- import android.view.ViewGroup;
+- import android.widget.ImageView;
+-+import android.widget.LinearLayout;
+- import android.widget.TextView;
+- 
+- import androidx.annotation.NonNull;
+-@@ -14,8 +15,10 @@
+- import com.bumptech.glide.Glide;
+- import com.example.testgallery.activities.mainActivities.ItemAlbumActivity;
+- import com.example.testgallery.R;
+-+import com.example.testgallery.activities.mainActivities.SlideShowActivity;
+- import com.example.testgallery.models.Album;
+- import com.google.android.material.bottomsheet.BottomSheetBehavior;
+-+import com.google.android.material.bottomsheet.BottomSheetDialog;
+- 
+- import java.util.ArrayList;
+- import java.util.List;
+-@@ -23,16 +26,12 @@
+- public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHolder> {
+-     private List<Album> mListAlbums;
+-     private Context context;
+--    private BottomSheetBehavior bottomSheetBehavior;
+-+    private BottomSheetDialog bottomSheetDialog;
+-     public AlbumAdapter(List<Album> mListAlbums, Context context) {
+-         this.mListAlbums = mListAlbums;
+-         this.context = context;
+-     }
+- 
+--    public void setBottomSheetBehavior(BottomSheetBehavior bottomSheetBehavior) {
+--        this.bottomSheetBehavior = bottomSheetBehavior;
+--    }
+--
+-     public void setData(List<Album> mListAlbums) {
+-         this.mListAlbums = mListAlbums;
+-         notifyDataSetChanged();
+-@@ -64,18 +63,21 @@
+-         private final ImageView img_album;
+-         private final TextView txtName_album;
+-         private final TextView txtCount_item_album;
+-+        private Context context;
+-+        private LinearLayout layout_bottom_share;
+-+        private LinearLayout layout_bottom_delete;
+-+        private LinearLayout layout_bottom_slide_show;
+- 
+-         public AlbumViewHolder(@NonNull View itemView) {
+-             super(itemView);
+-             img_album = itemView.findViewById(R.id.img_album);
+-             txtName_album = itemView.findViewById(R.id.txtName_album);
+-             txtCount_item_album = itemView.findViewById(R.id.txtCount_item_album);
+-+            context = itemView.getContext();
+-         }
+- 
+-         public void onBind(Album ref) {
+--            txtName_album.setText(ref.getName());
+--            txtCount_item_album.setText(String.valueOf(ref.getList().size()) + " items");
+--            Glide.with(context).load(ref.getImg().getThumb()).into(img_album);
+-+            bindData(ref);
+- 
+-             img_album.setOnClickListener(new View.OnClickListener() {
+-                 @Override
+-@@ -92,16 +94,65 @@
+-                     context.startActivity(intent);
+-                 }
+-             });
+-+
+-             img_album.setOnLongClickListener(new View.OnLongClickListener() {
+-                 @Override
+-                 public boolean onLongClick(View view) {
+--                    if(bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
+--                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+--                    }
+-+                    openBottomDialog();
+-+                    layout_bottom_slide_show.setOnClickListener(new View.OnClickListener() {
+-+                        @Override
+-+                        public void onClick(View view) {
+-+                            slideShowEvents(ref);
+-+                        }
+-+                    });
+-+                    layout_bottom_delete.setOnClickListener(new View.OnClickListener() {
+-+                        @Override
+-+                        public void onClick(View view) {
+-+                            deleteEvents(ref);
+-+                        }
+-+                    });
+-+                    layout_bottom_share.setOnClickListener(new View.OnClickListener() {
+-+                        @Override
+-+                        public void onClick(View view) {
+-+                            shareEvents(ref);
+-+                        }
+-+                    });
+-                     return true;
+-                 }
+-             });
+- 
+-+        }
+-+
+-+        private void bindData(Album ref) {
+-+            txtName_album.setText(ref.getName());
+-+            txtCount_item_album.setText(String.valueOf(ref.getList().size()) + " items");
+-+            Glide.with(context).load(ref.getImg().getThumb()).into(img_album);
+-+        }
+-+
+-+        private void slideShowEvents(@NonNull Album ref) {
+-+            Intent intent = new Intent(context, SlideShowActivity.class);
+-+            ArrayList<String> list = new ArrayList<>();
+-+            for(int i=0;i<ref.getList().size();i++) {
+-+                list.add(ref.getList().get(i).getThumb());
+-+            }
+-+            intent.putStringArrayListExtra("data_slide", list);
+-+            intent.putExtra("name", ref.getName());
+-+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+-+            context.startActivity(intent);
+-+        }
+-+        private void deleteEvents(Album ref) {
+-+        }
+-+        private void shareEvents(Album ref) {
+-+        }
+-+        private void openBottomDialog() {
+-+            View viewDialog = LayoutInflater.from(context).inflate(R.layout.layout_bottom_sheet_album, null);
+-+            layout_bottom_share = viewDialog.findViewById(R.id.layout_bottom_share);
+-+            layout_bottom_delete = viewDialog.findViewById(R.id.layout_bottom_delete);
+-+            layout_bottom_slide_show = viewDialog.findViewById(R.id.layout_bottom_slide_show);
+-+
+-+            bottomSheetDialog = new BottomSheetDialog(context);
+-+            bottomSheetDialog.setContentView(viewDialog);
+-+            bottomSheetDialog.show();
+-         }
+-     }
+- }
+-Index: app/src/main/res/layout/content_fragment_album.xml
+-===================================================================
+-diff --git a/app/src/main/res/layout/content_fragment_album.xml b/app/src/main/res/layout/content_fragment_album.xml
+-deleted file mode 100644
+---- a/app/src/main/res/layout/content_fragment_album.xml	(revision 9bd4c65625074cf529641af49abbfd65e4c5154c)
+-+++ /dev/null	(revision 9bd4c65625074cf529641af49abbfd65e4c5154c)
+-@@ -1,15 +0,0 @@
+--<?xml version="1.0" encoding="utf-8"?>
+--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+--    android:layout_width="match_parent"
+--    android:layout_height="match_parent"
+--    android:orientation="vertical">
+--    <include
+--        android:id="@+id/toolbar_album"
+--        layout="@layout/layout_toolbar" />
+--    <androidx.recyclerview.widget.RecyclerView
+--        android:layout_marginTop="30dp"
+--        android:layout_gravity="center"
+--        android:id="@+id/ryc_album"
+--        android:layout_width="wrap_content"
+--        android:layout_height="match_parent" />
+--</LinearLayout>
+-\ No newline at end of file
+-Index: .idea/misc.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"DesignSurface\">\r\n    <option name=\"filePathToZoomLevelMap\">\r\n      <map>\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/drawable/ic_add_photo_list_album.xml\" value=\"0.2755208333333333\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/drawable/ic_share.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/drawable/ic_slide_show.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/activity_create_album.xml\" value=\"0.264\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/activity_item_album.xml\" value=\"0.14375\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/activity_main.xml\" value=\"0.16485507246376813\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/activity_picture.xml\" value=\"0.16485507246376813\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/activity_slide_show.xml\" value=\"0.16485507246376813\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/fragment_album.xml\" value=\"0.16485507246376813\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/fragment_favorite.xml\" value=\"0.16485507246376813\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/fragment_list_album.xml\" value=\"0.264\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/fragment_photo.xml\" value=\"0.16485507246376813\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/fragment_secret_createpass.xml\" value=\"0.22871376811594202\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/fragment_secret_enterpass.xml\" value=\"0.16485507246376813\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/fragment_share.xml\" value=\"0.22871376811594202\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/item_album.xml\" value=\"0.22871376811594202\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/item_picture.xml\" value=\"0.22871376811594202\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/item_slide_show.xml\" value=\"0.16485507246376813\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/layout_bottom_sheet_album.xml\" value=\"0.6\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/layout_info.xml\" value=\"0.24954710144927536\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/layout_toolbar.xml\" value=\"0.16485507246376813\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/menu/menu_bottom_nav.xml\" value=\"0.259375\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/menu/menu_bottom_picture.xml\" value=\"0.259375\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/menu/menu_effect_slide.xml\" value=\"0.2359375\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/menu/menu_top.xml\" value=\"0.259375\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/menu/menu_top_picture.xml\" value=\"0.259375\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable-v24/ic_launcher_foreground.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_add_photo_list_album.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_albums.xml\" value=\"0.2755208333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_back.xml\" value=\"0.19212962962962962\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_delete.xml\" value=\"0.19212962962962962\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_delete_list_album.xml\" value=\"0.19212962962962962\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_edit.xml\" value=\"0.19212962962962962\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_gallery.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_info.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_launcher_background.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_new_album.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_photos.xml\" value=\"0.2755208333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_picture.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_search.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_share.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_star.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/activity_main.xml\" value=\"0.1721014492753623\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/activity_picture.xml\" value=\"0.16032608695652173\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_album.xml\" value=\"0.23233695652173914\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_albums.xml\" value=\"0.176\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_favorite.xml\" value=\"0.23233695652173914\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_gallery.xml\" value=\"0.16032608695652173\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_list_album.xml\" value=\"0.41021897810218977\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_photo.xml\" value=\"0.23233695652173914\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_picture.xml\" value=\"0.16032608695652173\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_search.xml\" value=\"0.16032608695652173\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_share.xml\" value=\"0.16032608695652173\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/item_album.xml\" value=\"0.6\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/item_category.xml\" value=\"0.23233695652173914\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/item_picture.xml\" value=\"0.23233695652173914\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/menu/menu_bottom_nav.xml\" value=\"0.14375\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/menu/menu_bottom_picture.xml\" value=\"0.25\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/menu/menu_top_picture.xml\" value=\"0.25\" />\r\n        <entry key=\"app/src/main/res/drawable-v24/bottom_sheet_background.xml\" value=\"0.4601851851851852\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_albums.xml\" value=\"0.4601851851851852\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_gallery.xml\" value=\"0.4601851851851852\" />\r\n        <entry key=\"app/src/main/res/layout/activity_create_album.xml\" value=\"0.44212962962962965\" />\r\n        <entry key=\"app/src/main/res/layout/activity_main.xml\" value=\"0.350462962962963\" />\r\n        <entry key=\"app/src/main/res/layout/activity_picture.xml\" value=\"0.4316123188405797\" />\r\n        <entry key=\"app/src/main/res/layout/activity_slide_show.xml\" value=\"0.25277777777777777\" />\r\n        <entry key=\"app/src/main/res/layout/fragment_album.xml\" value=\"0.4316123188405797\" />\r\n        <entry key=\"app/src/main/res/layout/fragment_favorite.xml\" value=\"0.3745471014492754\" />\r\n        <entry key=\"app/src/main/res/layout/fragment_list_album.xml\" value=\"0.2148964896489649\" />\r\n        <entry key=\"app/src/main/res/layout/fragment_photo.xml\" value=\"0.3745471014492754\" />\r\n        <entry key=\"app/src/main/res/layout/fragment_secret_createpass.xml\" value=\"0.350462962962963\" />\r\n        <entry key=\"app/src/main/res/layout/fragment_secret_enterpass.xml\" value=\"0.350462962962963\" />\r\n        <entry key=\"app/src/main/res/layout/fragment_share.xml\" value=\"0.3745471014492754\" />\r\n        <entry key=\"app/src/main/res/layout/item_album.xml\" value=\"0.4316123188405797\" />\r\n        <entry key=\"app/src/main/res/layout/item_category.xml\" value=\"0.25277777777777777\" />\r\n        <entry key=\"app/src/main/res/layout/item_picture.xml\" value=\"0.25277777777777777\" />\r\n        <entry key=\"app/src/main/res/layout/item_slide_show.xml\" value=\"0.25277777777777777\" />\r\n        <entry key=\"app/src/main/res/layout/layout_info.xml\" value=\"0.44212962962962965\" />\r\n        <entry key=\"app/src/main/res/layout/layout_toolbar.xml\" value=\"0.25277777777777777\" />\r\n        <entry key=\"app/src/main/res/menu/menu_bottom_nav.xml\" value=\"0.25277777777777777\" />\r\n        <entry key=\"app/src/main/res/menu/menu_bottom_picture.xml\" value=\"0.25277777777777777\" />\r\n        <entry key=\"app/src/main/res/menu/menu_top.xml\" value=\"0.25277777777777777\" />\r\n        <entry key=\"app/src/main/res/menu/menu_top_picture.xml\" value=\"0.25972222222222224\" />\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_11\" default=\"true\" project-jdk-name=\"11\" project-jdk-type=\"JavaSDK\" />\r\n</project>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/.idea/misc.xml b/.idea/misc.xml
+---- a/.idea/misc.xml	(revision 9bd4c65625074cf529641af49abbfd65e4c5154c)
+-+++ b/.idea/misc.xml	(date 1636548863117)
+-@@ -11,6 +11,7 @@
+-         <entry key="..\:/SimpleGallery/app/src/main/res/layout/activity_main.xml" value="0.16485507246376813" />
+-         <entry key="..\:/SimpleGallery/app/src/main/res/layout/activity_picture.xml" value="0.16485507246376813" />
+-         <entry key="..\:/SimpleGallery/app/src/main/res/layout/activity_slide_show.xml" value="0.16485507246376813" />
+-+        <entry key="..\:/SimpleGallery/app/src/main/res/layout/content_fragment_album.xml" value="0.24954710144927536" />
+-         <entry key="..\:/SimpleGallery/app/src/main/res/layout/fragment_album.xml" value="0.16485507246376813" />
+-         <entry key="..\:/SimpleGallery/app/src/main/res/layout/fragment_favorite.xml" value="0.16485507246376813" />
+-         <entry key="..\:/SimpleGallery/app/src/main/res/layout/fragment_list_album.xml" value="0.264" />
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_11_11_2021_2_06_AM__Default_Changelist_.xml
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_11_11_2021_2_06_AM__Default_Changelist_.xml b/.idea/shelf/Uncommitted_changes_before_Update_at_11_11_2021_2_06_AM__Default_Changelist_.xml
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Update_at_11_11_2021_2_06_AM__Default_Changelist_.xml	(revision 322acf861ed5c8d44b11db60233a2e1c81446163)
++++ /dev/null	(revision 322acf861ed5c8d44b11db60233a2e1c81446163)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Update_at_11_11_2021_2_06_AM_[Default_Changelist]" date="1636571203932" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_11_11_2021_2_06_AM_[Default_Changelist]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Update at 11/11/2021 2:06 AM [Default Changelist]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_11_10_2021_8_18_PM__Default_Changelist_.xml
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_11_10_2021_8_18_PM__Default_Changelist_.xml b/.idea/shelf/Uncommitted_changes_before_Update_at_11_10_2021_8_18_PM__Default_Changelist_.xml
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Update_at_11_10_2021_8_18_PM__Default_Changelist_.xml	(revision 322acf861ed5c8d44b11db60233a2e1c81446163)
++++ /dev/null	(revision 322acf861ed5c8d44b11db60233a2e1c81446163)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Update_at_11_10_2021_8_18_PM_[Default_Changelist]" date="1636550345685" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_11_10_2021_8_18_PM_[Default_Changelist]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Update at 11/10/2021 8:18 PM [Default Changelist]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_11_10_2021_11_25_PM__Default_Changelist_.xml
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_11_10_2021_11_25_PM__Default_Changelist_.xml b/.idea/shelf/Uncommitted_changes_before_Update_at_11_10_2021_11_25_PM__Default_Changelist_.xml
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Update_at_11_10_2021_11_25_PM__Default_Changelist_.xml	(revision 322acf861ed5c8d44b11db60233a2e1c81446163)
++++ /dev/null	(revision 322acf861ed5c8d44b11db60233a2e1c81446163)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Update_at_11_10_2021_11_25_PM_[Default_Changelist]" date="1636561568455" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_11_10_2021_11_25_PM_[Default_Changelist]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Update at 11/10/2021 11:25 PM [Default Changelist]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/shelf/Uncommitted_changes_before_Update_at_11_10_2021_9_21_PM__Default_Changelist_.xml
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Update_at_11_10_2021_9_21_PM__Default_Changelist_.xml b/.idea/shelf/Uncommitted_changes_before_Update_at_11_10_2021_9_21_PM__Default_Changelist_.xml
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Update_at_11_10_2021_9_21_PM__Default_Changelist_.xml	(revision 322acf861ed5c8d44b11db60233a2e1c81446163)
++++ /dev/null	(revision 322acf861ed5c8d44b11db60233a2e1c81446163)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Update_at_11_10_2021_9_21_PM_[Default_Changelist]" date="1636554118814" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_11_10_2021_9_21_PM_[Default_Changelist]/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Update at 11/10/2021 9:21 PM [Default Changelist]" />
+-</changelist>
+\ No newline at end of file
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"DesignSurface\">\r\n    <option name=\"filePathToZoomLevelMap\">\r\n      <map>\r\n        <entry key=\"..\\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/layout/activity_main.xml\" value=\"0.151268115942029\" />\r\n        <entry key=\"..\\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/layout/activity_picture.xml\" value=\"0.151268115942029\" />\r\n        <entry key=\"..\\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/layout/fragment_photo.xml\" value=\"0.151268115942029\" />\r\n        <entry key=\"..\\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/layout/fragment_secret.xml\" value=\"0.1793478260869565\" />\r\n        <entry key=\"..\\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/layout/item_picture.xml\" value=\"0.14447463768115942\" />\r\n        <entry key=\"..\\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/layout/item_slide_show.xml\" value=\"0.19519927536231885\" />\r\n        <entry key=\"..\\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/menu/menu_bottom_nav.xml\" value=\"0.25\" />\r\n        <entry key=\"..\\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/menu/menu_top.xml\" value=\"0.12708333333333333\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/layout_bottom_sheet_album.xml\" value=\"0.1337386018237082\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable-v24/ic_launcher_foreground.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_add_photo_list_album.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_albums.xml\" value=\"0.2755208333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_back.xml\" value=\"0.19212962962962962\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_delete.xml\" value=\"0.19212962962962962\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_delete_list_album.xml\" value=\"0.19212962962962962\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_edit.xml\" value=\"0.19212962962962962\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_gallery.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_info.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_launcher_background.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_new_album.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_photos.xml\" value=\"0.2755208333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_picture.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_search.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_share.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_star.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/activity_main.xml\" value=\"0.1721014492753623\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/activity_picture.xml\" value=\"0.16032608695652173\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_album.xml\" value=\"0.23233695652173914\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_albums.xml\" value=\"0.176\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_favorite.xml\" value=\"0.23233695652173914\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_gallery.xml\" value=\"0.16032608695652173\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_list_album.xml\" value=\"0.41021897810218977\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_photo.xml\" value=\"0.23233695652173914\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_picture.xml\" value=\"0.16032608695652173\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_search.xml\" value=\"0.16032608695652173\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_share.xml\" value=\"0.16032608695652173\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/item_album.xml\" value=\"0.6\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/item_category.xml\" value=\"0.23233695652173914\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/item_picture.xml\" value=\"0.23233695652173914\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/menu/menu_bottom_nav.xml\" value=\"0.14375\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/menu/menu_bottom_picture.xml\" value=\"0.25\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/menu/menu_top_picture.xml\" value=\"0.25\" />\r\n        <entry key=\"..\\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/activity_camera.xml\" value=\"0.1265625\" />\r\n        <entry key=\"..\\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/activity_create_album.xml\" value=\"0.13020833333333334\" />\r\n        <entry key=\"..\\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/activity_main.xml\" value=\"0.13020833333333334\" />\r\n        <entry key=\"..\\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/activity_picture.xml\" value=\"0.13020833333333334\" />\r\n        <entry key=\"..\\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/activity_slide_show.xml\" value=\"0.13020833333333334\" />\r\n        <entry key=\"..\\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/fragment_album.xml\" value=\"0.13020833333333334\" />\r\n        <entry key=\"..\\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/fragment_favorite.xml\" value=\"0.13020833333333334\" />\r\n        <entry key=\"..\\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/fragment_list_album.xml\" value=\"0.13020833333333334\" />\r\n        <entry key=\"..\\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/fragment_photo.xml\" value=\"0.4\" />\r\n        <entry key=\"..\\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/fragment_share.xml\" value=\"0.13020833333333334\" />\r\n        <entry key=\"..\\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/item_album.xml\" value=\"0.176\" />\r\n        <entry key=\"..\\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/item_category.xml\" value=\"0.13020833333333334\" />\r\n        <entry key=\"..\\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/item_favorite_picture.xml\" value=\"0.264\" />\r\n        <entry key=\"..\\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/item_picture.xml\" value=\"0.4\" />\r\n        <entry key=\"..\\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/item_slide_show.xml\" value=\"0.13020833333333334\" />\r\n        <entry key=\"..\\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/layout_info.xml\" value=\"0.13020833333333334\" />\r\n        <entry key=\"..\\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/layout_toolbar.xml\" value=\"0.13020833333333334\" />\r\n        <entry key=\"..\\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/menu/menu_bottom_picture.xml\" value=\"0.13020833333333334\" />\r\n        <entry key=\"..\\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/xml/file_paths.xml\" value=\"0.1265625\" />\r\n        <entry key=\"app/src/main/res/drawable-v24/bottom_sheet_background.xml\" value=\"0.4601851851851852\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_add.xml\" value=\"0.2708333333333333\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_add_photo_list_album.xml\" value=\"0.2708333333333333\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_albums.xml\" value=\"0.2708333333333333\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_camera.xml\" value=\"0.2708333333333333\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_delete.xml\" value=\"0.2708333333333333\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_delete_list_album.xml\" value=\"0.2708333333333333\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_edit.xml\" value=\"0.2708333333333333\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_gallery.xml\" value=\"0.2708333333333333\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_info.xml\" value=\"0.3685185185185185\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_launcher_foreground.xml\" value=\"0.34629629629629627\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_picture.xml\" value=\"0.2708333333333333\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_search.xml\" value=\"0.3685185185185185\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_searchmin.xml\" value=\"0.3685185185185185\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_secret.xml\" value=\"0.2708333333333333\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_star.xml\" value=\"0.2708333333333333\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_tick.xml\" value=\"0.2708333333333333\" />\r\n        <entry key=\"app/src/main/res/layout/activity_picture.xml\" value=\"0.33\" />\r\n        <entry key=\"app/src/main/res/layout/fragment_album.xml\" value=\"0.4316123188405797\" />\r\n        <entry key=\"app/src/main/res/layout/fragment_favorite.xml\" value=\"0.350462962962963\" />\r\n        <entry key=\"app/src/main/res/layout/fragment_list_album.xml\" value=\"0.2148964896489649\" />\r\n        <entry key=\"app/src/main/res/layout/item_album.xml\" value=\"0.4316123188405797\" />\r\n        <entry key=\"app/src/main/res/layout/layout_info.xml\" value=\"0.44212962962962965\" />\r\n        <entry key=\"app/src/main/res/menu/menu_album_secret.xml\" value=\"0.44212962962962965\" />\r\n        <entry key=\"app/src/main/res/menu/menu_bottom_nav.xml\" value=\"0.44212962962962965\" />\r\n        <entry key=\"app/src/main/res/menu/menu_bottom_picture.xml\" value=\"0.44212962962962965\" />\r\n        <entry key=\"app/src/main/res/menu/menu_effect_slide.xml\" value=\"0.44212962962962965\" />\r\n        <entry key=\"app/src/main/res/menu/menu_top.xml\" value=\"0.44212962962962965\" />\r\n        <entry key=\"app/src/main/res/menu/menu_top_album.xml\" value=\"0.44212962962962965\" />\r\n        <entry key=\"app/src/main/res/menu/menu_top_picture.xml\" value=\"0.44212962962962965\" />\r\n        <entry key=\"app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml\" value=\"0.34629629629629627\" />\r\n        <entry key=\"app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml\" value=\"0.34629629629629627\" />\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_11\" default=\"true\" project-jdk-name=\"11\" project-jdk-type=\"JavaSDK\" />\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision 322acf861ed5c8d44b11db60233a2e1c81446163)
++++ b/.idea/misc.xml	(date 1637154011111)
+@@ -11,6 +11,11 @@
+         <entry key="..\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/layout/item_slide_show.xml" value="0.19519927536231885" />
+         <entry key="..\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/menu/menu_bottom_nav.xml" value="0.25" />
+         <entry key="..\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/menu/menu_top.xml" value="0.12708333333333333" />
++        <entry key="..\:/SimpleGallery/app/src/main/res/layout/activity_picture.xml" value="0.1337386018237082" />
++        <entry key="..\:/SimpleGallery/app/src/main/res/layout/activity_slide_show.xml" value="0.1337386018237082" />
++        <entry key="..\:/SimpleGallery/app/src/main/res/layout/item_picture.xml" value="0.1337386018237082" />
++        <entry key="..\:/SimpleGallery/app/src/main/res/layout/item_slide_picture.xml" value="0.23867753623188406" />
++        <entry key="..\:/SimpleGallery/app/src/main/res/layout/item_slide_show.xml" value="0.1337386018237082" />
+         <entry key="..\:/SimpleGallery/app/src/main/res/layout/layout_bottom_sheet_album.xml" value="0.1337386018237082" />
+         <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2911458333333333" />
+         <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_add_photo_list_album.xml" value="0.2911458333333333" />
+Index: app/src/main/java/com/example/testgallery/adapters/SlideImageAdapter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/testgallery/adapters/SlideImageAdapter.java b/app/src/main/java/com/example/testgallery/adapters/SlideImageAdapter.java
+new file mode 100644
+--- /dev/null	(date 1637205141134)
++++ b/app/src/main/java/com/example/testgallery/adapters/SlideImageAdapter.java	(date 1637205141134)
+@@ -0,0 +1,70 @@
++package com.example.testgallery.adapters;
++
++import android.content.Context;
++import android.util.Log;
++import android.view.LayoutInflater;
++import android.view.View;
++import android.view.ViewGroup;
++import android.widget.ImageView;
++
++import androidx.annotation.NonNull;
++import androidx.appcompat.app.AppCompatActivity;
++import androidx.viewpager.widget.PagerAdapter;
++import androidx.viewpager.widget.ViewPager;
++
++import com.bumptech.glide.Glide;
++import com.example.testgallery.R;
++import com.example.testgallery.utility.PictureInterface;
++import com.github.chrisbanes.photoview.PhotoView;
++import com.smarteist.autoimageslider.SliderViewAdapter;
++
++import java.util.ArrayList;
++
++public class SlideImageAdapter extends PagerAdapter {
++    private ArrayList<String> imageListThumb;
++    private ArrayList<String> imageListPath;
++
++    private Context context;
++    private ImageView imgPicture;
++
++
++    public void setData(ArrayList<String> imageListThumb, ArrayList<String> imageListPath) {
++        this.imageListPath = imageListPath;
++        this.imageListThumb = imageListThumb;
++        notifyDataSetChanged();
++    }
++
++    public void setContext(Context context) {
++        this.context = context;
++    }
++
++    @Override
++    public int getCount() {
++        return imageListPath.size();
++    }
++
++    @Override
++    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
++
++        return view == object;
++    }
++
++    @NonNull
++    @Override
++    public Object instantiateItem(@NonNull ViewGroup container, int position) {
++        View view = LayoutInflater.from(context).inflate(R.layout.item_slide_picture, container, false);
++        imgPicture = view.findViewById(R.id.imgPicture);
++        Glide.with(context).load(imageListPath.get(position)).into(imgPicture);
++        ViewPager vp = (ViewPager) container;
++        vp.addView(view, 0);
++        return view;
++    }
++
++    @Override
++    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
++        ViewPager viewPager = (ViewPager) container;
++        View view = (View) object;
++        viewPager.removeView(view);
++    }
++}
++
+Index: app/src/main/java/com/example/testgallery/utility/PictureInterface.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/testgallery/utility/PictureInterface.java b/app/src/main/java/com/example/testgallery/utility/PictureInterface.java
+new file mode 100644
+--- /dev/null	(date 1637205141125)
++++ b/app/src/main/java/com/example/testgallery/utility/PictureInterface.java	(date 1637205141125)
+@@ -0,0 +1,9 @@
++package com.example.testgallery.utility;
++
++import android.graphics.drawable.Drawable;
++
++public interface PictureInterface {
++    //public void setTitleToolbar(String imageName);
++    //public void setThumb(String mThumb, String path);
++    public void setDrawable(Drawable drawable);
++}
+Index: app/src/main/res/layout/item_slide_picture.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/item_slide_picture.xml b/app/src/main/res/layout/item_slide_picture.xml
+new file mode 100644
+--- /dev/null	(date 1637157632642)
++++ b/app/src/main/res/layout/item_slide_picture.xml	(date 1637157632642)
+@@ -0,0 +1,11 @@
++<?xml version="1.0" encoding="utf-8"?>
++<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
++    android:gravity="center"
++    android:layout_width="match_parent"
++    android:layout_height="match_parent">
++    <com.github.chrisbanes.photoview.PhotoView
++        android:id="@+id/imgPicture"
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:src="@drawable/anh1" />
++</LinearLayout>
+\ No newline at end of file

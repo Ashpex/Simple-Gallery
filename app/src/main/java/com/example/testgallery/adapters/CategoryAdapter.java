@@ -48,7 +48,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
 
         ImageAdapter girlAdapter = new ImageAdapter(context.getApplicationContext());
         girlAdapter.setData(category.getListGirl());
+        girlAdapter.setListCategory(listCategory);
         holder.rcvPictures.setAdapter(girlAdapter);
+
+
     }
 
     @Override

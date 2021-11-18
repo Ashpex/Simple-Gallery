@@ -23,12 +23,10 @@
 
     </LinearLayout>
 
-    <com.github.chrisbanes.photoview.PhotoView
-        android:id="@+id/imgPicture"
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewPager_picture"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:src="@drawable/anh1" />
+        android:layout_height="match_parent"/>
 
     <!--    <LinearLayout-->
     <!--        android:layout_width="match_parent"-->

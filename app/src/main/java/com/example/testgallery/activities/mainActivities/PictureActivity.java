@@ -10,6 +10,7 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,59 +19,150 @@ import android.view.View;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.ParcelFileDescriptor;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager.widget.ViewPager;
 
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import com.bumptech.glide.Glide;
 import com.dsphotoeditor.sdk.activity.DsPhotoEditorActivity;
 import com.dsphotoeditor.sdk.utils.DsPhotoEditorConstants;
 import com.example.testgallery.R;
+import com.example.testgallery.adapters.SlideImageAdapter;
+import com.example.testgallery.utility.PictureInterface;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.navigation.NavigationBarView;
-
-
+import com.smarteist.autoimageslider.SliderView;
 
 
 public class PictureActivity extends AppCompatActivity {
-    ImageView imageView;
-
-
-    Toolbar toolbar_picture;
-    BottomNavigationView bottomNavigationView;
-    String urlImg;
-    String imgPath;
-    String imageName;
-    String thumb;
-
+    private ViewPager viewPager_picture;
+    private Toolbar toolbar_picture;
+    private BottomNavigationView bottomNavigationView;
     private boolean flag = false;
+    private ArrayList<String> imageListThumb;
+    private ArrayList<String> imageListPath;
+    private Intent intent;
+    private int pos;
+    private SlideImageAdapter slideImageAdapter;
+    private PictureInterface activityPicture;
+    private String imgPath;
+    private String imageName;
+    private String thumb;
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_picture);
+        //Fix Uri file SDK link: https://stackoverflow.com/questions/48117511/exposed-beyond-app-through-clipdata-item-geturi?answertab=oldest#tab-top
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
 
-        viewMapping();
 
-        Intent intent = getIntent();
-        thumb = intent.getStringExtra("imgSrc");
-        // Get image name
-        imageName = thumb.substring(thumb.lastIndexOf('/') + 1);
-        Glide.with(this).load(thumb).into(imageView);
-        urlImg=thumb;
-        imgPath = intent.getStringExtra("imgPath");
+        mappingControls();
 
+        events();
+    }
+
+    private void events() {
+        setDataIntent();
+        setUpToolBar();
+        setUpSilder();
+        bottomNavigationViewEvents();
+
+        viewPager_picture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!flag) {
+                    bottomNavigationView.setVisibility(View.INVISIBLE);
+                    toolbar_picture.setVisibility(View.INVISIBLE);
+                    flag = true;
+                } else {
+                    bottomNavigationView.setVisibility(View.VISIBLE);
+                    toolbar_picture.setVisibility(View.VISIBLE);
+                    flag = false;
+                }
+
+            }
+        });
+    }
+
+    private void bottomNavigationViewEvents() {
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                Uri targetUri = Uri.parse("file://" + thumb);
+                switch (item.getItemId()) {
+
+                    case R.id.sharePic:
+                        /*mDrawable = Drawable.createFromPath(imgPath);
+                        Bitmap mBitmap = ((BitmapDrawable) mDrawable).getBitmap();
+                        String path = MediaStore.Images.Media.insertImage(getContentResolver(), mBitmap, "Image Description", null);*/
+                        thumb = thumb.replaceAll(" ", "");
+                        Uri uri = Uri.parse("file://" + thumb);
+                        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                        shareIntent.setType("image/*");
+                        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+                        startActivity(Intent.createChooser(shareIntent, "Share Image"));
+                        break;
+
+                    case R.id.editPic:
+                        Intent editIntent = new Intent(PictureActivity.this, DsPhotoEditorActivity.class);
+
+                        // Set data
+                        editIntent.setData(Uri.fromFile(new File(imgPath)));
+                        // Set output directory
+                        editIntent.putExtra(DsPhotoEditorConstants.DS_PHOTO_EDITOR_OUTPUT_DIRECTORY, "EditedImages");
+                        // Set toolbar color
+                        editIntent.putExtra(DsPhotoEditorConstants.DS_TOOL_BAR_BACKGROUND_COLOR, Color.parseColor("#FF000000"));
+                        // Set background color
+                        editIntent.putExtra(DsPhotoEditorConstants.DS_MAIN_BACKGROUND_COLOR, Color.parseColor("#FF000000"));
+                        // Start activity
+                        startActivity(editIntent);
+
+                        break;
+
+                    case R.id.starPic:
+                        Toast.makeText(PictureActivity.this, "Thêm ảnh yêu thích", Toast.LENGTH_SHORT).show();
+                        break;
+
+                    case R.id.deletePic:
+                        File file = new File(targetUri.getPath());
+
+                        if (file.exists()) {
+                            file.delete();
+                            if (file.delete()) {
+                                Toast.makeText(PictureActivity.this, "Xóa thành công: " + targetUri.getPath(), Toast.LENGTH_SHORT).show();
+                            } else
+                                Toast.makeText(PictureActivity.this, "Xóa không thành công: " + targetUri.getPath(), Toast.LENGTH_SHORT).show();
+                        }
+                        finish();
+                        break;
+
+
+                }
+                return true;
+            }
+
+        });
+    }
+
+    private void setUpToolBar() {
         // Toolbar events
         toolbar_picture.inflateMenu(R.menu.menu_top_picture);
-        toolbar_picture.setTitle(imageName);
+        setTitleToolbar("");
 
         // Show back button
         toolbar_picture.setNavigationIcon(R.drawable.abc_ic_ab_back_material);
@@ -86,10 +178,10 @@ public class PictureActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
                 int id = menuItem.getItemId();
-                switch (id){
+                switch (id) {
                     case R.id.menuInfo:
-                        Uri targetUri = Uri.parse("file://" + urlImg);
-                        if(targetUri != null){
+                        Uri targetUri = Uri.parse("file://" + thumb);
+                        if (targetUri != null) {
                             showExif(targetUri);
                         }
                         break;
@@ -98,100 +190,10 @@ public class PictureActivity extends AppCompatActivity {
                 return true;
             }
         });
-
-
-//        imageView.setImageResource(src);
-
-
-
-        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                Uri targetUri = Uri.parse("file://" + urlImg);
-                switch (item.getItemId()) {
-
-                    case R.id.sharePic:
-                        Drawable mDrawable = imageView.getDrawable();
-                        Bitmap mBitmap = ((BitmapDrawable) mDrawable).getBitmap();
-                        String path = MediaStore.Images.Media.insertImage(getContentResolver(), mBitmap, "Image Description", null);
-                        Uri uri = Uri.parse(path);
-                        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                        shareIntent.setType("image/*");
-                        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
-                        startActivity(Intent.createChooser(shareIntent, "Share Image"));
-                        break;
-
-                    case R.id.editPic:
-                        Intent editIntent = new Intent(PictureActivity.this, DsPhotoEditorActivity.class);
-
-                        // Set data
-                        editIntent.setData(targetUri);
-
-                        // Set output directory
-                        editIntent.putExtra(DsPhotoEditorConstants.DS_PHOTO_EDITOR_OUTPUT_DIRECTORY,"Simple Gallery");
-                        // Set toolbar color
-                        editIntent.putExtra(DsPhotoEditorConstants.DS_TOOL_BAR_BACKGROUND_COLOR, Color.parseColor("#FF000000"));
-                        // Set background color
-                        editIntent.putExtra(DsPhotoEditorConstants.DS_MAIN_BACKGROUND_COLOR, Color.parseColor("#FF000000"));
-                        // Start activity
-                        startActivity(editIntent);
-
-                        break;
-
-                    case R.id.starPic:
-                        Toast.makeText(PictureActivity.this, "Thêm ảnh yêu thích", Toast.LENGTH_SHORT).show();
-
-
-                        break;
-
-                    case R.id.deletePic: //4
-                        File file = new File(targetUri.getPath());
-
-                        if (file.exists()){
-
-                            if(file.delete()){
-                                Toast.makeText(PictureActivity.this, "Xóa thành công: " + targetUri.getPath(), Toast.LENGTH_SHORT).show();
-                            }
-                            else Toast.makeText(PictureActivity.this, "Xóa không thành công: " + targetUri.getPath(), Toast.LENGTH_SHORT).show();
-                        }
-                        finish();
-                        break;
-
-
-                }
-                return true;
-            }
-
-        });
-
-
-
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!flag){
-                    bottomNavigationView.setVisibility(View.INVISIBLE);
-                    toolbar_picture.setVisibility(View.INVISIBLE);
-                    flag = true;
-                }else{
-                    bottomNavigationView.setVisibility(View.VISIBLE);
-                    toolbar_picture.setVisibility(View.VISIBLE);
-                    flag = false;
-                }
-
-            }
-        });
-
     }
 
-    @Override
-    public boolean onSupportNavigateUp(){
-        onBackPressed();
-        return true;
-    }
-
-    void showExif(Uri photoUri){
-        if(photoUri != null){
+    private void showExif(Uri photoUri) {
+        if (photoUri != null) {
 
             ParcelFileDescriptor parcelFileDescriptor = null;
 
@@ -201,7 +203,7 @@ public class PictureActivity extends AppCompatActivity {
 
                 ExifInterface exifInterface = new ExifInterface(fileDescriptor);
 
-                BottomSheetDialog infoDialog = new BottomSheetDialog(this,R.style.BottomSheetDialogTheme);
+                BottomSheetDialog infoDialog = new BottomSheetDialog(this, R.style.BottomSheetDialogTheme);
                 View infoDialogView = LayoutInflater.from(getApplicationContext())
                         .inflate(
                                 R.layout.layout_info,
@@ -246,29 +248,63 @@ public class PictureActivity extends AppCompatActivity {
             }
 
 
-
-        }else{
+        } else {
             Toast.makeText(getApplicationContext(),
                     "photoUri == null",
                     Toast.LENGTH_LONG).show();
         }
-    };
+    }
 
-/*    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_album:
-                Toast.makeText(this,"test",Toast.LENGTH_SHORT);
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }*/
+    ;
+
+    private void setUpSilder() {
+
+        slideImageAdapter = new SlideImageAdapter();
+        slideImageAdapter.setData(imageListThumb, imageListPath);
+        slideImageAdapter.setContext(getApplicationContext());
+        viewPager_picture.setAdapter(slideImageAdapter);
+        viewPager_picture.setCurrentItem(pos);
+
+        viewPager_picture.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                thumb = imageListThumb.get(position);
+                imgPath = imageListPath.get(position);
+                setTitleToolbar(thumb.substring(thumb.lastIndexOf('/') + 1));
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+    }
+
+    private void setDataIntent() {
+        intent = getIntent();
+        imageListPath = intent.getStringArrayListExtra("data_list_path");
+        imageListThumb = intent.getStringArrayListExtra("data_list_thumb");
+        pos = intent.getIntExtra("pos", 0);
 
 
-    void viewMapping(){
-        imageView = findViewById(R.id.imgPicture);
+    }
+
+    private void mappingControls() {
+        viewPager_picture = findViewById(R.id.viewPager_picture);
         bottomNavigationView = findViewById(R.id.bottom_picture);
         toolbar_picture = findViewById(R.id.toolbar_picture);
+    }
+
+
+    public void setTitleToolbar(String imageName) {
+        this.imageName = imageName;
+        toolbar_picture.setTitle(imageName);
     }
 
 
