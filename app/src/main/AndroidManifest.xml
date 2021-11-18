@@ -51,25 +51,25 @@
         <activity
             android:name="com.dsphotoeditor.sdk.activity.DsPhotoEditorActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.TestGallery" />
+            android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen" />
 
         <activity
             android:name="com.dsphotoeditor.sdk.activity.DsPhotoEditorStickerActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.TestGallery" />
+            android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen" />
         <activity
             android:name="com.dsphotoeditor.sdk.activity.DsPhotoEditorTextActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.TestGallery"
+            android:theme="@android:style/Theme.Material.NoActionBar"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name="com.dsphotoeditor.sdk.activity.DsPhotoEditorCropActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.TestGallery" />
+            android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen" />
         <activity
             android:name="com.dsphotoeditor.sdk.activity.DsPhotoEditorDrawActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.TestGallery" />
+            android:theme="@android:style/Theme.Material.NoActionBar.Fullscreen" />
 
     </application>
 
