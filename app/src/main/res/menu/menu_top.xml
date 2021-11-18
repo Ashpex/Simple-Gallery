@@ -15,12 +15,6 @@
         app:showAsAction="ifRoom|collapseActionView"
         app:actionViewClass="androidx.appcompat.widget.SearchView"/>
 
-    <item
-        android:id="@+id/menuSlideshow"
-        android:title="Slideshow"
-        android:icon="@drawable/ic_picture"
-        app:showAsAction="never"/>
-
     <item android:id="@+id/menuAdd"
         android:title="Thêm"
         android:icon="@drawable/ic_add"
@@ -31,7 +25,15 @@
         android:icon="@drawable/ic_delete"
         app:showAsAction="never"/>
 
+    <item
+        android:id="@+id/menuSlideshow"
+        android:title="Slideshow"
+        android:icon="@drawable/ic_picture"
+        app:showAsAction="never"/>
+
+
     <item android:id="@+id/menuSearch_Advanced"
         android:title="Search nâng cao"
         app:showAsAction="never"/>
+
 </menu>

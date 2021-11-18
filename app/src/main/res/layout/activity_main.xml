@@ -24,10 +24,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        app:elevation="16dp"
         app:menu="@menu/menu_bottom_nav"
-        app:itemBackground="@color/background"
+        app:labelVisibilityMode="labeled"
+        android:background="@color/background"
         app:itemIconTint="@color/custom_color_bottom_nav"
-        app:itemTextColor="@color/custom_color_bottom_nav"
-        app:labelVisibilityMode="labeled"/>
+        app:itemTextColor="@color/custom_color_bottom_nav"/>
+
 
 </RelativeLayout>

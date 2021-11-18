@@ -23,7 +23,9 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:src="@drawable/ic_back"
-            android:foregroundTint="@color/black" />
+            android:foregroundTint="@color/black"
+            android:clickable="true"
+            android:background="?android:attr/selectableItemBackground"/>
 
         <View
             android:layout_width="0dp"

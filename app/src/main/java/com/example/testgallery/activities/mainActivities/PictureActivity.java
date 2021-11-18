@@ -14,12 +14,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,7 +36,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import com.bumptech.glide.Glide;
 import com.dsphotoeditor.sdk.activity.DsPhotoEditorActivity;
 import com.dsphotoeditor.sdk.utils.DsPhotoEditorConstants;
 import com.example.testgallery.R;
@@ -48,7 +45,6 @@ import com.example.testgallery.utility.PictureInterface;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.navigation.NavigationBarView;
-import com.smarteist.autoimageslider.SliderView;
 
 
 public class PictureActivity extends AppCompatActivity implements PictureInterface{
@@ -188,6 +184,7 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
 
     private void setUpToolBar() {
         // Toolbar events
+
         toolbar_picture.inflateMenu(R.menu.menu_top_picture);
         setTitleToolbar("");
 

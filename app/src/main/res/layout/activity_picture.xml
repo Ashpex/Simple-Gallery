@@ -4,24 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="horizontal"
-        android:translationZ="90dp">
+    <include
+        android:id="@+id/toolbar_picture"
+        layout="@layout/layout_toolbar"
+        android:background="@color/white" />
 
-        <include
-            android:id="@+id/toolbar_picture"
-            layout="@layout/layout_toolbar" />
-
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.9"
-            android:layout_gravity="center"/>
-
-    </LinearLayout>
     <FrameLayout
         android:id="@+id/frame_viewPager"
         android:layout_width="match_parent"
@@ -33,29 +20,8 @@
     </FrameLayout>
 
 
-    <!--    <LinearLayout-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_alignParentBottom="true"-->
-    <!--        android:orientation="horizontal">-->
 
-    <!--        <ImageButton-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:src="@drawable/delete" />-->
 
-    <!--    </LinearLayout>-->
-
-<!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->
-<!--        android:id="@+id/top_picture"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_alignParentTop="true"-->
-<!--        app:itemBackground="@color/white"        -->
-<!--        app:itemIconTint="@color/black"-->
-<!--        app:itemTextColor="@color/custom_color_bottom_nav"-->
-<!--        app:labelVisibilityMode="unlabeled"-->
-<!--        app:menu="@menu/menu_top_picture" />-->
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -63,9 +29,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:itemBackground="@color/white"
         app:itemIconTint="@color/black"
         app:itemTextColor="@color/custom_color_bottom_nav"
+        app:elevation="16dp"
         app:labelVisibilityMode="unlabeled"
         app:menu="@menu/menu_bottom_picture" />
 

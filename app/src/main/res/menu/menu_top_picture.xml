@@ -5,7 +5,7 @@
     <item android:id="@+id/menuInfo"
         android:title="Thông tin"
         android:icon="@drawable/ic_info"
-        app:showAsAction="always"/>
+        app:showAsAction="always" />
 
     <item android:id="@+id/menuAddSecret"
         android:title="Ẩn ảnh"

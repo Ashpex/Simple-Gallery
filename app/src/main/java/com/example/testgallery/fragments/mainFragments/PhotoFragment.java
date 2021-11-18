@@ -139,7 +139,7 @@ public class PhotoFragment extends Fragment {
         View view = getLayoutInflater().inflate(R.layout.layout_dialog_search_advanced, null);
 
         dialog.setView(view);
-        dialog.setTitle("Tìm kiếm Nâng cao");
+            dialog.setTitle("Tìm kiếm Nâng cao");
         dialog.setPositiveButton("Tìm", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {

@@ -20,7 +20,10 @@
             android:layout_height="match_parent"
             android:layout_gravity="start"
             android:src="@drawable/ic_back"
-            android:foregroundTint="@color/black" />
+            android:foregroundTint="@color/black"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?android:attr/selectableItemBackgroundBorderless"/>
 
         <View
             android:layout_width="0dp"
@@ -37,7 +40,9 @@
             android:layout_marginBottom="2.5dp"
             android:layout_height="match_parent"
             android:layout_weight="0.1"
-
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
             android:src="@drawable/ic_tick" />
     </LinearLayout>
     <EditText
