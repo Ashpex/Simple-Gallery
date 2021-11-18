@@ -23,12 +23,10 @@ import java.util.ArrayList;
 
 public class ItemAlbumAdapter extends RecyclerView.Adapter<ItemAlbumAdapter.ItemAlbumViewHolder> {
     private ArrayList<String> album;
-    //private  ArrayList<String> getAlbumFiltered;
     private Context context;
 
     public ItemAlbumAdapter(ArrayList<String> album) {
         this.album = album;
-        //this.getAlbumFiltered = album;
     }
 
 
@@ -51,38 +49,7 @@ public class ItemAlbumAdapter extends RecyclerView.Adapter<ItemAlbumAdapter.Item
         return album.size();
     }
 
-/*    @Override
-    public Filter getFilter() {
-        Filter filter = new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence charSequence) {
-                FilterResults filterResults = new FilterResults();
-                if(charSequence == null | charSequence.length() == 0){
-                    filterResults.count = getAlbumFiltered.size();
-                    filterResults.values = getAlbumFiltered;
-                }
-                else{
-                    String searchChr = charSequence.toString().toLowerCase();
-                    ArrayList<String> resultData = new ArrayList<>();
-                    for(String album: getAlbumFiltered){
-                        if (album.toLowerCase().contains(searchChr)){
-                            resultData.add(album);
-                        }
-                    }
-                    filterResults.count = resultData.size();
-                    filterResults.values = resultData;
-                }
-                return filterResults;
-            }
 
-            @Override
-            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                album = (ArrayList<String>) filterResults.values;
-                notifyDataSetChanged();
-            }
-        };
-        return filter;
-    }*/
 
     class ItemAlbumViewHolder extends RecyclerView.ViewHolder {
         private ImageView imgPhoto;
