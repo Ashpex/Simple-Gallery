@@ -97,7 +97,8 @@ public class ItemAlbumAdapter extends RecyclerView.Adapter<ItemAlbumAdapter.Item
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(context, PictureActivity.class);
-                    intent.putExtra("imgSrc", img);
+                    intent.putStringArrayListExtra("data_list_path", album);
+                    intent.putStringArrayListExtra("data_list_thumb", album);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
                 }

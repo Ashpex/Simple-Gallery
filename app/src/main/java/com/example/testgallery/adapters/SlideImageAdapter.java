@@ -23,10 +23,14 @@ import java.util.ArrayList;
 public class SlideImageAdapter extends PagerAdapter {
     private ArrayList<String> imageListThumb;
     private ArrayList<String> imageListPath;
-
+    private PictureInterface pictureInterface;
     private Context context;
     private ImageView imgPicture;
+    private boolean flag = false;
 
+    public void setPictureInterface(PictureInterface pictureInterface) {
+        this.pictureInterface = pictureInterface;
+    }
 
     public void setData(ArrayList<String> imageListThumb, ArrayList<String> imageListPath) {
         this.imageListPath = imageListPath;
@@ -57,6 +61,16 @@ public class SlideImageAdapter extends PagerAdapter {
         Glide.with(context).load(imageListPath.get(position)).into(imgPicture);
         ViewPager vp = (ViewPager) container;
         vp.addView(view, 0);
+        imgPicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                pictureInterface.actionShow(flag);
+                if(flag)
+                    flag = false;
+                else
+                    flag = true;
+            }
+        });
         return view;
     }
 

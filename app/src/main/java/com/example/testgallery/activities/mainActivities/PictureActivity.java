@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -48,11 +49,11 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.smarteist.autoimageslider.SliderView;
 
 
-public class PictureActivity extends AppCompatActivity {
+public class PictureActivity extends AppCompatActivity implements PictureInterface{
     private ViewPager viewPager_picture;
     private Toolbar toolbar_picture;
     private BottomNavigationView bottomNavigationView;
-    private boolean flag = false;
+    private FrameLayout frame_viewPager;
     private ArrayList<String> imageListThumb;
     private ArrayList<String> imageListPath;
     private Intent intent;
@@ -62,7 +63,6 @@ public class PictureActivity extends AppCompatActivity {
     private String imgPath;
     private String imageName;
     private String thumb;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,22 +82,6 @@ public class PictureActivity extends AppCompatActivity {
         setUpToolBar();
         setUpSilder();
         bottomNavigationViewEvents();
-
-        viewPager_picture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!flag) {
-                    bottomNavigationView.setVisibility(View.INVISIBLE);
-                    toolbar_picture.setVisibility(View.INVISIBLE);
-                    flag = true;
-                } else {
-                    bottomNavigationView.setVisibility(View.VISIBLE);
-                    toolbar_picture.setVisibility(View.VISIBLE);
-                    flag = false;
-                }
-
-            }
-        });
     }
 
     private void bottomNavigationViewEvents() {
@@ -187,6 +171,17 @@ public class PictureActivity extends AppCompatActivity {
 
         });
     }
+
+    private void showNavigation(boolean flag) {
+        if (!flag) {
+            bottomNavigationView.setVisibility(View.INVISIBLE);
+            toolbar_picture.setVisibility(View.INVISIBLE);
+        } else {
+            bottomNavigationView.setVisibility(View.VISIBLE);
+            toolbar_picture.setVisibility(View.VISIBLE);
+        }
+    }
+
 
     private void setUpToolBar() {
         // Toolbar events
@@ -291,6 +286,7 @@ public class PictureActivity extends AppCompatActivity {
         slideImageAdapter = new SlideImageAdapter();
         slideImageAdapter.setData(imageListThumb, imageListPath);
         slideImageAdapter.setContext(getApplicationContext());
+        slideImageAdapter.setPictureInterface(activityPicture);
         viewPager_picture.setAdapter(slideImageAdapter);
         viewPager_picture.setCurrentItem(pos);
 
@@ -304,7 +300,6 @@ public class PictureActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-
             }
 
             @Override
@@ -320,7 +315,7 @@ public class PictureActivity extends AppCompatActivity {
         imageListPath = intent.getStringArrayListExtra("data_list_path");
         imageListThumb = intent.getStringArrayListExtra("data_list_thumb");
         pos = intent.getIntExtra("pos", 0);
-
+        activityPicture = this;
 
     }
 
@@ -328,12 +323,14 @@ public class PictureActivity extends AppCompatActivity {
         viewPager_picture = findViewById(R.id.viewPager_picture);
         bottomNavigationView = findViewById(R.id.bottom_picture);
         toolbar_picture = findViewById(R.id.toolbar_picture);
+        frame_viewPager = findViewById(R.id.frame_viewPager);
     }
 
 
     public void setTitleToolbar(String imageName) {
         this.imageName = imageName;
         toolbar_picture.setTitle(imageName);
+
     }
 
     public void showDialog(String title, String message){
@@ -366,4 +363,8 @@ public class PictureActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void actionShow(boolean flag) {
+        showNavigation(flag);
+    }
 }

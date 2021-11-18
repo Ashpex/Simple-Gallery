@@ -1,0 +1,241 @@
+Index: app/src/main/java/com/example/testgallery/adapters/SlideImageAdapter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.testgallery.adapters;\r\n\r\nimport android.content.Context;\r\nimport android.util.Log;\r\nimport android.view.LayoutInflater;\r\nimport android.view.View;\r\nimport android.view.ViewGroup;\r\nimport android.widget.ImageView;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\nimport androidx.viewpager.widget.PagerAdapter;\r\nimport androidx.viewpager.widget.ViewPager;\r\n\r\nimport com.bumptech.glide.Glide;\r\nimport com.example.testgallery.R;\r\nimport com.example.testgallery.utility.PictureInterface;\r\nimport com.github.chrisbanes.photoview.PhotoView;\r\nimport com.smarteist.autoimageslider.SliderViewAdapter;\r\n\r\nimport java.util.ArrayList;\r\n\r\npublic class SlideImageAdapter extends PagerAdapter {\r\n    private ArrayList<String> imageListThumb;\r\n    private ArrayList<String> imageListPath;\r\n\r\n    private Context context;\r\n    private ImageView imgPicture;\r\n\r\n\r\n    public void setData(ArrayList<String> imageListThumb, ArrayList<String> imageListPath) {\r\n        this.imageListPath = imageListPath;\r\n        this.imageListThumb = imageListThumb;\r\n        notifyDataSetChanged();\r\n    }\r\n\r\n    public void setContext(Context context) {\r\n        this.context = context;\r\n    }\r\n\r\n    @Override\r\n    public int getCount() {\r\n        return imageListPath.size();\r\n    }\r\n\r\n    @Override\r\n    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {\r\n\r\n        return view == object;\r\n    }\r\n\r\n    @NonNull\r\n    @Override\r\n    public Object instantiateItem(@NonNull ViewGroup container, int position) {\r\n        View view = LayoutInflater.from(context).inflate(R.layout.item_slide_picture, container, false);\r\n        imgPicture = view.findViewById(R.id.imgPicture);\r\n        Glide.with(context).load(imageListPath.get(position)).into(imgPicture);\r\n        ViewPager vp = (ViewPager) container;\r\n        vp.addView(view, 0);\r\n        return view;\r\n    }\r\n\r\n    @Override\r\n    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {\r\n        ViewPager viewPager = (ViewPager) container;\r\n        View view = (View) object;\r\n        viewPager.removeView(view);\r\n    }\r\n}\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/testgallery/adapters/SlideImageAdapter.java b/app/src/main/java/com/example/testgallery/adapters/SlideImageAdapter.java
+--- a/app/src/main/java/com/example/testgallery/adapters/SlideImageAdapter.java	(revision d49efce55bbabbf8d024395fb1a7158f5c7d82da)
++++ b/app/src/main/java/com/example/testgallery/adapters/SlideImageAdapter.java	(date 1637214607607)
+@@ -23,10 +23,14 @@
+ public class SlideImageAdapter extends PagerAdapter {
+     private ArrayList<String> imageListThumb;
+     private ArrayList<String> imageListPath;
+-
++    private PictureInterface pictureInterface;
+     private Context context;
+     private ImageView imgPicture;
++    private boolean flag = false;
+ 
++    public void setPictureInterface(PictureInterface pictureInterface) {
++        this.pictureInterface = pictureInterface;
++    }
+ 
+     public void setData(ArrayList<String> imageListThumb, ArrayList<String> imageListPath) {
+         this.imageListPath = imageListPath;
+@@ -57,6 +61,16 @@
+         Glide.with(context).load(imageListPath.get(position)).into(imgPicture);
+         ViewPager vp = (ViewPager) container;
+         vp.addView(view, 0);
++        imgPicture.setOnClickListener(new View.OnClickListener() {
++            @Override
++            public void onClick(View view) {
++                pictureInterface.actionShow(flag);
++                if(flag)
++                    flag = false;
++                else
++                    flag = true;
++            }
++        });
+         return view;
+     }
+ 
+Index: app/src/main/java/com/example/testgallery/utility/PictureInterface.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.testgallery.utility;\r\n\r\nimport android.graphics.drawable.Drawable;\r\n\r\npublic interface PictureInterface {\r\n    //public void setTitleToolbar(String imageName);\r\n    //public void setThumb(String mThumb, String path);\r\n    public void setDrawable(Drawable drawable);\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/testgallery/utility/PictureInterface.java b/app/src/main/java/com/example/testgallery/utility/PictureInterface.java
+--- a/app/src/main/java/com/example/testgallery/utility/PictureInterface.java	(revision d49efce55bbabbf8d024395fb1a7158f5c7d82da)
++++ b/app/src/main/java/com/example/testgallery/utility/PictureInterface.java	(date 1637214607632)
+@@ -5,5 +5,5 @@
+ public interface PictureInterface {
+     //public void setTitleToolbar(String imageName);
+     //public void setThumb(String mThumb, String path);
+-    public void setDrawable(Drawable drawable);
++    public void actionShow(boolean flag);
+ }
+Index: app/src/main/java/com/example/testgallery/activities/mainActivities/PictureActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.testgallery.activities.mainActivities;\r\n\r\n\r\nimport android.content.Intent;\r\nimport android.graphics.Bitmap;\r\nimport android.graphics.Color;\r\nimport android.graphics.drawable.BitmapDrawable;\r\nimport android.graphics.drawable.Drawable;\r\nimport android.media.ExifInterface;\r\nimport android.net.Uri;\r\nimport android.os.Bundle;\r\n\r\nimport android.os.StrictMode;\r\nimport android.provider.MediaStore;\r\nimport android.util.Log;\r\nimport android.view.LayoutInflater;\r\nimport android.view.MenuItem;\r\nimport android.view.View;\r\nimport android.widget.ImageView;\r\n\r\nimport androidx.annotation.NonNull;\r\nimport androidx.annotation.Nullable;\r\nimport androidx.appcompat.app.AppCompatActivity;\r\nimport android.os.ParcelFileDescriptor;\r\nimport android.widget.LinearLayout;\r\nimport android.widget.TextView;\r\nimport android.widget.Toast;\r\nimport androidx.appcompat.widget.Toolbar;\r\nimport androidx.viewpager.widget.ViewPager;\r\n\r\nimport java.io.File;\r\nimport java.io.FileDescriptor;\r\nimport java.io.FileNotFoundException;\r\nimport java.io.IOException;\r\nimport java.util.ArrayList;\r\n\r\nimport com.bumptech.glide.Glide;\r\nimport com.dsphotoeditor.sdk.activity.DsPhotoEditorActivity;\r\nimport com.dsphotoeditor.sdk.utils.DsPhotoEditorConstants;\r\nimport com.example.testgallery.R;\r\nimport com.example.testgallery.adapters.SlideImageAdapter;\r\nimport com.example.testgallery.utility.PictureInterface;\r\nimport com.google.android.material.bottomnavigation.BottomNavigationView;\r\nimport com.google.android.material.bottomsheet.BottomSheetDialog;\r\nimport com.google.android.material.navigation.NavigationBarView;\r\nimport com.smarteist.autoimageslider.SliderView;\r\n\r\n\r\npublic class PictureActivity extends AppCompatActivity {\r\n    private ViewPager viewPager_picture;\r\n    private Toolbar toolbar_picture;\r\n    private BottomNavigationView bottomNavigationView;\r\n    private boolean flag = false;\r\n    private ArrayList<String> imageListThumb;\r\n    private ArrayList<String> imageListPath;\r\n    private Intent intent;\r\n    private int pos;\r\n    private SlideImageAdapter slideImageAdapter;\r\n    private PictureInterface activityPicture;\r\n    private String imgPath;\r\n    private String imageName;\r\n    private String thumb;\r\n\r\n    @Override\r\n    protected void onCreate(@Nullable Bundle savedInstanceState) {\r\n        super.onCreate(savedInstanceState);\r\n        setContentView(R.layout.activity_picture);\r\n        //Fix Uri file SDK link: https://stackoverflow.com/questions/48117511/exposed-beyond-app-through-clipdata-item-geturi?answertab=oldest#tab-top\r\n        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();\r\n        StrictMode.setVmPolicy(builder.build());\r\n\r\n\r\n        mappingControls();\r\n\r\n        events();\r\n    }\r\n\r\n    private void events() {\r\n        setDataIntent();\r\n        setUpToolBar();\r\n        setUpSilder();\r\n        bottomNavigationViewEvents();\r\n\r\n        viewPager_picture.setOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                if (!flag) {\r\n                    bottomNavigationView.setVisibility(View.INVISIBLE);\r\n                    toolbar_picture.setVisibility(View.INVISIBLE);\r\n                    flag = true;\r\n                } else {\r\n                    bottomNavigationView.setVisibility(View.VISIBLE);\r\n                    toolbar_picture.setVisibility(View.VISIBLE);\r\n                    flag = false;\r\n                }\r\n\r\n            }\r\n        });\r\n    }\r\n\r\n    private void bottomNavigationViewEvents() {\r\n        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {\r\n            @Override\r\n            public boolean onNavigationItemSelected(@NonNull MenuItem item) {\r\n\r\n                Uri targetUri = Uri.parse(\"file://\" + thumb);\r\n                switch (item.getItemId()) {\r\n\r\n                    case R.id.sharePic:\r\n                        /*mDrawable = Drawable.createFromPath(imgPath);\r\n                        Bitmap mBitmap = ((BitmapDrawable) mDrawable).getBitmap();\r\n                        String path = MediaStore.Images.Media.insertImage(getContentResolver(), mBitmap, \"Image Description\", null);*/\r\n                        thumb = thumb.replaceAll(\" \", \"\");\r\n                        Uri uri = Uri.parse(\"file://\" + thumb);\r\n                        Intent shareIntent = new Intent(Intent.ACTION_SEND);\r\n                        shareIntent.setType(\"image/*\");\r\n                        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);\r\n                        startActivity(Intent.createChooser(shareIntent, \"Share Image\"));\r\n                        break;\r\n\r\n                    case R.id.editPic:\r\n                        Intent editIntent = new Intent(PictureActivity.this, DsPhotoEditorActivity.class);\r\n\r\n                        // Set data\r\n                        editIntent.setData(Uri.fromFile(new File(imgPath)));\r\n                        // Set output directory\r\n                        editIntent.putExtra(DsPhotoEditorConstants.DS_PHOTO_EDITOR_OUTPUT_DIRECTORY, \"EditedImages\");\r\n                        // Set toolbar color\r\n                        editIntent.putExtra(DsPhotoEditorConstants.DS_TOOL_BAR_BACKGROUND_COLOR, Color.parseColor(\"#FF000000\"));\r\n                        // Set background color\r\n                        editIntent.putExtra(DsPhotoEditorConstants.DS_MAIN_BACKGROUND_COLOR, Color.parseColor(\"#FF000000\"));\r\n                        // Start activity\r\n                        startActivity(editIntent);\r\n\r\n                        break;\r\n\r\n                    case R.id.starPic:\r\n                        Toast.makeText(PictureActivity.this, \"Thêm ảnh yêu thích\", Toast.LENGTH_SHORT).show();\r\n                        break;\r\n\r\n                    case R.id.deletePic:\r\n                        File file = new File(targetUri.getPath());\r\n\r\n                        if (file.exists()) {\r\n                            file.delete();\r\n                            if (file.delete()) {\r\n                                Toast.makeText(PictureActivity.this, \"Xóa thành công: \" + targetUri.getPath(), Toast.LENGTH_SHORT).show();\r\n                            } else\r\n                                Toast.makeText(PictureActivity.this, \"Xóa không thành công: \" + targetUri.getPath(), Toast.LENGTH_SHORT).show();\r\n                        }\r\n                        finish();\r\n                        break;\r\n\r\n\r\n                }\r\n                return true;\r\n            }\r\n\r\n        });\r\n    }\r\n\r\n    private void setUpToolBar() {\r\n        // Toolbar events\r\n        toolbar_picture.inflateMenu(R.menu.menu_top_picture);\r\n        setTitleToolbar(\"\");\r\n\r\n        // Show back button\r\n        toolbar_picture.setNavigationIcon(R.drawable.abc_ic_ab_back_material);\r\n        toolbar_picture.setNavigationOnClickListener(new View.OnClickListener() {\r\n            @Override\r\n            public void onClick(View view) {\r\n                finish();\r\n            }\r\n        });\r\n\r\n        // Show info\r\n        toolbar_picture.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {\r\n            @Override\r\n            public boolean onMenuItemClick(MenuItem menuItem) {\r\n                int id = menuItem.getItemId();\r\n                switch (id) {\r\n                    case R.id.menuInfo:\r\n                        Uri targetUri = Uri.parse(\"file://\" + thumb);\r\n                        if (targetUri != null) {\r\n                            showExif(targetUri);\r\n                        }\r\n                        break;\r\n                }\r\n\r\n                return true;\r\n            }\r\n        });\r\n    }\r\n\r\n    private void showExif(Uri photoUri) {\r\n        if (photoUri != null) {\r\n\r\n            ParcelFileDescriptor parcelFileDescriptor = null;\r\n\r\n            try {\r\n                parcelFileDescriptor = getContentResolver().openFileDescriptor(photoUri, \"r\");\r\n                FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();\r\n\r\n                ExifInterface exifInterface = new ExifInterface(fileDescriptor);\r\n\r\n                BottomSheetDialog infoDialog = new BottomSheetDialog(this, R.style.BottomSheetDialogTheme);\r\n                View infoDialogView = LayoutInflater.from(getApplicationContext())\r\n                        .inflate(\r\n                                R.layout.layout_info,\r\n                                (LinearLayout) findViewById(R.id.infoContainer),\r\n                                false\r\n                        );\r\n                TextView txtInfoProducer = (TextView) infoDialogView.findViewById(R.id.txtInfoProducer);\r\n                TextView txtInfoSize = (TextView) infoDialogView.findViewById(R.id.txtInfoSize);\r\n                TextView txtInfoModel = (TextView) infoDialogView.findViewById(R.id.txtInfoModel);\r\n                TextView txtInfoFlash = (TextView) infoDialogView.findViewById(R.id.txtInfoFlash);\r\n                TextView txtInfoFocalLength = (TextView) infoDialogView.findViewById(R.id.txtInfoFocalLength);\r\n                TextView txtInfoAuthor = (TextView) infoDialogView.findViewById(R.id.txtInfoAuthor);\r\n                TextView txtInfoTime = (TextView) infoDialogView.findViewById(R.id.txtInfoTime);\r\n                TextView txtInfoName = (TextView) infoDialogView.findViewById(R.id.txtInfoName);\r\n\r\n                txtInfoName.setText(imageName);\r\n                txtInfoProducer.setText(exifInterface.getAttribute(ExifInterface.TAG_MAKE));\r\n                txtInfoSize.setText(exifInterface.getAttribute(ExifInterface.TAG_IMAGE_LENGTH) + \"x\" + exifInterface.getAttribute(ExifInterface.TAG_IMAGE_WIDTH));\r\n                txtInfoModel.setText(exifInterface.getAttribute(ExifInterface.TAG_MODEL));\r\n                txtInfoFlash.setText(exifInterface.getAttribute(ExifInterface.TAG_FLASH));\r\n                txtInfoFocalLength.setText(exifInterface.getAttribute(ExifInterface.TAG_FOCAL_LENGTH));\r\n                txtInfoAuthor.setText(exifInterface.getAttribute(ExifInterface.TAG_ARTIST));\r\n                txtInfoTime.setText(exifInterface.getAttribute(ExifInterface.TAG_DATETIME));\r\n\r\n                infoDialog.setContentView(infoDialogView);\r\n                infoDialog.show();\r\n\r\n\r\n                parcelFileDescriptor.close();\r\n\r\n\r\n            } catch (FileNotFoundException e) {\r\n                e.printStackTrace();\r\n                Toast.makeText(getApplicationContext(),\r\n                        \"Something wrong:\\n\" + e.toString(),\r\n                        Toast.LENGTH_LONG).show();\r\n            } catch (IOException e) {\r\n                e.printStackTrace();\r\n                Toast.makeText(getApplicationContext(),\r\n                        \"Something wrong:\\n\" + e.toString(),\r\n                        Toast.LENGTH_LONG).show();\r\n            }\r\n\r\n\r\n        } else {\r\n            Toast.makeText(getApplicationContext(),\r\n                    \"photoUri == null\",\r\n                    Toast.LENGTH_LONG).show();\r\n        }\r\n    }\r\n\r\n    ;\r\n\r\n    private void setUpSilder() {\r\n\r\n        slideImageAdapter = new SlideImageAdapter();\r\n        slideImageAdapter.setData(imageListThumb, imageListPath);\r\n        slideImageAdapter.setContext(getApplicationContext());\r\n        viewPager_picture.setAdapter(slideImageAdapter);\r\n        viewPager_picture.setCurrentItem(pos);\r\n\r\n        viewPager_picture.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {\r\n            @Override\r\n            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {\r\n                thumb = imageListThumb.get(position);\r\n                imgPath = imageListPath.get(position);\r\n                setTitleToolbar(thumb.substring(thumb.lastIndexOf('/') + 1));\r\n            }\r\n\r\n            @Override\r\n            public void onPageSelected(int position) {\r\n\r\n            }\r\n\r\n            @Override\r\n            public void onPageScrollStateChanged(int state) {\r\n\r\n            }\r\n        });\r\n\r\n    }\r\n\r\n    private void setDataIntent() {\r\n        intent = getIntent();\r\n        imageListPath = intent.getStringArrayListExtra(\"data_list_path\");\r\n        imageListThumb = intent.getStringArrayListExtra(\"data_list_thumb\");\r\n        pos = intent.getIntExtra(\"pos\", 0);\r\n\r\n\r\n    }\r\n\r\n    private void mappingControls() {\r\n        viewPager_picture = findViewById(R.id.viewPager_picture);\r\n        bottomNavigationView = findViewById(R.id.bottom_picture);\r\n        toolbar_picture = findViewById(R.id.toolbar_picture);\r\n    }\r\n\r\n\r\n    public void setTitleToolbar(String imageName) {\r\n        this.imageName = imageName;\r\n        toolbar_picture.setTitle(imageName);\r\n    }\r\n\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/testgallery/activities/mainActivities/PictureActivity.java b/app/src/main/java/com/example/testgallery/activities/mainActivities/PictureActivity.java
+--- a/app/src/main/java/com/example/testgallery/activities/mainActivities/PictureActivity.java	(revision d49efce55bbabbf8d024395fb1a7158f5c7d82da)
++++ b/app/src/main/java/com/example/testgallery/activities/mainActivities/PictureActivity.java	(date 1637214615344)
+@@ -16,6 +16,7 @@
+ import android.view.LayoutInflater;
+ import android.view.MenuItem;
+ import android.view.View;
++import android.widget.FrameLayout;
+ import android.widget.ImageView;
+ 
+ import androidx.annotation.NonNull;
+@@ -46,11 +47,11 @@
+ import com.smarteist.autoimageslider.SliderView;
+ 
+ 
+-public class PictureActivity extends AppCompatActivity {
++public class PictureActivity extends AppCompatActivity implements PictureInterface{
+     private ViewPager viewPager_picture;
+     private Toolbar toolbar_picture;
+     private BottomNavigationView bottomNavigationView;
+-    private boolean flag = false;
++    private FrameLayout frame_viewPager;
+     private ArrayList<String> imageListThumb;
+     private ArrayList<String> imageListPath;
+     private Intent intent;
+@@ -60,7 +61,6 @@
+     private String imgPath;
+     private String imageName;
+     private String thumb;
+-
+     @Override
+     protected void onCreate(@Nullable Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+@@ -80,22 +80,6 @@
+         setUpToolBar();
+         setUpSilder();
+         bottomNavigationViewEvents();
+-
+-        viewPager_picture.setOnClickListener(new View.OnClickListener() {
+-            @Override
+-            public void onClick(View view) {
+-                if (!flag) {
+-                    bottomNavigationView.setVisibility(View.INVISIBLE);
+-                    toolbar_picture.setVisibility(View.INVISIBLE);
+-                    flag = true;
+-                } else {
+-                    bottomNavigationView.setVisibility(View.VISIBLE);
+-                    toolbar_picture.setVisibility(View.VISIBLE);
+-                    flag = false;
+-                }
+-
+-            }
+-        });
+     }
+ 
+     private void bottomNavigationViewEvents() {
+@@ -159,6 +143,19 @@
+         });
+     }
+ 
++    private void showNavigation(boolean flag) {
++        if (!flag) {
++            bottomNavigationView.setVisibility(View.INVISIBLE);
++            toolbar_picture.setVisibility(View.INVISIBLE);
++            flag = true;
++        } else {
++            bottomNavigationView.setVisibility(View.VISIBLE);
++            toolbar_picture.setVisibility(View.VISIBLE);
++            flag = false;
++        }
++    }
++
++
+     private void setUpToolBar() {
+         // Toolbar events
+         toolbar_picture.inflateMenu(R.menu.menu_top_picture);
+@@ -262,6 +259,7 @@
+         slideImageAdapter = new SlideImageAdapter();
+         slideImageAdapter.setData(imageListThumb, imageListPath);
+         slideImageAdapter.setContext(getApplicationContext());
++        slideImageAdapter.setPictureInterface(activityPicture);
+         viewPager_picture.setAdapter(slideImageAdapter);
+         viewPager_picture.setCurrentItem(pos);
+ 
+@@ -275,7 +273,6 @@
+ 
+             @Override
+             public void onPageSelected(int position) {
+-
+             }
+ 
+             @Override
+@@ -291,7 +288,7 @@
+         imageListPath = intent.getStringArrayListExtra("data_list_path");
+         imageListThumb = intent.getStringArrayListExtra("data_list_thumb");
+         pos = intent.getIntExtra("pos", 0);
+-
++        activityPicture = this;
+ 
+     }
+ 
+@@ -299,13 +296,19 @@
+         viewPager_picture = findViewById(R.id.viewPager_picture);
+         bottomNavigationView = findViewById(R.id.bottom_picture);
+         toolbar_picture = findViewById(R.id.toolbar_picture);
++        frame_viewPager = findViewById(R.id.frame_viewPager);
+     }
+ 
+ 
+     public void setTitleToolbar(String imageName) {
+         this.imageName = imageName;
+         toolbar_picture.setTitle(imageName);
++
+     }
+ 
+ 
++    @Override
++    public void actionShow(boolean flag) {
++        showNavigation(flag);
++    }
+ }
+\ No newline at end of file
+Index: app/src/main/res/layout/activity_picture.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<RelativeLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\">\r\n\r\n    <LinearLayout\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"50dp\"\r\n        android:orientation=\"horizontal\"\r\n        android:translationZ=\"90dp\">\r\n\r\n        <include\r\n            android:id=\"@+id/toolbar_picture\"\r\n            layout=\"@layout/layout_toolbar\" />\r\n\r\n\r\n        <View\r\n            android:layout_width=\"0dp\"\r\n            android:layout_height=\"match_parent\"\r\n            android:layout_weight=\"0.9\"\r\n            android:layout_gravity=\"center\"/>\r\n\r\n    </LinearLayout>\r\n\r\n    <androidx.viewpager.widget.ViewPager\r\n        android:id=\"@+id/viewPager_picture\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"match_parent\"/>\r\n\r\n    <!--    <LinearLayout-->\r\n    <!--        android:layout_width=\"match_parent\"-->\r\n    <!--        android:layout_height=\"wrap_content\"-->\r\n    <!--        android:layout_alignParentBottom=\"true\"-->\r\n    <!--        android:orientation=\"horizontal\">-->\r\n\r\n    <!--        <ImageButton-->\r\n    <!--            android:layout_width=\"wrap_content\"-->\r\n    <!--            android:layout_height=\"wrap_content\"-->\r\n    <!--            android:src=\"@drawable/delete\" />-->\r\n\r\n    <!--    </LinearLayout>-->\r\n\r\n<!--    <com.google.android.material.bottomnavigation.BottomNavigationView-->\r\n<!--        android:id=\"@+id/top_picture\"-->\r\n<!--        android:layout_width=\"match_parent\"-->\r\n<!--        android:layout_height=\"wrap_content\"-->\r\n<!--        android:layout_alignParentTop=\"true\"-->\r\n<!--        app:itemBackground=\"@color/white\"        -->\r\n<!--        app:itemIconTint=\"@color/black\"-->\r\n<!--        app:itemTextColor=\"@color/custom_color_bottom_nav\"-->\r\n<!--        app:labelVisibilityMode=\"unlabeled\"-->\r\n<!--        app:menu=\"@menu/menu_top_picture\" />-->\r\n\r\n\r\n    <com.google.android.material.bottomnavigation.BottomNavigationView\r\n        android:id=\"@+id/bottom_picture\"\r\n        android:layout_width=\"match_parent\"\r\n        android:layout_height=\"wrap_content\"\r\n        android:layout_alignParentBottom=\"true\"\r\n        app:itemBackground=\"@color/white\"\r\n        app:itemIconTint=\"@color/black\"\r\n        app:itemTextColor=\"@color/custom_color_bottom_nav\"\r\n        app:labelVisibilityMode=\"unlabeled\"\r\n        app:menu=\"@menu/menu_bottom_picture\" />\r\n\r\n</RelativeLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/activity_picture.xml b/app/src/main/res/layout/activity_picture.xml
+--- a/app/src/main/res/layout/activity_picture.xml	(revision d49efce55bbabbf8d024395fb1a7158f5c7d82da)
++++ b/app/src/main/res/layout/activity_picture.xml	(date 1637213848952)
+@@ -22,11 +22,16 @@
+             android:layout_gravity="center"/>
+ 
+     </LinearLayout>
+-
+-    <androidx.viewpager.widget.ViewPager
+-        android:id="@+id/viewPager_picture"
+-        android:layout_width="match_parent"
+-        android:layout_height="match_parent"/>
++    <FrameLayout
++        android:id="@+id/frame_viewPager"
++        android:layout_width="match_parent"
++        android:layout_height="match_parent">
++        <androidx.viewpager.widget.ViewPager
++            android:id="@+id/viewPager_picture"
++            android:layout_width="match_parent"
++            android:layout_height="match_parent"/>
++    </FrameLayout>
++
+ 
+     <!--    <LinearLayout-->
+     <!--        android:layout_width="match_parent"-->
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"DesignSurface\">\r\n    <option name=\"filePathToZoomLevelMap\">\r\n      <map>\r\n        <entry key=\"..\\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/layout/activity_main.xml\" value=\"0.151268115942029\" />\r\n        <entry key=\"..\\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/layout/activity_picture.xml\" value=\"0.151268115942029\" />\r\n        <entry key=\"..\\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/layout/fragment_photo.xml\" value=\"0.151268115942029\" />\r\n        <entry key=\"..\\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/layout/fragment_secret.xml\" value=\"0.1793478260869565\" />\r\n        <entry key=\"..\\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/layout/item_picture.xml\" value=\"0.14447463768115942\" />\r\n        <entry key=\"..\\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/layout/item_slide_show.xml\" value=\"0.19519927536231885\" />\r\n        <entry key=\"..\\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/menu/menu_bottom_nav.xml\" value=\"0.25\" />\r\n        <entry key=\"..\\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/menu/menu_top.xml\" value=\"0.12708333333333333\" />\r\n        <entry key=\"..\\:/SimpleGallery/app/src/main/res/layout/layout_bottom_sheet_album.xml\" value=\"0.1337386018237082\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable-v24/ic_launcher_foreground.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_add_photo_list_album.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_albums.xml\" value=\"0.2755208333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_back.xml\" value=\"0.19212962962962962\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_delete.xml\" value=\"0.19212962962962962\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_delete_list_album.xml\" value=\"0.19212962962962962\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_edit.xml\" value=\"0.19212962962962962\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_gallery.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_info.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_launcher_background.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_new_album.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_photos.xml\" value=\"0.2755208333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_picture.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_search.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_share.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_star.xml\" value=\"0.2911458333333333\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/activity_main.xml\" value=\"0.1721014492753623\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/activity_picture.xml\" value=\"0.16032608695652173\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_album.xml\" value=\"0.23233695652173914\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_albums.xml\" value=\"0.176\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_favorite.xml\" value=\"0.23233695652173914\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_gallery.xml\" value=\"0.16032608695652173\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_list_album.xml\" value=\"0.41021897810218977\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_photo.xml\" value=\"0.23233695652173914\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_picture.xml\" value=\"0.16032608695652173\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_search.xml\" value=\"0.16032608695652173\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/fragment_share.xml\" value=\"0.16032608695652173\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/item_album.xml\" value=\"0.6\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/item_category.xml\" value=\"0.23233695652173914\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/layout/item_picture.xml\" value=\"0.23233695652173914\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/menu/menu_bottom_nav.xml\" value=\"0.14375\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/menu/menu_bottom_picture.xml\" value=\"0.25\" />\r\n        <entry key=\"..\\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/menu/menu_top_picture.xml\" value=\"0.25\" />\r\n        <entry key=\"..\\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/activity_camera.xml\" value=\"0.1265625\" />\r\n        <entry key=\"..\\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/activity_create_album.xml\" value=\"0.13020833333333334\" />\r\n        <entry key=\"..\\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/activity_main.xml\" value=\"0.13020833333333334\" />\r\n        <entry key=\"..\\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/activity_picture.xml\" value=\"0.13020833333333334\" />\r\n        <entry key=\"..\\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/activity_slide_show.xml\" value=\"0.13020833333333334\" />\r\n        <entry key=\"..\\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/fragment_album.xml\" value=\"0.13020833333333334\" />\r\n        <entry key=\"..\\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/fragment_favorite.xml\" value=\"0.13020833333333334\" />\r\n        <entry key=\"..\\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/fragment_list_album.xml\" value=\"0.13020833333333334\" />\r\n        <entry key=\"..\\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/fragment_photo.xml\" value=\"0.4\" />\r\n        <entry key=\"..\\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/fragment_share.xml\" value=\"0.13020833333333334\" />\r\n        <entry key=\"..\\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/item_album.xml\" value=\"0.176\" />\r\n        <entry key=\"..\\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/item_category.xml\" value=\"0.13020833333333334\" />\r\n        <entry key=\"..\\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/item_favorite_picture.xml\" value=\"0.264\" />\r\n        <entry key=\"..\\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/item_picture.xml\" value=\"0.4\" />\r\n        <entry key=\"..\\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/item_slide_show.xml\" value=\"0.13020833333333334\" />\r\n        <entry key=\"..\\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/layout_info.xml\" value=\"0.13020833333333334\" />\r\n        <entry key=\"..\\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/layout/layout_toolbar.xml\" value=\"0.13020833333333334\" />\r\n        <entry key=\"..\\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/menu/menu_bottom_picture.xml\" value=\"0.13020833333333334\" />\r\n        <entry key=\"..\\:/Users/lhqua/HongQuan/LTMobile/Project/SimpleGallery/app/src/main/res/xml/file_paths.xml\" value=\"0.1265625\" />\r\n        <entry key=\"app/src/main/res/drawable-v24/bottom_sheet_background.xml\" value=\"0.4601851851851852\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_add.xml\" value=\"0.2708333333333333\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_add_photo_list_album.xml\" value=\"0.2708333333333333\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_albums.xml\" value=\"0.2708333333333333\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_camera.xml\" value=\"0.2708333333333333\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_delete.xml\" value=\"0.2708333333333333\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_delete_list_album.xml\" value=\"0.2708333333333333\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_edit.xml\" value=\"0.2708333333333333\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_gallery.xml\" value=\"0.2708333333333333\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_info.xml\" value=\"0.3685185185185185\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_launcher_foreground.xml\" value=\"0.34629629629629627\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_picture.xml\" value=\"0.2708333333333333\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_search.xml\" value=\"0.3685185185185185\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_searchmin.xml\" value=\"0.3685185185185185\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_secret.xml\" value=\"0.2708333333333333\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_star.xml\" value=\"0.2708333333333333\" />\r\n        <entry key=\"app/src/main/res/drawable/ic_tick.xml\" value=\"0.2708333333333333\" />\r\n        <entry key=\"app/src/main/res/layout/activity_picture.xml\" value=\"0.33\" />\r\n        <entry key=\"app/src/main/res/layout/fragment_album.xml\" value=\"0.4316123188405797\" />\r\n        <entry key=\"app/src/main/res/layout/fragment_favorite.xml\" value=\"0.350462962962963\" />\r\n        <entry key=\"app/src/main/res/layout/fragment_list_album.xml\" value=\"0.2148964896489649\" />\r\n        <entry key=\"app/src/main/res/layout/item_album.xml\" value=\"0.4316123188405797\" />\r\n        <entry key=\"app/src/main/res/layout/layout_info.xml\" value=\"0.44212962962962965\" />\r\n        <entry key=\"app/src/main/res/menu/menu_album_secret.xml\" value=\"0.44212962962962965\" />\r\n        <entry key=\"app/src/main/res/menu/menu_bottom_nav.xml\" value=\"0.44212962962962965\" />\r\n        <entry key=\"app/src/main/res/menu/menu_bottom_picture.xml\" value=\"0.44212962962962965\" />\r\n        <entry key=\"app/src/main/res/menu/menu_effect_slide.xml\" value=\"0.44212962962962965\" />\r\n        <entry key=\"app/src/main/res/menu/menu_top.xml\" value=\"0.44212962962962965\" />\r\n        <entry key=\"app/src/main/res/menu/menu_top_album.xml\" value=\"0.44212962962962965\" />\r\n        <entry key=\"app/src/main/res/menu/menu_top_picture.xml\" value=\"0.44212962962962965\" />\r\n        <entry key=\"app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml\" value=\"0.34629629629629627\" />\r\n        <entry key=\"app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml\" value=\"0.34629629629629627\" />\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_11\" default=\"true\" project-jdk-name=\"11\" project-jdk-type=\"JavaSDK\" />\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision d49efce55bbabbf8d024395fb1a7158f5c7d82da)
++++ b/.idea/misc.xml	(date 1637214616580)
+@@ -11,6 +11,9 @@
+         <entry key="..\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/layout/item_slide_show.xml" value="0.19519927536231885" />
+         <entry key="..\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/menu/menu_bottom_nav.xml" value="0.25" />
+         <entry key="..\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/menu/menu_top.xml" value="0.12708333333333333" />
++        <entry key="..\:/SimpleGallery/app/src/main/res/layout/activity_main.xml" value="0.15172101449275363" />
++        <entry key="..\:/SimpleGallery/app/src/main/res/layout/activity_picture.xml" value="0.15172101449275363" />
++        <entry key="..\:/SimpleGallery/app/src/main/res/layout/item_album.xml" value="0.25679347826086957" />
+         <entry key="..\:/SimpleGallery/app/src/main/res/layout/layout_bottom_sheet_album.xml" value="0.1337386018237082" />
+         <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2911458333333333" />
+         <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_add_photo_list_album.xml" value="0.2911458333333333" />

@@ -22,11 +22,16 @@
             android:layout_gravity="center"/>
 
     </LinearLayout>
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewPager_picture"
+    <FrameLayout
+        android:id="@+id/frame_viewPager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewPager_picture"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </FrameLayout>
+
 
     <!--    <LinearLayout-->
     <!--        android:layout_width="match_parent"-->
