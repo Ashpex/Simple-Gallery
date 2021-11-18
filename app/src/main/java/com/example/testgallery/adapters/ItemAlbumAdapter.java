@@ -1,5 +1,6 @@
 package com.example.testgallery.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -40,8 +41,9 @@ public class ItemAlbumAdapter extends RecyclerView.Adapter<ItemAlbumAdapter.Item
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ItemAlbumViewHolder holder, int position) {
-        holder.onBind(album.get(position));
+    public void onBindViewHolder(@NonNull ItemAlbumViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        holder.onBind(album.get(position), position);
+
     }
 
     @Override
@@ -90,7 +92,7 @@ public class ItemAlbumAdapter extends RecyclerView.Adapter<ItemAlbumAdapter.Item
             context = itemView.getContext();
             imgPhoto = itemView.findViewById(R.id.imgPhoto);
         }
-        public void onBind(String img) {
+        public void onBind(String img, int pos) {
             // set ảnh cho imgPhoto bằng thư viện Glide
             Glide.with(context).load(img).into(imgPhoto);
             imgPhoto.setOnClickListener(new View.OnClickListener() {
@@ -99,6 +101,7 @@ public class ItemAlbumAdapter extends RecyclerView.Adapter<ItemAlbumAdapter.Item
                     Intent intent = new Intent(context, PictureActivity.class);
                     intent.putStringArrayListExtra("data_list_path", album);
                     intent.putStringArrayListExtra("data_list_thumb", album);
+                    intent.putExtra("pos", pos);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
                 }
