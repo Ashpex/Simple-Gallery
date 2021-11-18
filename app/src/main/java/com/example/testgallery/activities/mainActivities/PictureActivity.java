@@ -214,17 +214,45 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
                         break;
 
                     case R.id.menuAddSecret:
-                        String scrPath = Environment.getExternalStorageDirectory()+File.separator+".secret";
-                        File scrDir = new File(scrPath);
-                        if(!scrDir.exists()){
-                            Toast.makeText(PictureActivity.this, "Bạn chưa tạo album secret", Toast.LENGTH_SHORT).show();
-                        }
-                        else{
-                            FileUtility fu = new FileUtility();
-                            File img = new File(imgPath);
-                            fu.moveFile(imgPath,img.getName(),scrPath);
-                            Toast.makeText(PictureActivity.this, "Đã ẩn ảnh", Toast.LENGTH_SHORT).show();
-                        }
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(PictureActivity.this);
+
+                        builder.setTitle("Thông báo");
+                        builder.setMessage("Bạn có chắc muốn ẩn ảnh này không?");
+
+                        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int which) {
+                                String scrPath = Environment.getExternalStorageDirectory()+File.separator+".secret";
+                                File scrDir = new File(scrPath);
+                                if(!scrDir.exists()){
+                                    Toast.makeText(PictureActivity.this, "Bạn chưa tạo album secret", Toast.LENGTH_SHORT).show();
+                                }
+                                else{
+                                    FileUtility fu = new FileUtility();
+                                    File img = new File(imgPath);
+                                    fu.moveFile(imgPath,img.getName(),scrPath);
+                                    Toast.makeText(PictureActivity.this, "Đã ẩn ảnh", Toast.LENGTH_SHORT).show();
+                                }
+                                finish();
+                                dialog.dismiss();
+                            }
+                        });
+                        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                // Do nothing
+                                dialog.dismiss();
+                            }
+                        });
+
+                        AlertDialog alert = builder.create();
+                        alert.show();
+
+                        break;
+
                 }
 
                 return true;
