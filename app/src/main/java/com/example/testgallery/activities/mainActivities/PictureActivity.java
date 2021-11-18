@@ -1,6 +1,7 @@
 package com.example.testgallery.activities.mainActivities;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -20,6 +21,7 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.ParcelFileDescriptor;
 import android.widget.LinearLayout;
@@ -141,16 +143,41 @@ public class PictureActivity extends AppCompatActivity {
                         break;
 
                     case R.id.deletePic:
-                        File file = new File(targetUri.getPath());
 
-                        if (file.exists()) {
-                            file.delete();
-                            if (file.delete()) {
-                                Toast.makeText(PictureActivity.this, "Xóa thành công: " + targetUri.getPath(), Toast.LENGTH_SHORT).show();
-                            } else
-                                Toast.makeText(PictureActivity.this, "Xóa không thành công: " + targetUri.getPath(), Toast.LENGTH_SHORT).show();
-                        }
-                        finish();
+                        AlertDialog.Builder builder = new AlertDialog.Builder(PictureActivity.this);
+
+                        builder.setTitle("Thông báo");
+                        builder.setMessage("Bạn có chắc muốn xóa ảnh này không?");
+
+                        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+                            public void onClick(DialogInterface dialog, int which) {
+                                File file = new File(targetUri.getPath());
+
+                                if (file.exists()) {
+                                    if (file.delete()) {
+                                        Toast.makeText(PictureActivity.this, "Xóa thành công: " + targetUri.getPath(), Toast.LENGTH_SHORT).show();
+                                    } else
+                                        Toast.makeText(PictureActivity.this, "Xóa không thành công: " + targetUri.getPath(), Toast.LENGTH_SHORT).show();
+                                }
+                                finish();
+                                dialog.dismiss();
+                            }
+                        });
+
+                        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                                // Do nothing
+                                dialog.dismiss();
+                            }
+                        });
+
+                        AlertDialog alert = builder.create();
+                        alert.show();
+
                         break;
 
 
@@ -307,6 +334,35 @@ public class PictureActivity extends AppCompatActivity {
     public void setTitleToolbar(String imageName) {
         this.imageName = imageName;
         toolbar_picture.setTitle(imageName);
+    }
+
+    public void showDialog(String title, String message){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle(title);
+        builder.setMessage(message);
+
+        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+                // Do nothing but close the dialog
+
+                dialog.dismiss();
+            }
+        });
+
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                // Do nothing
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
 
