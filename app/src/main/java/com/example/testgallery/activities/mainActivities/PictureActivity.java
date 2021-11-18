@@ -223,6 +223,7 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
                             FileUtility fu = new FileUtility();
                             File img = new File(imgPath);
                             fu.moveFile(imgPath,img.getName(),scrPath);
+                            Toast.makeText(PictureActivity.this, "Đã ẩn ảnh", Toast.LENGTH_SHORT).show();
                         }
                 }
 
