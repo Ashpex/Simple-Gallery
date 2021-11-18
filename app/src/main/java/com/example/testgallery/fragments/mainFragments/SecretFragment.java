@@ -23,6 +23,7 @@ import com.example.testgallery.R;
 import com.example.testgallery.activities.mainActivities.ItemAlbumActivity;
 import com.example.testgallery.utility.FileUtility;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.textfield.TextInputLayout;
 
 
 import java.io.File;
@@ -37,6 +38,9 @@ public class SecretFragment extends Fragment {
     EditText createPass;
     EditText confirmPass;
     EditText enterPass;
+    TextInputLayout enterField;
+    TextInputLayout createField;
+    TextInputLayout confirmField;
     String password;
     SharedPreferences settings;
     private androidx.appcompat.widget.Toolbar toolbar_album;
@@ -118,7 +122,8 @@ public class SecretFragment extends Fragment {
                 String createText = createPass.getText().toString();
                 String confirmText = confirmPass.getText().toString();
                 if(createText.equals("")||confirmText.equals("")){
-                    Toast.makeText(getActivity(),"Empty input", Toast.LENGTH_SHORT).show();
+                    createField.setError("Empty input");
+                    confirmField.setError("Empty input");
                 }
                 else{
                     if(createText.equals(confirmText)){
@@ -142,7 +147,7 @@ public class SecretFragment extends Fragment {
                         accessSecret();
                     }
                     else{
-                        Toast.makeText(getActivity(),"Password doesn't match", Toast.LENGTH_SHORT).show();
+                        confirmField.setError("Password doesn't match");
                     }
                 }
             }
@@ -159,9 +164,10 @@ public class SecretFragment extends Fragment {
                 if(enterText.equals(password)){
                     Toast.makeText(getActivity(),"Password correct", Toast.LENGTH_SHORT).show();
                     accessSecret();
+                    enterPass.setText("");
                 }
                 else{
-                    Toast.makeText(getActivity(),"Wrong password", Toast.LENGTH_SHORT).show();
+                    enterField.setError("Wrong password");
                 }
             }
         });
@@ -177,6 +183,10 @@ public class SecretFragment extends Fragment {
         btnCreatePass = view.findViewById(R.id.btnCreatePass);
         createPassView = view.findViewById(R.id.frag_createpass);
         enterPassView = view.findViewById(R.id.frag_enterpass);
+        enterField = view.findViewById(R.id.enterField);
+        createField = view.findViewById(R.id.createField);
+        confirmField = view.findViewById(R.id.confirmField);
+
     }
     public void accessSecret(){
         Intent intent = new Intent(this.getContext(), ItemAlbumActivity.class);
