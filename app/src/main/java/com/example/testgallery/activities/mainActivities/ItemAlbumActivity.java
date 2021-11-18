@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
+import android.widget.Adapter;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -70,7 +71,6 @@ public class ItemAlbumActivity extends AppCompatActivity {
                 switch (id){
                     case R.id.album_item_search:
                         Toast.makeText(ItemAlbumActivity.this, "Tìm kiếm", Toast.LENGTH_SHORT).show();
-
                         break;
 
                     case R.id.album_item_add:

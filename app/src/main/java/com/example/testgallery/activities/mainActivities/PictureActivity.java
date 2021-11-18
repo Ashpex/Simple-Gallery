@@ -107,11 +107,13 @@ public class PictureActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
 
                     case R.id.sharePic:
-                        /*mDrawable = Drawable.createFromPath(imgPath);
+
+                        Drawable mDrawable = Drawable.createFromPath(imgPath);
                         Bitmap mBitmap = ((BitmapDrawable) mDrawable).getBitmap();
-                        String path = MediaStore.Images.Media.insertImage(getContentResolver(), mBitmap, "Image Description", null);*/
+                        String path = MediaStore.Images.Media.insertImage(getContentResolver(), mBitmap, "Image Description", null);
                         thumb = thumb.replaceAll(" ", "");
-                        Uri uri = Uri.parse("file://" + thumb);
+                        //Uri uri = Uri.parse("file://" + thumb);
+                        Uri uri = Uri.parse(path);
                         Intent shareIntent = new Intent(Intent.ACTION_SEND);
                         shareIntent.setType("image/*");
                         shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
@@ -124,7 +126,7 @@ public class PictureActivity extends AppCompatActivity {
                         // Set data
                         editIntent.setData(Uri.fromFile(new File(imgPath)));
                         // Set output directory
-                        editIntent.putExtra(DsPhotoEditorConstants.DS_PHOTO_EDITOR_OUTPUT_DIRECTORY, "EditedImages");
+                        editIntent.putExtra(DsPhotoEditorConstants.DS_PHOTO_EDITOR_OUTPUT_DIRECTORY, "Simple Gallery");
                         // Set toolbar color
                         editIntent.putExtra(DsPhotoEditorConstants.DS_TOOL_BAR_BACKGROUND_COLOR, Color.parseColor("#FF000000"));
                         // Set background color
