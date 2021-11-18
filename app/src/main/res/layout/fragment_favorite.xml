@@ -4,16 +4,15 @@
     android:layout_height="match_parent"
     android:background="#4B9430">
     <include
-        android:id="@+id/toolbar"
+        android:id="@+id/toolbar_favor"
         layout="@layout/layout_toolbar"/>
-    <TextView
-        android:layout_marginTop="30dp"
-        android:layout_centerInParent="true"
-        android:layout_width="wrap_content"
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="60dp"
+        android:layout_marginLeft="5dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:textColor="@color/black"
-        android:text="Favorite Fragment"/>
+        android:id="@+id/favor_category"/>
+
 
 
 </RelativeLayout>

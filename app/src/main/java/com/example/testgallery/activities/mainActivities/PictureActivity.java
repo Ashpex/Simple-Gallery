@@ -14,10 +14,12 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -35,16 +37,22 @@ import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
+import com.bumptech.glide.Glide;
 import com.dsphotoeditor.sdk.activity.DsPhotoEditorActivity;
 import com.dsphotoeditor.sdk.utils.DsPhotoEditorConstants;
 import com.example.testgallery.R;
+import com.example.testgallery.activities.mainActivities.data_favor.DataLocalManager;
 import com.example.testgallery.adapters.SlideImageAdapter;
 import com.example.testgallery.utility.FileUtility;
 import com.example.testgallery.utility.PictureInterface;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.navigation.NavigationBarView;
+import com.smarteist.autoimageslider.SliderView;
 
 
 public class PictureActivity extends AppCompatActivity implements PictureInterface{
@@ -61,6 +69,9 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
     private String imgPath;
     private String imageName;
     private String thumb;
+
+    private static Set<String> imageListFavor = DataLocalManager.getListSet();
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,8 +132,11 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
                         break;
 
                     case R.id.starPic:
-                        Toast.makeText(PictureActivity.this, "Thêm ảnh yêu thích", Toast.LENGTH_SHORT).show();
 
+                        imageListFavor.add(imgPath);
+
+                        DataLocalManager.setListImg(imageListFavor);
+                        Toast.makeText(PictureActivity.this, imageListFavor.size()+"", Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.deletePic:
@@ -184,7 +198,6 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
 
     private void setUpToolBar() {
         // Toolbar events
-
         toolbar_picture.inflateMenu(R.menu.menu_top_picture);
         setTitleToolbar("");
 
@@ -211,45 +224,17 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
                         break;
 
                     case R.id.menuAddSecret:
-
-                        AlertDialog.Builder builder = new AlertDialog.Builder(PictureActivity.this);
-
-                        builder.setTitle("Thông báo");
-                        builder.setMessage("Bạn có chắc muốn ẩn ảnh này không?");
-
-                        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-
-                            public void onClick(DialogInterface dialog, int which) {
-                                String scrPath = Environment.getExternalStorageDirectory()+File.separator+".secret";
-                                File scrDir = new File(scrPath);
-                                if(!scrDir.exists()){
-                                    Toast.makeText(PictureActivity.this, "Bạn chưa tạo album secret", Toast.LENGTH_SHORT).show();
-                                }
-                                else{
-                                    FileUtility fu = new FileUtility();
-                                    File img = new File(imgPath);
-                                    fu.moveFile(imgPath,img.getName(),scrPath);
-                                    Toast.makeText(PictureActivity.this, "Đã ẩn ảnh", Toast.LENGTH_SHORT).show();
-                                }
-                                finish();
-                                dialog.dismiss();
-                            }
-                        });
-                        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                // Do nothing
-                                dialog.dismiss();
-                            }
-                        });
-
-                        AlertDialog alert = builder.create();
-                        alert.show();
-
-                        break;
-
+                        String scrPath = Environment.getExternalStorageDirectory()+File.separator+".secret";
+                        File scrDir = new File(scrPath);
+                        if(!scrDir.exists()){
+                            Toast.makeText(PictureActivity.this, "Bạn chưa tạo album secret", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            FileUtility fu = new FileUtility();
+                            File img = new File(imgPath);
+                            fu.moveFile(imgPath,img.getName(),scrPath);
+                            Toast.makeText(PictureActivity.this, "Đã ẩn ảnh", Toast.LENGTH_SHORT).show();
+                        }
                 }
 
                 return true;

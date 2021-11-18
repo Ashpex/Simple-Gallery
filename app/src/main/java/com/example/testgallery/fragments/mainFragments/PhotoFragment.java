@@ -119,8 +119,8 @@ public class PhotoFragment extends Fragment {
                         break;
                     case R.id.menuCamera:
                         takenImg();
-                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        startActivity(intent);
+//                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//                        startActivity(intent);
                         break;
                     case R.id.menuAdd:
                         Toast.makeText(getContext(),"main",Toast.LENGTH_SHORT).show();

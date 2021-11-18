@@ -101,6 +101,7 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
         // Remove view
         container.removeView((View) object);
     }
+
     public class MyAsyncTask extends AsyncTask<Void, Integer, Void> {
         public int pos;
 
