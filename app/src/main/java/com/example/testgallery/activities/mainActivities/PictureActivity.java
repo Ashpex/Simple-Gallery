@@ -11,6 +11,7 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 
+import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -42,6 +43,7 @@ import com.dsphotoeditor.sdk.activity.DsPhotoEditorActivity;
 import com.dsphotoeditor.sdk.utils.DsPhotoEditorConstants;
 import com.example.testgallery.R;
 import com.example.testgallery.adapters.SlideImageAdapter;
+import com.example.testgallery.utility.FileUtility;
 import com.example.testgallery.utility.PictureInterface;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -123,7 +125,17 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
                         break;
 
                     case R.id.starPic:
-                        Toast.makeText(PictureActivity.this, "Thêm ảnh yêu thích", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(PictureActivity.this, "Thêm ảnh yêu thích", Toast.LENGTH_SHORT).show();
+                        String scrPath = Environment.getExternalStorageDirectory()+File.separator+".secret";
+                        File scrDir = new File(scrPath);
+                        if(!scrDir.exists()){
+                            Toast.makeText(PictureActivity.this, "Bạn chưa tạo album secret", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            FileUtility fu = new FileUtility();
+                            File img = new File(imgPath);
+                            fu.moveFile(imgPath,img.getName(),scrPath);
+                        }
                         break;
 
                     case R.id.deletePic:

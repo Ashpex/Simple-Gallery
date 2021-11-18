@@ -3,6 +3,8 @@ package com.example.testgallery.fragments.mainFragments;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +26,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class SecretFragment extends Fragment {
@@ -39,10 +42,12 @@ public class SecretFragment extends Fragment {
     private androidx.appcompat.widget.Toolbar toolbar_album;
     private LinearLayout createPassView;
     private LinearLayout enterPassView;
+    private  String secretPath;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+        secretPath = Environment.getExternalStorageDirectory()+File.separator+".secret";
         settings = getActivity().getSharedPreferences("PREFS",0);
         password = settings.getString("password","");
         view = inflater.inflate(R.layout.fragment_secret, container,false);
@@ -80,10 +85,10 @@ public class SecretFragment extends Fragment {
         });
     }
     public void deleteSecret(){
-        File scrDir = getContext().getDir("secret", getContext().MODE_PRIVATE);
+        File scrDir = new File(secretPath);
         if(scrDir.exists()){
             FileUtility fu = new FileUtility();
-            fu.deleteRecursive(getContext().getDir("secret", getContext().MODE_PRIVATE));
+            fu.deleteRecursive(scrDir);
             SharedPreferences.Editor editor = settings.edit();
             editor.putString("password","");
             editor.apply();
@@ -120,10 +125,16 @@ public class SecretFragment extends Fragment {
                         SharedPreferences.Editor editor = settings.edit();
                         editor.putString("password",createText);
                         editor.apply();
-                        File mydir = getContext().getDir("secret", getContext().MODE_PRIVATE);
-                        if (!mydir.exists())
-                        {
+
+                        File mydir = new File(secretPath);
+                        if (!mydir.exists()) {
                             mydir.mkdirs();
+                            File nonmedia = new File(Environment.getExternalStorageDirectory() + File.separator + ".secret" + File.separator + ".nonmedia");
+                            try {
+                                nonmedia.createNewFile();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                         createPassView.setVisibility(View.INVISIBLE);
                         enterPassView.setVisibility(View.VISIBLE);
@@ -177,7 +188,7 @@ public class SecretFragment extends Fragment {
         this.getContext().startActivity(intent);
     }
     public ArrayList<String> getListImg(){
-        File mydir = getContext().getDir("secret", getContext().MODE_PRIVATE);
+        File mydir = new File(secretPath);
         if (!mydir.exists())
         {
             Toast.makeText(getActivity(),"Secret doesn't exist", Toast.LENGTH_SHORT).show();
@@ -187,7 +198,9 @@ public class SecretFragment extends Fragment {
             ArrayList<String> listPath = new ArrayList<>();
             File list[] = mydir.listFiles();
             for(File file:list){
-                listPath.add(file.getPath());
+                if(!file.getName().equals(".nonmedia")) {
+                    listPath.add(file.getPath());
+                }
             }
             return listPath;
         }

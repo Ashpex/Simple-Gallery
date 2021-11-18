@@ -1,5 +1,5 @@
 package com.example.testgallery.utility;
-
+//https://stackoverflow.com/questions/4178168/how-to-programmatically-move-copy-and-delete-files-and-directories-on-sd
 import android.util.Log;
 
 import java.io.File;
@@ -45,8 +45,8 @@ public class FileUtility {
             }
 
 
-            in = new FileInputStream(inputPath + inputFile);
-            out = new FileOutputStream(outputPath + inputFile);
+            in = new FileInputStream(inputPath);
+            out = new FileOutputStream(outputPath + File.separator +inputFile);
 
             byte[] buffer = new byte[1024];
             int read;
@@ -62,7 +62,7 @@ public class FileUtility {
             out = null;
 
             // delete the original file
-            new File(inputPath + inputFile).delete();
+            new File(inputPath).delete();
 
 
         }

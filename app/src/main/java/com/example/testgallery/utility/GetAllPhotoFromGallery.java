@@ -29,7 +29,8 @@ public class GetAllPhotoFromGallery {
         String[] projection = {
                 MediaStore.MediaColumns.DATA,
                 MediaStore.Images.Media.BUCKET_DISPLAY_NAME,
-                MediaStore.Images.Media.DATE_TAKEN
+                MediaStore.Images.Media.DATE_TAKEN,
+                MediaStore.Images.Media.TITLE
         };
 
         final String orderBy = MediaStore.Images.Media.DATE_TAKEN;
