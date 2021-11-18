@@ -6,4 +6,9 @@
         android:title="Thông tin"
         android:icon="@drawable/ic_info"
         app:showAsAction="always"/>
+
+    <item android:id="@+id/menuAddSecret"
+        android:title="Ẩn ảnh"
+        android:icon="@drawable/ic_secret"
+        app:showAsAction="never"/>
 </menu>
