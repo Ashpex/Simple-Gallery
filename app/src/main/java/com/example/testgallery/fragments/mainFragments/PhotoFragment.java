@@ -2,20 +2,27 @@ package com.example.testgallery.fragments.mainFragments;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -30,14 +37,26 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.testgallery.activities.mainActivities.ItemAlbumActivity;
+import com.example.testgallery.ml.MobilenetV110224Quant;
 import com.example.testgallery.utility.GetAllPhotoFromGallery;
 import com.example.testgallery.R;
 import com.example.testgallery.models.Category;
 import com.example.testgallery.adapters.CategoryAdapter;
 import com.example.testgallery.models.Image;
+
+import org.tensorflow.lite.DataType;
+import org.tensorflow.lite.support.image.TensorImage;
+import org.tensorflow.lite.support.tensorbuffer.TensorBuffer;
 
 public class PhotoFragment extends Fragment {
     private RecyclerView recyclerView;
@@ -45,19 +64,37 @@ public class PhotoFragment extends Fragment {
     private androidx.appcompat.widget.Toolbar toolbar_photo;
     private Boolean flag = false;
     private List<Category> listImg;
-
+    private List<Image> imageList;
+    private List<String> listLabel;
+    private ArrayList<String> list_searchA;
+    private Context context;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_photo, container,false);
-
+        context = view.getContext();
+        setUpListLabel(view.getContext());
         recyclerView = view.findViewById(R.id.rcv_category);
         toolbar_photo = view.findViewById(R.id.toolbar_photo);
-
         toolBarEvents();
         setRyc();
 
         return view;
+    }
+
+    private void setUpListLabel(Context context) {
+        list_searchA = new ArrayList<>();
+        try {
+            listLabel = new ArrayList<>();
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(context.getAssets().open("label.txt")));
+            String line = "";
+            while ((line = reader.readLine()) != null) {
+                listLabel.add(line.toUpperCase());
+            }
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setRyc() {
@@ -82,12 +119,14 @@ public class PhotoFragment extends Fragment {
                         break;
                     case R.id.menuCamera:
                         takenImg();
-                        //reset fragment -> chua xu li
-//                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                        startActivity(intent);
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivity(intent);
                         break;
                     case R.id.menuAdd:
                         Toast.makeText(getContext(),"main",Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.menuSearch_Advanced:
+                        actionSearchAdvanced();
                         break;
                 }
                 return true;
@@ -95,13 +134,30 @@ public class PhotoFragment extends Fragment {
         });
     }
 
+    private void actionSearchAdvanced() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(context);
+        View view = getLayoutInflater().inflate(R.layout.layout_dialog_search_advanced, null);
+
+        dialog.setView(view);
+        dialog.setTitle("Tìm kiếm Nâng cao");
+        dialog.setPositiveButton("Tìm", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                EditText edt_search_view = view.findViewById(R.id.edt_search_view);
+                LabelAsyncTask labelAsyncTask = new LabelAsyncTask();
+                labelAsyncTask.setTitle(edt_search_view.getText().toString());
+                labelAsyncTask.execute();
+                dialogInterface.cancel();
+            }
+        });
+        dialog.show();
+    }
+
     @Override
     public void onStart() {
         super.onStart();
-        if(flag) {
-            MyAsyncTask myAsyncTask = new MyAsyncTask();
-            myAsyncTask.execute();
-        }
+        MyAsyncTask myAsyncTask = new MyAsyncTask();
+        myAsyncTask.execute();
     }
 
     @Override
@@ -189,7 +245,7 @@ public class PhotoFragment extends Fragment {
         cursor.moveToFirst();
         return cursor.getString(column_index);
     }
-    //
+
 
 
     private void eventSearch(@NonNull MenuItem item) {
@@ -214,7 +270,7 @@ public class PhotoFragment extends Fragment {
     private List<Category> getListCategory() {
         List<Category> categoryList = new ArrayList<>();
         int categoryCount = 0;
-        List<Image> imageList = GetAllPhotoFromGallery.getAllImageFromGallery(getContext());
+        imageList = GetAllPhotoFromGallery.getAllImageFromGallery(getContext());
 
         try {
             categoryList.add(new Category(imageList.get(0).getDateTaken(),new ArrayList<>()));
@@ -234,7 +290,6 @@ public class PhotoFragment extends Fragment {
     }
     public class MyAsyncTask extends AsyncTask<Void, Integer, Void> {
 
-
         @Override
         protected Void doInBackground(Void... voids) {
             listImg = getListCategory();
@@ -245,6 +300,79 @@ public class PhotoFragment extends Fragment {
         protected void onPostExecute(Void unused) {
             super.onPostExecute(unused);
             categoryAdapter.setData(listImg);
+        }
+    }
+    public class LabelAsyncTask extends AsyncTask<Void, Integer, Void> {
+        private String title;
+        private ProgressDialog mProgressDialog ;
+        public void setTitle(String title) {
+            this.title = title.toUpperCase();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            List<Image> imageList = GetAllPhotoFromGallery.getAllImageFromGallery(context);
+            list_searchA.clear();
+            for(int i =0;i<imageList.size();i++) {
+                Bitmap bitmap = getBitmap(imageList.get(i).getPath());
+                Bitmap resized = Bitmap.createScaledBitmap(bitmap, 224, 224,true);
+                try {
+                    MobilenetV110224Quant model = MobilenetV110224Quant.newInstance(context);
+                    TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 224, 224, 3}, DataType.UINT8);
+                    ByteBuffer byteBuffer = TensorImage.fromBitmap(resized).getBuffer();
+                    inputFeature0.loadBuffer(byteBuffer);
+                    TensorBuffer outputFeature0 = model.process(inputFeature0).getOutputFeature0AsTensorBuffer();
+                    int max = getMax(outputFeature0.getFloatArray());
+                    if(listLabel.get(max).toUpperCase().contains(title))
+                    list_searchA.add(imageList.get(i).getPath());
+                    model.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        private int getMax(float[] arr) {
+            int ind = 0;
+            float min = 0.0f;
+            for(int i = 0;i<1001;i++) {
+                if(arr[i] > min) {
+                    ind = i;
+                    min = arr[i];
+                }
+            }
+            return ind;
+        }
+        public Bitmap getBitmap(String path) {
+            Bitmap bitmap=null;
+            try {
+                File f= new File(path);
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+                bitmap = BitmapFactory.decodeStream(new FileInputStream(f), null, options);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return bitmap ;
+        }
+        @Override
+        protected void onPostExecute(Void unused) {
+            super.onPostExecute(unused);
+            mProgressDialog.cancel();
+            Intent intent = new Intent(context, ItemAlbumActivity.class);
+            intent.putStringArrayListExtra("data", list_searchA);
+            intent.putExtra("name", title);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mProgressDialog = new ProgressDialog(context);
+            mProgressDialog.setMessage("Loading, please wait...");
+            mProgressDialog.show();
         }
     }
 }
