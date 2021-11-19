@@ -132,6 +132,13 @@ public class FavoriteFragment extends Fragment {
     }
 
     private void slideShowEvents() {
+        Intent intent = new Intent(getView().getContext(), SlideShowActivity.class);
 
+        ArrayList<String> list = new ArrayList<>(imageListPath.size());
+        list.addAll(imageListPath);
+        intent.putStringArrayListExtra("data_slide", list);
+
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        getView().getContext().startActivity(intent);
     }
 }
