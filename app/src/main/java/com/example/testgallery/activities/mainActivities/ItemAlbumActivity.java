@@ -106,7 +106,6 @@ public class ItemAlbumActivity extends AppCompatActivity {
     }
 
     private void setData() {
-
         myAlbum = intent.getStringArrayListExtra("data");
     }
 
