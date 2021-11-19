@@ -10,13 +10,14 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/filled_edt_search_view"
+        android:id="@+id/searchViewField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         app:startIconDrawable="@drawable/ic_searchmin"
         app:startIconContentDescription="@string/search"
         app:endIconMode="clear_text"
+        app:errorEnabled="true"
         android:hint="Nhập để tìm"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 

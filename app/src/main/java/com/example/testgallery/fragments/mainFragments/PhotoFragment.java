@@ -53,6 +53,7 @@ import com.example.testgallery.R;
 import com.example.testgallery.models.Category;
 import com.example.testgallery.adapters.CategoryAdapter;
 import com.example.testgallery.models.Image;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.image.TensorImage;
@@ -144,6 +145,8 @@ public class PhotoFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 EditText edt_search_view = view.findViewById(R.id.edt_search_view);
+                //TextInputLayout searchViewField = view.findViewById(R.id.searchViewField);
+                //searchViewField.setError("Vui lòng nhập từ khóa để tìm kiếm");
                 LabelAsyncTask labelAsyncTask = new LabelAsyncTask();
                 labelAsyncTask.setTitle(edt_search_view.getText().toString());
                 labelAsyncTask.execute();

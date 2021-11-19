@@ -22,7 +22,7 @@
             android:layout_weight="0.1"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            android:src="@drawable/ic_back"
+            android:src="@drawable/abc_ic_ab_back_material"
             android:foregroundTint="@color/black"
             android:clickable="true"
             android:background="?android:attr/selectableItemBackground"/>
