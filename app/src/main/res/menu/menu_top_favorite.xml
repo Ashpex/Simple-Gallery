@@ -3,23 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/favorite_item_search"
-        android:title="Tìm kiếm"
+        android:title="@string/search"
         android:icon="@drawable/ic_searchmin"
         app:showAsAction="ifRoom|collapseActionView"
         app:actionViewClass="androidx.appcompat.widget.SearchView"/>
 
     <item android:id="@+id/favorite_item_slideshow"
-        android:title="Slideshow"
+        android:title="@string/slideshow"
         android:icon="@drawable/ic_add"
         app:showAsAction="never"/>
 
     <item android:id="@+id/favorite_item_add"
-        android:title="Thêm ảnh"
+        android:title="@string/add"
         android:icon="@drawable/ic_add"
         app:showAsAction="never"/>
 
     <item android:id="@+id/favorite_item_delete"
-        android:title="Xóa ảnh"
+        android:title="@string/delete"
         android:icon="@drawable/ic_add"
         app:showAsAction="never"/>
 </menu>

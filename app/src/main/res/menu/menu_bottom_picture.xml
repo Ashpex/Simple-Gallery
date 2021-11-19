@@ -2,18 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/sharePic"
-        android:title="Chia sẻ"
+        android:title="@string/share"
         android:icon="@drawable/ic_share" />
 
     <item android:id="@+id/editPic"
-        android:title="Chỉnh sửa ảnh"
+        android:title="@string/edit_photo"
         android:icon="@drawable/ic_edit" />
 
     <item android:id="@+id/starPic"
-        android:title="Yêu thích"
+        android:title="@string/add_to_favorite"
         android:icon="@drawable/ic_star" />
 
     <item android:id="@+id/deletePic"
-        android:title="Xóa Ảnh"
+        android:title="@string/delete"
         android:icon="@drawable/ic_delete" />
 </menu>

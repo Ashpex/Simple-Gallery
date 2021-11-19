@@ -5,7 +5,7 @@
 
     <item
         android:id="@+id/menuCamera"
-        android:title="Camera"
+        android:title="@string/camera"
         android:icon="@drawable/ic_camera"
         app:showAsAction="always"/>
 
@@ -16,24 +16,24 @@
         app:actionViewClass="androidx.appcompat.widget.SearchView"/>
 
     <item android:id="@+id/menuAdd"
-        android:title="Thêm"
+        android:title="@string/add"
         android:icon="@drawable/ic_add"
         app:showAsAction="never"/>
 
     <item android:id="@+id/menuDelete"
-        android:title="Xóa"
+        android:title="@string/delete"
         android:icon="@drawable/ic_delete"
         app:showAsAction="never"/>
 
     <item
         android:id="@+id/menuSlideshow"
-        android:title="Slideshow"
+        android:title="@string/slideshow"
         android:icon="@drawable/ic_picture"
         app:showAsAction="never"/>
 
 
     <item android:id="@+id/menuSearch_Advanced"
-        android:title="Search nâng cao"
+        android:title="@string/advance_search"
         app:showAsAction="never"/>
 
 </menu>

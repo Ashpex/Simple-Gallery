@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/menuInfo"
-        android:title="Thông tin"
+        android:title="@string/information"
         android:icon="@drawable/ic_info"
         app:showAsAction="always" />
 
     <item android:id="@+id/menuAddSecret"
-        android:title="Ẩn ảnh"
+        android:title="@string/hide_photo"
         android:icon="@drawable/ic_secret"
         app:showAsAction="never"/>
 </menu>

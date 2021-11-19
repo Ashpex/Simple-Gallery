@@ -73,15 +73,15 @@ public class ItemAlbumActivity extends AppCompatActivity {
                 int id = menuItem.getItemId();
                 switch (id){
                     case R.id.album_item_search:
-                        Toast.makeText(ItemAlbumActivity.this, "Tìm kiếm", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ItemAlbumActivity.this, "Search", Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.album_item_add:
-                        Toast.makeText(ItemAlbumActivity.this, "Thêm ảnh vào album", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ItemAlbumActivity.this, "Add images to album", Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.album_item_delete:
-                        Toast.makeText(ItemAlbumActivity.this, "Xóa", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ItemAlbumActivity.this, "Delete", Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.album_item_slideshow:

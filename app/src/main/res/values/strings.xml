@@ -1,9 +1,24 @@
 <resources>
     <string name="app_name">Simple Gallery</string>
-    <string name="picture">Ảnh</string>
-    <string name="search">Tìm kiếm</string>
-    <string name="share">Chia sẻ</string>
-    <string name="gallery">Thư viện</string>
+    <string name="picture">Photo</string>
+    <string name="search">Search</string>
+    <string name="share">Share</string>
+    <string name="gallery">Gallery</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="slideshow">Slideshow</string>
+    <string name="add">Add</string>
+    <string name="delete">Delete</string>
+    <string name="information">Information</string>
+    <string name="hide_photo">Hide photo</string>
+    <string name="photo">Photo</string>
+    <string name="album">Album</string>
+    <string name="secret">Secret</string>
+    <string name="favorite">Favorite</string>
+    <string name="change_password">Change Password</string>
+    <string name="delete_secret_album">Delete Secret Album</string>
+    <string name="advance_search">Advance Search</string>
+    <string name="camera">Camera</string>
+    <string name="edit_photo">Edit photo</string>
+    <string name="add_to_favorite">Add to favorite</string>
 </resources>

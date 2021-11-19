@@ -15,7 +15,7 @@
         app:actionViewClass="androidx.appcompat.widget.SearchView"/>
 
     <item android:id="@+id/menuAdd"
-        android:title="Thêm"
+        android:title="Create album"
         android:icon="@drawable/ic_add"
         app:showAsAction="never"/>
 

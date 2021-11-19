@@ -2,19 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/photo"
-        android:title="Photo"
+        android:title="@string/photo"
         android:icon="@drawable/ic_picture"/>
 
     <item android:id="@+id/album"
-        android:title="Album"
+        android:title="@string/album"
         android:icon="@drawable/ic_gallery"/>
 
     <item android:id="@+id/scret"
-        android:title="Secret"
+        android:title="@string/secret"
         android:icon="@drawable/ic_secret"/>
 
     <item android:id="@+id/favorite"
-        android:title="Favorite"
+        android:title="@string/favorite"
         android:icon="@drawable/ic_star"/>
 
 

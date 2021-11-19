@@ -57,15 +57,15 @@ public class FavoriteFragment extends Fragment {
                 int id = menuItem.getItemId();
                 switch (id){
                     case R.id.album_item_search:
-                        Toast.makeText(view.getContext(), "Tìm kiếm", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(view.getContext(), "Search", Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.album_item_add:
-                        Toast.makeText(view.getContext(), "Thêm ảnh vào album", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(view.getContext(), "Add images to album", Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.album_item_delete:
-                        Toast.makeText(view.getContext(), "Xóa", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(view.getContext(), "Delete", Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.album_item_slideshow:

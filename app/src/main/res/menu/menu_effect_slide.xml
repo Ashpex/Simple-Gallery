@@ -3,16 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/menu_effect1"
-        android:title="ANTICLOCKSPINTRANSFORMATION"
+        android:title="ANTI CLOCKSPIN TRANSFORMATION"
         app:showAsAction="never"/>
 
     <item
         android:id="@+id/menu_effect2"
-        android:title="ZOOMOUTTRANSFORMATION"
+        android:title="ZOOM OUT TRANSFORMATION"
         android:icon="@drawable/ic_add"
         app:showAsAction="never"/>
 
     <item android:id="@+id/menu_effect3"
-        android:title="DEPTHTRANSFORMATION"
+        android:title="DEPTH TRANSFORMATION"
         app:showAsAction="never"/>
 </menu>
