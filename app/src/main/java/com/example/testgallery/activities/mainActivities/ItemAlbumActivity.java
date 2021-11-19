@@ -106,7 +106,7 @@ public class ItemAlbumActivity extends AppCompatActivity {
     }
 
     private void setData() {
-        //imageListFavor = intent.getStringArrayListExtra("list_img_favour");
+
         myAlbum = intent.getStringArrayListExtra("data");
     }
 
