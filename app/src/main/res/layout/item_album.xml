@@ -5,7 +5,8 @@
     android:layout_height="165dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
-    android:layout_marginTop="7dp">
+    android:layout_marginTop="7dp"
+    android:clickable="true" >
     <androidx.cardview.widget.CardView
         android:id="@+id/img_item_album"
         android:layout_width="160dp"
