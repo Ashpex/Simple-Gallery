@@ -20,9 +20,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.testgallery.R;
 import com.example.testgallery.adapters.ItemAlbumAdapter;
+import com.example.testgallery.models.Image;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ItemAlbumActivity extends AppCompatActivity {
     private ArrayList<String> myAlbum;
@@ -32,6 +34,7 @@ public class ItemAlbumActivity extends AppCompatActivity {
     private String album_name;
     Toolbar toolbar_item_album;
     private SearchView searchView;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -103,6 +106,7 @@ public class ItemAlbumActivity extends AppCompatActivity {
     }
 
     private void setData() {
+        //imageListFavor = intent.getStringArrayListExtra("list_img_favour");
         myAlbum = intent.getStringArrayListExtra("data");
     }
 

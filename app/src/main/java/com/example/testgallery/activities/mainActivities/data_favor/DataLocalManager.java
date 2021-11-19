@@ -2,12 +2,7 @@ package com.example.testgallery.activities.mainActivities.data_favor;
 
 import android.content.Context;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashSet;
