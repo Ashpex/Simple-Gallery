@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#4B9430">
+    android:background="#FF69B4">
     <include
         android:id="@+id/toolbar_favor"
         layout="@layout/layout_toolbar"/>

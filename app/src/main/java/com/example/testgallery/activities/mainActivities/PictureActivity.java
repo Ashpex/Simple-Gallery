@@ -133,7 +133,9 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
 
                     case R.id.starPic:
 
-                        imageListFavor.add(imgPath);
+                        if(!imageListFavor.add(imgPath)){
+                            imageListFavor.remove(imgPath);
+                        }
 
                         DataLocalManager.setListImg(imageListFavor);
                         Toast.makeText(PictureActivity.this, imageListFavor.size()+"", Toast.LENGTH_SHORT).show();

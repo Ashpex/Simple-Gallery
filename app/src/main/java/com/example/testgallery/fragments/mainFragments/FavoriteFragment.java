@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -37,7 +38,7 @@ public class FavoriteFragment extends Fragment {
     private RecyclerView recyclerView;
     private CategoryAdapter categoryAdapter;
     private List<Category> listImg;
-    private List<String> imageListUri;
+    private List<String> imageListPath;
     private List<Image> imageList;
     private androidx.appcompat.widget.Toolbar toolbar_favor;
     private Context context;
@@ -49,37 +50,34 @@ public class FavoriteFragment extends Fragment {
         context = view.getContext();
         recyclerView = view.findViewById(R.id.favor_category);
         toolbar_favor = view.findViewById(R.id.toolbar_favor);
-        imageListUri = DataLocalManager.getListImg();
+        imageListPath = DataLocalManager.getListImg();
         setRyc();
 
         return view;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        FavoriteFragment.MyAsyncTask myAsyncTask = new FavoriteFragment.MyAsyncTask();
+        myAsyncTask.execute();
     }
 
     private void setRyc() {
         categoryAdapter = new CategoryAdapter(getContext());
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
-        categoryAdapter.setData(getListCategory());
+        categoryAdapter.setData(getListCategoryFavor());
         recyclerView.setAdapter(categoryAdapter);
 
     }
 
-    //Chua bo vo thread
-    @Override
-    public void onResume() {
-        super.onResume();
-        imageListUri = DataLocalManager.getListImg();
-        categoryAdapter = new CategoryAdapter(getContext());
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        categoryAdapter.setData(getListCategory());
-        recyclerView.setAdapter(categoryAdapter);
-    }
 
-    private List<Category> getListCategory() {
+
+    private List<Category> getListCategoryFavor() {
         List<Category> categoryList = new ArrayList<>();
         int categoryCount = 0;
-        imageList = getListImgFavor(imageListUri);
+        imageList = getListImgFavor(imageListPath);
 
         try {
             categoryList.add(new Category(imageList.get(0).getDateTaken(),new ArrayList<>()));
@@ -109,5 +107,19 @@ public class FavoriteFragment extends Fragment {
         }
 
         return listImageFavor;
+    }
+    public class MyAsyncTask extends AsyncTask<Void, Integer, Void>{
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            imageListPath = DataLocalManager.getListImg();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            super.onPostExecute(unused);
+            categoryAdapter.setData(getListCategoryFavor());
+        }
     }
 }
