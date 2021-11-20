@@ -1,0 +1,186 @@
+Index: app/src/main/java/com/example/testgallery/activities/mainActivities/ItemAlbumActivity.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.testgallery.activities.mainActivities;\n\nimport android.app.SearchManager;\nimport android.content.Context;\nimport android.content.Intent;\nimport android.os.Bundle;\nimport android.view.MenuItem;\nimport android.view.View;\n\nimport android.widget.Adapter;\nimport android.widget.Toast;\n\nimport androidx.annotation.Nullable;\nimport androidx.appcompat.app.AppCompatActivity;\nimport androidx.appcompat.widget.SearchView;\nimport androidx.appcompat.widget.Toolbar;\n\nimport androidx.recyclerview.widget.GridLayoutManager;\nimport androidx.recyclerview.widget.RecyclerView;\n\nimport com.example.testgallery.R;\nimport com.example.testgallery.adapters.ItemAlbumAdapter;\n\n\nimport java.util.ArrayList;\n\npublic class ItemAlbumActivity extends AppCompatActivity {\n    private ArrayList<String> myAlbum;\n    private RecyclerView ryc_album;\n    private RecyclerView ryc_list_album;\n    private Intent intent;\n    private String album_name;\n    Toolbar toolbar_item_album;\n    private SearchView searchView;\n\n    @Override\n    protected void onCreate(@Nullable Bundle savedInstanceState) {\n        super.onCreate(savedInstanceState);\n        setContentView(R.layout.activity_item_album);\n        intent = getIntent();\n        mappingControls();\n        setData();\n        setRyc();\n        events();\n\n\n    }\n\n\n\n    private void events() {\n\n        // Toolbar events\n        toolbar_item_album.inflateMenu(R.menu.menu_top_item_album);\n        toolbar_item_album.setTitle(album_name);\n\n        // Show back button\n        toolbar_item_album.setNavigationIcon(R.drawable.abc_ic_ab_back_material);\n        toolbar_item_album.setNavigationOnClickListener(new View.OnClickListener() {\n            @Override\n            public void onClick(View view) {\n                finish();\n            }\n        });\n\n        // Toolbar options\n        toolbar_item_album.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {\n            @Override\n            public boolean onMenuItemClick(MenuItem menuItem) {\n                int id = menuItem.getItemId();\n                switch (id){\n                    case R.id.album_item_search:\n                        Toast.makeText(ItemAlbumActivity.this, \"Tìm kiếm\", Toast.LENGTH_SHORT).show();\n                        break;\n\n                    case R.id.album_item_add:\n                        Toast.makeText(ItemAlbumActivity.this, \"Thêm ảnh vào album\", Toast.LENGTH_SHORT).show();\n                        break;\n\n                    case R.id.album_item_delete:\n                        Toast.makeText(ItemAlbumActivity.this, \"Xóa\", Toast.LENGTH_SHORT).show();\n                        break;\n\n                    case R.id.album_item_slideshow:\n                        slideShowEvents();\n                        break;\n                }\n\n                return true;\n            }\n        });\n\n    }\n\n\n\n    private void slideShowEvents() {\n        Intent intent = new Intent(ItemAlbumActivity.this, SlideShowActivity.class);\n        intent.putStringArrayListExtra(\"data_slide\", myAlbum);\n        intent.putExtra(\"name\",album_name);\n        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);\n        ItemAlbumActivity.this.startActivity(intent);\n    }\n\n    private void setData() {\n        myAlbum = intent.getStringArrayListExtra(\"data\");\n    }\n\n    private void setRyc() {\n        album_name = intent.getStringExtra(\"name\");\n        ryc_list_album.setLayoutManager(new GridLayoutManager(this, 3));\n        ryc_list_album.setAdapter(new ItemAlbumAdapter(myAlbum));\n    }\n\n    @Override\n    public boolean onSupportNavigateUp(){\n        onBackPressed();\n        return true;\n    }\n\n    private void mappingControls() {\n        ryc_list_album = findViewById(R.id.ryc_list_album);\n        toolbar_item_album = findViewById(R.id.toolbar_item_album);\n\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/testgallery/activities/mainActivities/ItemAlbumActivity.java b/app/src/main/java/com/example/testgallery/activities/mainActivities/ItemAlbumActivity.java
+--- a/app/src/main/java/com/example/testgallery/activities/mainActivities/ItemAlbumActivity.java	(revision aae37a06137fe4e523b850c3cf36cfde53b10df6)
++++ b/app/src/main/java/com/example/testgallery/activities/mainActivities/ItemAlbumActivity.java	(date 1637290446839)
+@@ -46,8 +46,6 @@
+ 
+     }
+ 
+-
+-
+     private void events() {
+ 
+         // Toolbar events
+Index: app/src/main/java/com/example/testgallery/fragments/mainFragments/FavoriteFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.testgallery.fragments.mainFragments;\n\nimport android.content.Context;\nimport android.database.Cursor;\nimport android.graphics.Bitmap;\nimport android.graphics.BitmapFactory;\nimport android.net.Uri;\nimport android.os.AsyncTask;\nimport android.os.Bundle;\nimport android.provider.MediaStore;\nimport android.util.Log;\nimport android.view.LayoutInflater;\nimport android.view.View;\nimport android.view.ViewGroup;\nimport android.widget.TextView;\nimport android.widget.Toast;\n\nimport androidx.annotation.NonNull;\nimport androidx.annotation.Nullable;\nimport androidx.fragment.app.Fragment;\nimport androidx.recyclerview.widget.LinearLayoutManager;\nimport androidx.recyclerview.widget.RecyclerView;\n\nimport com.example.testgallery.R;\nimport com.example.testgallery.activities.mainActivities.data_favor.DataLocalManager;\nimport com.example.testgallery.adapters.CategoryAdapter;\nimport com.example.testgallery.models.Category;\nimport com.example.testgallery.models.Image;\nimport com.example.testgallery.utility.GetAllPhotoFromGallery;\n\nimport java.io.File;\nimport java.text.SimpleDateFormat;\nimport java.util.ArrayList;\nimport java.util.Calendar;\nimport java.util.List;\n\npublic class FavoriteFragment extends Fragment {\n    private RecyclerView recyclerView;\n    private CategoryAdapter categoryAdapter;\n    private List<Category> listImg;\n    private List<String> imageListPath;\n    private List<Image> imageList;\n    private androidx.appcompat.widget.Toolbar toolbar_favor;\n    private Context context;\n    private TextView textView;\n    @Nullable\n    @Override\n    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {\n        View view = inflater.inflate(R.layout.fragment_favorite, container,false);\n        context = view.getContext();\n        recyclerView = view.findViewById(R.id.favor_category);\n        toolbar_favor = view.findViewById(R.id.toolbar_favor);\n        imageListPath = DataLocalManager.getListImg();\n        setRyc();\n\n        return view;\n    }\n\n    @Override\n    public void onStart() {\n        super.onStart();\n        FavoriteFragment.MyAsyncTask myAsyncTask = new FavoriteFragment.MyAsyncTask();\n        myAsyncTask.execute();\n    }\n\n    private void setRyc() {\n        categoryAdapter = new CategoryAdapter(getContext());\n        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);\n        recyclerView.setLayoutManager(linearLayoutManager);\n        categoryAdapter.setData(getListCategoryFavor());\n        recyclerView.setAdapter(categoryAdapter);\n\n    }\n\n\n\n    private List<Category> getListCategoryFavor() {\n        List<Category> categoryList = new ArrayList<>();\n        int categoryCount = 0;\n        imageList = getListImgFavor(imageListPath);\n\n        try {\n            categoryList.add(new Category(imageList.get(0).getDateTaken(),new ArrayList<>()));\n            categoryList.get(categoryCount).addListGirl(imageList.get(0));\n            for(int i=1;i<imageList.size();i++){\n                if(!imageList.get(i).getDateTaken().equals(imageList.get(i-1).getDateTaken())){\n                    categoryList.add(new Category(imageList.get(i).getDateTaken(),new ArrayList<>()));\n                    categoryCount++;\n                }\n                categoryList.get(categoryCount).addListGirl(imageList.get(i));\n            }\n            return categoryList;\n        } catch (Exception e){\n            return null;\n        }\n    }\n\n    private List<Image> getListImgFavor(List<String> imageListUri) {\n        List<Image> listImageFavor = new ArrayList<>();\n        List<Image> imageList = GetAllPhotoFromGallery.getAllImageFromGallery(context);\n        for (int i = 0; i < imageList.size(); i++) {\n            for (String st: imageListUri) {\n                if(imageList.get(i).getPath().equals(st)){\n                    listImageFavor.add(imageList.get(i));\n                }\n            }\n        }\n\n        return listImageFavor;\n    }\n    public class MyAsyncTask extends AsyncTask<Void, Integer, Void>{\n\n        @Override\n        protected Void doInBackground(Void... voids) {\n            imageListPath = DataLocalManager.getListImg();\n            return null;\n        }\n\n        @Override\n        protected void onPostExecute(Void unused) {\n            super.onPostExecute(unused);\n            categoryAdapter.setData(getListCategoryFavor());\n        }\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/java/com/example/testgallery/fragments/mainFragments/FavoriteFragment.java b/app/src/main/java/com/example/testgallery/fragments/mainFragments/FavoriteFragment.java
+--- a/app/src/main/java/com/example/testgallery/fragments/mainFragments/FavoriteFragment.java	(revision aae37a06137fe4e523b850c3cf36cfde53b10df6)
++++ b/app/src/main/java/com/example/testgallery/fragments/mainFragments/FavoriteFragment.java	(date 1637293278137)
+@@ -1,19 +1,16 @@
+ package com.example.testgallery.fragments.mainFragments;
+ 
+ import android.content.Context;
+-import android.database.Cursor;
+-import android.graphics.Bitmap;
+-import android.graphics.BitmapFactory;
+-import android.net.Uri;
++
++import android.content.Intent;
+ import android.os.AsyncTask;
+ import android.os.Bundle;
+-import android.provider.MediaStore;
+-import android.util.Log;
++
+ import android.view.LayoutInflater;
+ import android.view.View;
+ import android.view.ViewGroup;
+ import android.widget.TextView;
+-import android.widget.Toast;
++
+ 
+ import androidx.annotation.NonNull;
+ import androidx.annotation.Nullable;
+@@ -22,78 +19,47 @@
+ import androidx.recyclerview.widget.RecyclerView;
+ 
+ import com.example.testgallery.R;
++import com.example.testgallery.activities.mainActivities.ItemAlbumActivity;
+ import com.example.testgallery.activities.mainActivities.data_favor.DataLocalManager;
+ import com.example.testgallery.adapters.CategoryAdapter;
+ import com.example.testgallery.models.Category;
+ import com.example.testgallery.models.Image;
+ import com.example.testgallery.utility.GetAllPhotoFromGallery;
+ 
+-import java.io.File;
+-import java.text.SimpleDateFormat;
++
+ import java.util.ArrayList;
+-import java.util.Calendar;
+ import java.util.List;
+ 
+ public class FavoriteFragment extends Fragment {
+-    private RecyclerView recyclerView;
+-    private CategoryAdapter categoryAdapter;
+-    private List<Category> listImg;
++
+     private List<String> imageListPath;
+     private List<Image> imageList;
+     private androidx.appcompat.widget.Toolbar toolbar_favor;
+     private Context context;
++    private RecyclerView ryc_album;
++    private RecyclerView ryc_list_album;
+     private TextView textView;
+     @Nullable
+     @Override
+     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+         View view = inflater.inflate(R.layout.fragment_favorite, container,false);
+         context = view.getContext();
+-        recyclerView = view.findViewById(R.id.favor_category);
+         toolbar_favor = view.findViewById(R.id.toolbar_favor);
+         imageListPath = DataLocalManager.getListImg();
+-        setRyc();
+-
++        accessFavorite();
+         return view;
+     }
+ 
+-    @Override
+-    public void onStart() {
+-        super.onStart();
+-        FavoriteFragment.MyAsyncTask myAsyncTask = new FavoriteFragment.MyAsyncTask();
+-        myAsyncTask.execute();
++    public void accessFavorite(){
++        Intent intent = new Intent(this.getContext(), ItemAlbumActivity.class);
++        ArrayList<String> list = new ArrayList<>(getListImgFavor(imageListPath).size());
++        list.addAll(imageListPath);
++        intent.putStringArrayListExtra("data", list);
++        intent.putExtra("name", "Favorite");
++        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
++        this.getContext().startActivity(intent);
+     }
+ 
+-    private void setRyc() {
+-        categoryAdapter = new CategoryAdapter(getContext());
+-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false);
+-        recyclerView.setLayoutManager(linearLayoutManager);
+-        categoryAdapter.setData(getListCategoryFavor());
+-        recyclerView.setAdapter(categoryAdapter);
+-
+-    }
+-
+-
+-
+-    private List<Category> getListCategoryFavor() {
+-        List<Category> categoryList = new ArrayList<>();
+-        int categoryCount = 0;
+-        imageList = getListImgFavor(imageListPath);
+-
+-        try {
+-            categoryList.add(new Category(imageList.get(0).getDateTaken(),new ArrayList<>()));
+-            categoryList.get(categoryCount).addListGirl(imageList.get(0));
+-            for(int i=1;i<imageList.size();i++){
+-                if(!imageList.get(i).getDateTaken().equals(imageList.get(i-1).getDateTaken())){
+-                    categoryList.add(new Category(imageList.get(i).getDateTaken(),new ArrayList<>()));
+-                    categoryCount++;
+-                }
+-                categoryList.get(categoryCount).addListGirl(imageList.get(i));
+-            }
+-            return categoryList;
+-        } catch (Exception e){
+-            return null;
+-        }
+-    }
+ 
+     private List<Image> getListImgFavor(List<String> imageListUri) {
+         List<Image> listImageFavor = new ArrayList<>();
+@@ -108,18 +74,7 @@
+ 
+         return listImageFavor;
+     }
+-    public class MyAsyncTask extends AsyncTask<Void, Integer, Void>{
+ 
+-        @Override
+-        protected Void doInBackground(Void... voids) {
+-            imageListPath = DataLocalManager.getListImg();
+-            return null;
+-        }
+ 
+-        @Override
+-        protected void onPostExecute(Void unused) {
+-            super.onPostExecute(unused);
+-            categoryAdapter.setData(getListCategoryFavor());
+-        }
+-    }
++
+ }
+Index: app/src/main/res/layout/activity_item_album.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<LinearLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    xmlns:app=\"http://schemas.android.com/apk/res-auto\"\n    android:orientation=\"vertical\"\n    android:layout_width=\"match_parent\"\n    android:layout_height=\"match_parent\"\n    android:background=\"@color/white\">\n    <include\n        android:id=\"@+id/toolbar_item_album\"\n        layout=\"@layout/layout_toolbar\" />\n\n    <FrameLayout\n        android:id=\"@+id/container\"\n        android:layout_width=\"match_parent\"\n        android:layout_height=\"wrap_content\">\n    </FrameLayout>\n    <androidx.recyclerview.widget.RecyclerView\n        android:id=\"@+id/ryc_list_album\"\n        android:layout_width=\"wrap_content\"\n        android:layout_height=\"match_parent\"\n        android:layout_gravity=\"center\"\n        android:layout_marginTop=\"15dp\"/>\n\n</LinearLayout>\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/app/src/main/res/layout/activity_item_album.xml b/app/src/main/res/layout/activity_item_album.xml
+--- a/app/src/main/res/layout/activity_item_album.xml	(revision aae37a06137fe4e523b850c3cf36cfde53b10df6)
++++ b/app/src/main/res/layout/activity_item_album.xml	(date 1637285550923)
+@@ -3,8 +3,7 @@
+     xmlns:app="http://schemas.android.com/apk/res-auto"
+     android:orientation="vertical"
+     android:layout_width="match_parent"
+-    android:layout_height="match_parent"
+-    android:background="@color/white">
++    android:layout_height="match_parent">
+     <include
+         android:id="@+id/toolbar_item_album"
+         layout="@layout/layout_toolbar" />

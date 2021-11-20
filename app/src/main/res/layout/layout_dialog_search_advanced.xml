@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        app:startIconDrawable="@drawable/ic_searchmin"
+        app:startIconDrawable="@drawable/ic_search"
         app:startIconContentDescription="@string/search"
         app:endIconMode="clear_text"
         app:errorEnabled="true"

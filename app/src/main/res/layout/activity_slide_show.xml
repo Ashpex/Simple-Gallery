@@ -25,7 +25,8 @@
             android:src="@drawable/abc_ic_ab_back_material"
             android:foregroundTint="@color/black"
             android:clickable="true"
-            android:background="?android:attr/selectableItemBackgroundBorderless"/>
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:iconTint="?attr/colorOnBackground"/>
 
         <View
             android:layout_width="0dp"
