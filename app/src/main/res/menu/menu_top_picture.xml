@@ -5,7 +5,8 @@
     <item android:id="@+id/menuInfo"
         android:title="@string/information"
         android:icon="@drawable/ic_info"
-        app:showAsAction="always" />
+        app:showAsAction="always"
+        android:iconTint="?attr/colorOnBackground"/>
 
     <item android:id="@+id/menuAddSecret"
         android:title="@string/hide_photo"

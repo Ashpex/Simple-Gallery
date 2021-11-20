@@ -47,6 +47,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.testgallery.activities.mainActivities.ItemAlbumActivity;
+import com.example.testgallery.activities.mainActivities.SlideShowActivity;
+import com.example.testgallery.activities.mainActivities.data_favor.DataLocalManager;
 import com.example.testgallery.ml.MobilenetV110224Quant;
 import com.example.testgallery.utility.GetAllPhotoFromGallery;
 import com.example.testgallery.R;
@@ -68,6 +70,8 @@ public class PhotoFragment extends Fragment {
     private List<Image> imageList;
     private List<String> listLabel;
     private ArrayList<String> list_searchA;
+    private ArrayList<String> imageListPath;
+
     private Context context;
     @Nullable
     @Override
@@ -120,11 +124,12 @@ public class PhotoFragment extends Fragment {
                         break;
                     case R.id.menuCamera:
                         takenImg();
-//                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//                        startActivity(intent);
                         break;
                     case R.id.menuAdd:
                         Toast.makeText(getContext(),"main",Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.menuSlideshow:
+                        //slideShowEvents();
                         break;
                     case R.id.menuSearch_Advanced:
                         actionSearchAdvanced();
@@ -305,6 +310,20 @@ public class PhotoFragment extends Fragment {
             categoryAdapter.setData(listImg);
         }
     }
+
+    private void slideShowEvents() {
+
+        Intent intent = new Intent(getContext(), SlideShowActivity.class);
+        imageList = GetAllPhotoFromGallery.getAllImageFromGallery(getContext());
+        for(int i = 0; i < imageList.size(); i++){
+            imageListPath.add((imageList.get(i)).getPath());
+        }
+        intent.putStringArrayListExtra("data_slide", imageListPath);
+
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        getView().getContext().startActivity(intent);
+    }
+
     public class LabelAsyncTask extends AsyncTask<Void, Integer, Void> {
         private String title;
         private ProgressDialog mProgressDialog ;
@@ -359,6 +378,8 @@ public class PhotoFragment extends Fragment {
             }
             return bitmap ;
         }
+
+
         @Override
         protected void onPostExecute(Void unused) {
             super.onPostExecute(unused);

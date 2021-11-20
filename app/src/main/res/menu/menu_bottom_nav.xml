@@ -3,19 +3,23 @@
     <item
         android:id="@+id/photo"
         android:title="@string/photo"
-        android:icon="@drawable/ic_picture"/>
+        android:icon="@drawable/ic_picture"
+        android:iconTint="?attr/colorOnBackground"/>
 
     <item android:id="@+id/album"
         android:title="@string/album"
-        android:icon="@drawable/ic_gallery"/>
+        android:icon="@drawable/ic_gallery"
+        android:iconTint="?attr/colorOnBackground"/>
 
     <item android:id="@+id/scret"
         android:title="@string/secret"
-        android:icon="@drawable/ic_secret"/>
+        android:icon="@drawable/ic_secret"
+        android:iconTint="?attr/colorOnBackground" />
 
     <item android:id="@+id/favorite"
         android:title="@string/favorite"
-        android:icon="@drawable/ic_star"/>
+        android:icon="@drawable/ic_star"
+        android:iconTint="?attr/colorOnBackground"/>
 
 
 </menu>

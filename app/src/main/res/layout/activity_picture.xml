@@ -29,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        app:itemIconTint="@color/black"
+        app:itemIconTint="?attr/colorOnBackground"
         app:itemTextColor="@color/custom_color_bottom_nav"
         app:elevation="16dp"
         app:labelVisibilityMode="unlabeled"

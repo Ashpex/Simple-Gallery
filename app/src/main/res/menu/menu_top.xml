@@ -7,13 +7,15 @@
         android:id="@+id/menuCamera"
         android:title="@string/camera"
         android:icon="@drawable/ic_camera"
-        app:showAsAction="always"/>
+        app:showAsAction="always"
+        android:iconTint="?attr/colorOnBackground"/>
 
     <item android:id="@+id/menuSearch"
         android:title="@string/search"
         android:icon="@drawable/ic_searchmin"
         app:showAsAction="ifRoom|collapseActionView"
-        app:actionViewClass="androidx.appcompat.widget.SearchView"/>
+        app:actionViewClass="androidx.appcompat.widget.SearchView"
+        android:iconTint="?attr/colorOnBackground"/>
 
     <item android:id="@+id/menuAdd"
         android:title="@string/add"
