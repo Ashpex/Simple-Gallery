@@ -229,7 +229,7 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
                         AlertDialog.Builder builder = new AlertDialog.Builder(PictureActivity.this);
 
                         builder.setTitle("Confirm");
-                        builder.setMessage("Do you want to hide this image?");
+                        builder.setMessage("Do you want to hide/show this image?");
 
                         builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
 
@@ -242,8 +242,13 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
                                 else{
                                     FileUtility fu = new FileUtility();
                                     File img = new File(imgPath);
-                                    fu.moveFile(imgPath,img.getName(),scrPath);
-                                    Toast.makeText(PictureActivity.this, "Your image is hidden", Toast.LENGTH_SHORT).show();
+                                    if(!(scrPath+File.separator+img.getName()).equals(imgPath)){
+                                        fu.moveFile(imgPath,img.getName(),scrPath);
+                                        Toast.makeText(PictureActivity.this, "Your image is hidden", Toast.LENGTH_SHORT).show();
+                                    }
+                                    else{
+                                        fu.moveFile(imgPath,img.getName(),Environment.getExternalStorageDirectory()+File.separator+"DCIM"+File.separator+"Restore");
+                                    }
                                 }
                                 finish();
                                 dialog.dismiss();
