@@ -14,29 +14,24 @@ import android.view.ViewGroup;
 import android.app.UiModeManager;
 
 import com.example.testgallery.R;
+import com.example.testgallery.fragments.mainFragments.SettingsFragment;
 
-public class SettingsActivity extends PreferenceActivity {
-    private UiModeManager uiModeManager;
+public class SettingsActivity extends AppCompatActivity {
+    private androidx.appcompat.widget.Toolbar toolbar_settings;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        addPreferencesFromResource(R.xml.setting);
-        uiModeManager = (UiModeManager) getSystemService(UI_MODE_SERVICE);
-        LoadSettings();
-    }
+        //toolbar_settings = (Toolbar) findViewById(R.id.toolbar_settings);
+        //toolbar_settings.inflateMenu(R.menu.menu_top_settings);
+        //toolbar_settings.setTitle("Settings");
 
-    private void LoadSettings(){
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean checkNight = sp.getBoolean("nightMode",false);
-        if(checkNight){
-            uiModeManager.setNightMode(UiModeManager.MODE_NIGHT_YES);
-        }
-        else{
-            uiModeManager.setNightMode(UiModeManager.MODE_NIGHT_NO);
-        }
-
-
+        getFragmentManager().beginTransaction()
+                .replace(android.R.id.content, new SettingsFragment())
+                .commit();
 
     }
+
 
 }

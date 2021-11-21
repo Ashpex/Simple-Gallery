@@ -34,9 +34,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activities.mainActivities.SettingsActivity"
-            android:exported="false" />
+            android:exported="true"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activities.mainActivities.ItemAlbumActivity"
             android:exported="true"
@@ -55,9 +57,9 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".activities.mainActivities.MainActivity"
-            android:exported="true">
+            android:exported="true"
             android:screenOrientation="portrait" />
-        </activity>
+
         <activity
             android:name="com.dsphotoeditor.sdk.activity.DsPhotoEditorActivity"
             android:screenOrientation="portrait"
