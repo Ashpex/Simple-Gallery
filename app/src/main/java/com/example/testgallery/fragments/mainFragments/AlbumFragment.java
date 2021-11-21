@@ -3,7 +3,10 @@ package com.example.testgallery.fragments.mainFragments;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,10 +29,14 @@ import com.example.testgallery.models.Album;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import com.example.testgallery.models.Image;
 import com.example.testgallery.utility.GetAllPhotoFromGallery;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+
+import android.app.SearchManager;
+import android.widget.SearchView.OnQueryTextListener;
 
 public class AlbumFragment extends Fragment {
     private RecyclerView ryc_album;
@@ -43,7 +50,7 @@ public class AlbumFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_album, container,false);
+        view = inflater.inflate(R.layout.fragment_album, container, false);
         listImage = GetAllPhotoFromGallery.getAllImageFromGallery(view.getContext());
         toolbar_album = view.findViewById(R.id.toolbar_album);
         layout_bottom = view.findViewById(R.id.layout_bottom);
@@ -60,10 +67,9 @@ public class AlbumFragment extends Fragment {
     }
 
     private void getDataFromGallery() {
-        listImage = GetAllPhotoFromGallery.getAllImageFromGallery(view.getContext());
+//        listImage = GetAllPhotoFromGallery.getAllImageFromGallery(view.getContext());
         listAlbum = getListAlbum(listImage);
     }
-
 
     private void toolBarEvents() {
         toolbar_album.inflateMenu(R.menu.menu_top_album);
@@ -72,9 +78,9 @@ public class AlbumFragment extends Fragment {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 int id = item.getItemId();
-                switch (id){
+                switch (id) {
                     case R.id.menuSearch:
-                        //eventSearch(item);
+                        eventSearch(item);
                         break;
                     case R.id.menuCamera:
                         Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
@@ -90,13 +96,27 @@ public class AlbumFragment extends Fragment {
     }
 
     private void eventSearch(@NonNull MenuItem item) {
-        Toast.makeText(getContext(),"Search",Toast.LENGTH_SHORT).show();
-
         SearchView searchView = (SearchView) item.getActionView();
         searchView.setQueryHint("Type to search");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
+                List<Album> lisAlbumSearch = new ArrayList<>();
+
+                for (Album album : listAlbum) {
+                    if (album.getName().toLowerCase().contains(s)) {
+                        lisAlbumSearch.add(album);
+                    }
+                }
+
+                if (lisAlbumSearch.size() != 0) {
+                    albumAdapter.setData(lisAlbumSearch);
+                    synchronized (AlbumFragment.this) {
+                        AlbumFragment.this.notifyAll();
+                    }
+                } else {
+                    Toast.makeText(getContext(), "Searched album not found", Toast.LENGTH_LONG).show();
+                }
                 return false;
             }
 
@@ -105,6 +125,24 @@ public class AlbumFragment extends Fragment {
                 return false;
             }
         });
+
+        item.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                albumAdapter.setData(listAlbum);
+                synchronized (AlbumFragment.this) {
+                    AlbumFragment.this.notifyAll();
+                }
+                return true;
+            }
+        });
+
     }
 
     private void events() {
@@ -112,12 +150,12 @@ public class AlbumFragment extends Fragment {
         myAsyncTask.execute();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        MyAsyncTask myAsyncTask = new MyAsyncTask();
-        myAsyncTask.execute();
-    }
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        MyAsyncTask myAsyncTask = new MyAsyncTask();
+//        myAsyncTask.execute();
+//    }
 
     private void openCreateAlbumActivity() {
         Intent _intent = new Intent(view.getContext(), CreateAlbumActivity.class);
@@ -134,27 +172,28 @@ public class AlbumFragment extends Fragment {
         albumAdapter = new AlbumAdapter(listAlbum, getContext());
         ryc_album.setAdapter(albumAdapter);
     }
+
     @NonNull
     private List<Album> getListAlbum(List<Image> listImage) {
         List<String> ref = new ArrayList<>();
         List<Album> listAlbum = new ArrayList<>();
 
-        for(int i = 0; i< listImage.size();i++) {
+        for (int i = 0; i < listImage.size(); i++) {
             String[] _array = listImage.get(i).getThumb().split("/");
-            String _name = _array[_array.length -2];
-            if(!ref.contains(_name)) {
+            String _name = _array[_array.length - 2];
+            if (!ref.contains(_name)) {
                 ref.add(_name);
                 Album token = new Album(listImage.get(i), _name);
                 token.addItem(listImage.get(i));
                 listAlbum.add(token);
-            }
-            else {
+            } else {
                 listAlbum.get(ref.indexOf(_name)).addItem(listImage.get(i));
             }
         }
 
         return listAlbum;
     }
+
     public class MyAsyncTask extends AsyncTask<Void, Integer, Void> {
 
 

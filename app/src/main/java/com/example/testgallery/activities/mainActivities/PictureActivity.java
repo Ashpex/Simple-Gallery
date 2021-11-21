@@ -201,7 +201,7 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
     private void setUpToolBar() {
         // Toolbar events
         toolbar_picture.inflateMenu(R.menu.menu_top_picture);
-        setTitleToolbar("");
+        setTitleToolbar("abc");
 
         // Show back button
         toolbar_picture.setNavigationIcon(R.drawable.abc_ic_ab_back_material);

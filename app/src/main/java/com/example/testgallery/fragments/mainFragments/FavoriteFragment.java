@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 
@@ -20,10 +21,13 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.testgallery.R;
+import com.example.testgallery.activities.mainActivities.ItemAlbumActivity;
 import com.example.testgallery.activities.mainActivities.SlideShowActivity;
 import com.example.testgallery.activities.mainActivities.data_favor.DataLocalManager;
+import com.example.testgallery.adapters.CategoryAdapter;
 import com.example.testgallery.adapters.ItemAlbumAdapter;
 
+import com.example.testgallery.models.Category;
 import com.example.testgallery.models.Image;
 import com.example.testgallery.utility.GetAllPhotoFromGallery;
 
@@ -57,7 +61,7 @@ public class FavoriteFragment extends Fragment {
                 int id = menuItem.getItemId();
                 switch (id){
                     case R.id.album_item_search:
-                        Toast.makeText(view.getContext(), "Search", Toast.LENGTH_SHORT).show();
+                        eventSearch(menuItem);
                         break;
 
                     case R.id.album_item_add:
@@ -86,13 +90,6 @@ public class FavoriteFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        FavoriteFragment.MyAsyncTask myAsyncTask = new FavoriteFragment.MyAsyncTask();
-        myAsyncTask.execute();
-    }
-
     private void setRyc() {
 
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 3));
@@ -101,7 +98,60 @@ public class FavoriteFragment extends Fragment {
 
     }
 
+    private void eventSearch(@NonNull MenuItem item) {
+        android.widget.SearchView searchView = (android.widget.SearchView) item.getActionView();
+        searchView.setQueryHint("Type to search");
+        searchView.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                ArrayList<String> listImageSearch = new ArrayList<>();
+                for (String image : imageListPath) {
+                    if (image.toLowerCase().contains(s)) {
+                        listImageSearch.add(image);
+                    }
+                }
 
+                if (listImageSearch.size() != 0) {
+                    recyclerView.setAdapter(new ItemAlbumAdapter(listImageSearch));
+                    synchronized (FavoriteFragment.this) {
+                        FavoriteFragment.this.notifyAll();
+                    }
+                } else {
+                    Toast.makeText(getContext(), "Searched image not found", Toast.LENGTH_LONG).show();
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+
+        item.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                recyclerView.setAdapter(new ItemAlbumAdapter(new ArrayList<>(imageListPath)));
+                synchronized (FavoriteFragment.this) {
+                    FavoriteFragment.this.notifyAll();
+                }
+                return true;
+            }
+        });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        FavoriteFragment.MyAsyncTask myAsyncTask = new FavoriteFragment.MyAsyncTask();
+        myAsyncTask.execute();
+    }
 
     private List<Image> getListImgFavor(List<String> imageListUri) {
         List<Image> listImageFavor = new ArrayList<>();

@@ -28,4 +28,8 @@ public class Category {
         this.nameCategory = nameCategory;
         this.listImage = listImage;
     }
+
+    public Category(List<Image> listImage) {
+        this.listImage = listImage;
+    }
 }

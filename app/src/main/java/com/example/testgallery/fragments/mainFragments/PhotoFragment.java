@@ -50,6 +50,7 @@ import com.example.testgallery.activities.mainActivities.ItemAlbumActivity;
 import com.example.testgallery.activities.mainActivities.SlideShowActivity;
 import com.example.testgallery.activities.mainActivities.data_favor.DataLocalManager;
 import com.example.testgallery.ml.MobilenetV110224Quant;
+import com.example.testgallery.models.Album;
 import com.example.testgallery.utility.GetAllPhotoFromGallery;
 import com.example.testgallery.R;
 import com.example.testgallery.models.Category;
@@ -120,7 +121,7 @@ public class PhotoFragment extends Fragment {
                 int id = item.getItemId();
                 switch (id){
                     case R.id.menuSearch:
-                        //eventSearch(item);
+                        eventSearch(item);
                         break;
                     case R.id.menuCamera:
                         takenImg();
@@ -138,6 +139,65 @@ public class PhotoFragment extends Fragment {
                 return true;
             }
         });
+    }
+
+    private void eventSearch(@NonNull MenuItem item) {
+        SearchView searchView = (SearchView) item.getActionView();
+        searchView.setQueryHint("Type to search");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                List<Image> imageList = GetAllPhotoFromGallery.getAllImageFromGallery(getContext());
+                List<Image> listImageSearch = new ArrayList<>();
+
+                for (Image image : imageList) {
+                    String thumb = image.getThumb();
+                    if (thumb.substring(thumb.lastIndexOf('/') + 1).toLowerCase().contains(s)) {
+                        listImageSearch.add(image);
+                    }
+                }
+
+                CategoryAdapter categoryAdapter1 = new CategoryAdapter(getContext());
+                Category category = new Category(listImageSearch);
+                List<Category> categoryList = new ArrayList<>();
+                categoryList.add(category);
+
+                if (listImageSearch.size() != 0) {
+                    categoryAdapter1.setData(categoryList);
+                    recyclerView.setAdapter(categoryAdapter1);
+                    synchronized (PhotoFragment.this) {
+                        PhotoFragment.this.notifyAll();
+                    }
+                } else {
+                    Toast.makeText(getContext(), "Searched image not found", Toast.LENGTH_LONG).show();
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+
+        item.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                categoryAdapter.setData(getListCategory());
+                recyclerView.setAdapter(categoryAdapter);
+                synchronized (PhotoFragment.this) {
+                    PhotoFragment.this.notifyAll();
+                }
+                return true;
+            }
+        });
+
     }
 
     private void actionSearchAdvanced() {
@@ -252,26 +312,6 @@ public class PhotoFragment extends Fragment {
                 .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
         cursor.moveToFirst();
         return cursor.getString(column_index);
-    }
-
-
-
-    private void eventSearch(@NonNull MenuItem item) {
-        Toast.makeText(getContext(),"Search",Toast.LENGTH_SHORT).show();
-
-        SearchView searchView = (SearchView) item.getActionView();
-        searchView.setQueryHint("Type to search");
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                return false;
-            }
-        });
     }
 
     @NonNull
