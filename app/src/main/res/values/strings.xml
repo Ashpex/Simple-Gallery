@@ -24,4 +24,5 @@
     <string name="anti_clockspin_transformation">ANTI CLOCKSPIN TRANSFORMATION</string>
     <string name="zoom_out_transformation">ZOOM OUT TRANSFORMATION</string>
     <string name="depth_transformation">DEPTH TRANSFORMATION</string>
+    <string name="settings">Settings</string>
 </resources>

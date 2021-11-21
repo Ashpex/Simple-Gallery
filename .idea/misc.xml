@@ -105,6 +105,7 @@
         <entry key="app/src/main/res/layout/activity_item_album.xml" value="0.44212962962962965" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.3958333333333333" />
         <entry key="app/src/main/res/layout/activity_picture.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/activity_settings.xml" value="0.24444444444444444" />
         <entry key="app/src/main/res/layout/activity_slide_show.xml" value="0.3958333333333333" />
         <entry key="app/src/main/res/layout/fragment_album.xml" value="0.4316123188405797" />
         <entry key="app/src/main/res/layout/fragment_favorite.xml" value="0.350462962962963" />
@@ -115,6 +116,7 @@
         <entry key="app/src/main/res/layout/fragment_share.xml" value="0.3958333333333333" />
         <entry key="app/src/main/res/layout/item_album.xml" value="0.4316123188405797" />
         <entry key="app/src/main/res/layout/item_category.xml" value="0.3958333333333333" />
+        <entry key="app/src/main/res/layout/item_dev.xml" value="0.24861111111111112" />
         <entry key="app/src/main/res/layout/item_picture.xml" value="0.3958333333333333" />
         <entry key="app/src/main/res/layout/item_slide_picture.xml" value="0.44212962962962965" />
         <entry key="app/src/main/res/layout/item_slide_show.xml" value="0.44212962962962965" />
@@ -134,6 +136,7 @@
         <entry key="app/src/main/res/menu/menu_top_picture.xml" value="0.44212962962962965" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.34629629629629627" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.34629629629629627" />
+        <entry key="app/src/main/res/xml/setting.xml" value="0.24444444444444444" />
       </map>
     </option>
   </component>
