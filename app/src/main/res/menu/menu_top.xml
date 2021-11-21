@@ -38,4 +38,8 @@
         android:title="@string/advance_search"
         app:showAsAction="never"/>
 
+    <item android:id="@+id/menuSettings"
+        android:title="@string/settings"
+        app:showAsAction="never"/>
+
 </menu>

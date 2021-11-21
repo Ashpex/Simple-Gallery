@@ -16,14 +16,11 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -32,8 +29,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -48,14 +43,12 @@ import java.util.List;
 
 import com.example.testgallery.activities.mainActivities.ItemAlbumActivity;
 import com.example.testgallery.activities.mainActivities.SlideShowActivity;
-import com.example.testgallery.activities.mainActivities.data_favor.DataLocalManager;
 import com.example.testgallery.ml.MobilenetV110224Quant;
 import com.example.testgallery.utility.GetAllPhotoFromGallery;
 import com.example.testgallery.R;
 import com.example.testgallery.models.Category;
 import com.example.testgallery.adapters.CategoryAdapter;
 import com.example.testgallery.models.Image;
-import com.google.android.material.textfield.TextInputLayout;
 
 import org.tensorflow.lite.DataType;
 import org.tensorflow.lite.support.image.TensorImage;
@@ -134,6 +127,9 @@ public class PhotoFragment extends Fragment {
                     case R.id.menuSearch_Advanced:
                         actionSearchAdvanced();
                         break;
+                    case R.id.menuSettings:
+                        Intent intent = new Intent(getContext(), SettingsActivity.class);
+                        startActivity(intent);
                 }
                 return true;
             }
