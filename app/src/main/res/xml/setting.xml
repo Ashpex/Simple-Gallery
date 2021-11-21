@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-
-
     <PreferenceCategory
         android:title="General">
         <SwitchPreference
-            android:key="darkMode"
-            android:title="Dark Mode"/>
+            android:key="nightMode"
+            android:title="Night Mode"
+            android:defaultValue="false"
+            android:summaryOn="Night mode is activated"
+            android:summaryOff="Night mode is deactivated"/>
 
     </PreferenceCategory>
 

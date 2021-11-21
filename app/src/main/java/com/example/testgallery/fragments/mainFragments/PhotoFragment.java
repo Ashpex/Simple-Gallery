@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.testgallery.activities.mainActivities.ItemAlbumActivity;
+import com.example.testgallery.activities.mainActivities.SettingsActivity;
 import com.example.testgallery.activities.mainActivities.SlideShowActivity;
 import com.example.testgallery.ml.MobilenetV110224Quant;
 import com.example.testgallery.models.Album;
@@ -129,8 +130,8 @@ public class PhotoFragment extends Fragment {
                         actionSearchAdvanced();
                         break;
                     case R.id.menuSettings:
-                        //Intent intent = new Intent(getContext(), SettingsActivity.class);
-                        //startActivity(intent);
+                        Intent intent = new Intent(getContext(), SettingsActivity.class);
+                        startActivity(intent);
                 }
                 return true;
             }
