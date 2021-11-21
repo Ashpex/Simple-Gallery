@@ -17,18 +17,22 @@ import com.example.testgallery.R;
 import com.example.testgallery.fragments.mainFragments.SettingsFragment;
 
 public class SettingsActivity extends AppCompatActivity {
-    private androidx.appcompat.widget.Toolbar toolbar_settings;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //toolbar_settings = (Toolbar) findViewById(R.id.toolbar_settings);
-        //toolbar_settings.inflateMenu(R.menu.menu_top_settings);
-        //toolbar_settings.setTitle("Settings");
+        setContentView(R.layout.activity_settings);
+
+        Toolbar toolbar_settings = (Toolbar)findViewById(R.id.toolbar_settings);
+        setSupportActionBar(toolbar_settings);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar_settings.setTitle("Settings");
+        toolbar_settings.inflateMenu(R.menu.menu_top_settings);
 
         getFragmentManager().beginTransaction()
-                .replace(android.R.id.content, new SettingsFragment())
+                .replace(R.id.settingsFragment, new SettingsFragment())
                 .commit();
 
     }
