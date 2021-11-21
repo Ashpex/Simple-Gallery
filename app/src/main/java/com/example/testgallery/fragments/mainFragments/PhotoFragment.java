@@ -128,8 +128,8 @@ public class PhotoFragment extends Fragment {
                         actionSearchAdvanced();
                         break;
                     case R.id.menuSettings:
-                        Intent intent = new Intent(getContext(), SettingsActivity.class);
-                        startActivity(intent);
+                        //Intent intent = new Intent(getContext(), SettingsActivity.class);
+                        //startActivity(intent);
                 }
                 return true;
             }
