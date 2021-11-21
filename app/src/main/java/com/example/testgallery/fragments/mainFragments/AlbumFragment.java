@@ -150,12 +150,12 @@ public class AlbumFragment extends Fragment {
         myAsyncTask.execute();
     }
 
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        MyAsyncTask myAsyncTask = new MyAsyncTask();
-//        myAsyncTask.execute();
-//    }
+    @Override
+    public void onStart() {
+        super.onStart();
+        MyAsyncTask myAsyncTask = new MyAsyncTask();
+        myAsyncTask.execute();
+    }
 
     private void openCreateAlbumActivity() {
         Intent _intent = new Intent(view.getContext(), CreateAlbumActivity.class);
