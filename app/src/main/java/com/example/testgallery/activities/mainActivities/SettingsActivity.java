@@ -32,6 +32,7 @@ public class SettingsActivity extends AppCompatActivity {
                 .replace(R.id.settingsFragment, new SettingsFragment())
                 .commit();
 
+
     }
 
     private void toolbarEvents(){
