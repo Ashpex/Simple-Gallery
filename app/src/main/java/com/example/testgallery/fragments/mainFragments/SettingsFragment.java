@@ -19,13 +19,34 @@ public class SettingsFragment extends PreferenceFragment {
 
 
     public android.preference.SwitchPreference switchNight;
+    public static SharedPreferences prefs;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         addPreferencesFromResource(R.xml.setting);
-        onResume();
+        switchNight = (SwitchPreference) findPreference("nightMode");
+
+
+        switchNight.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+
+                boolean checked = ((SwitchPreference) preference)
+                        .isChecked();
+                if(checked){
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
+                }
+                else{
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                }
+                return true;
+            }
+        });
+
+
     }
 
 
@@ -49,10 +70,8 @@ public class SettingsFragment extends PreferenceFragment {
         boolean nightMode = preferences.getBoolean("nightMode", false);
 
         if (nightMode) {
-            Toast.makeText(getActivity(),"Night mode is on", Toast.LENGTH_SHORT).show();
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         } else {
-            Toast.makeText(getActivity(),"Night mode is off", Toast.LENGTH_SHORT).show();
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
     }
