@@ -99,9 +99,9 @@ public class FavoriteFragment extends Fragment {
     }
 
     private void eventSearch(@NonNull MenuItem item) {
-        android.widget.SearchView searchView = (android.widget.SearchView) item.getActionView();
+        androidx.appcompat.widget.SearchView searchView = (androidx.appcompat.widget.SearchView) item.getActionView();
         searchView.setQueryHint("Type to search");
-        searchView.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
+        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 ArrayList<String> listImageSearch = new ArrayList<>();

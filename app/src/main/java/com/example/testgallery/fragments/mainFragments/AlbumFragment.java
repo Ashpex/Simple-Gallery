@@ -3,15 +3,13 @@ package com.example.testgallery.fragments.mainFragments;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
+
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.SearchView;
+import androidx.appcompat.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,20 +21,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.testgallery.activities.mainActivities.CreateAlbumActivity;
 import com.example.testgallery.R;
-import com.example.testgallery.activities.mainActivities.SlideShowActivity;
 import com.example.testgallery.adapters.AlbumAdapter;
 import com.example.testgallery.models.Album;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import com.example.testgallery.models.Image;
 import com.example.testgallery.utility.GetAllPhotoFromGallery;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
 
-import android.app.SearchManager;
-import android.widget.SearchView.OnQueryTextListener;
 
 public class AlbumFragment extends Fragment {
     private RecyclerView ryc_album;

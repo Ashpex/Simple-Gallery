@@ -1,14 +1,12 @@
 package com.example.testgallery.activities.mainActivities;
 
-import android.app.SearchManager;
-import android.content.Context;
+
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.MenuItem;
 import android.view.View;
 
-import android.widget.Adapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,18 +19,10 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.testgallery.R;
-import com.example.testgallery.adapters.CategoryAdapter;
 import com.example.testgallery.adapters.ItemAlbumAdapter;
-import com.example.testgallery.fragments.mainFragments.AlbumFragment;
-import com.example.testgallery.fragments.mainFragments.PhotoFragment;
-import com.example.testgallery.models.Album;
-import com.example.testgallery.models.Category;
-import com.example.testgallery.models.Image;
-import com.example.testgallery.utility.GetAllPhotoFromGallery;
 
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class ItemAlbumActivity extends AppCompatActivity {
     private ArrayList<String> myAlbum;
@@ -104,9 +94,9 @@ public class ItemAlbumActivity extends AppCompatActivity {
     }
 
     private void eventSearch(@NonNull MenuItem item) {
-        android.widget.SearchView searchView = (android.widget.SearchView) item.getActionView();
+        SearchView searchView = (SearchView) item.getActionView();
         searchView.setQueryHint("Type to search");
-        searchView.setOnQueryTextListener(new android.widget.SearchView.OnQueryTextListener() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 ArrayList<String> listImageSearch = new ArrayList<>();

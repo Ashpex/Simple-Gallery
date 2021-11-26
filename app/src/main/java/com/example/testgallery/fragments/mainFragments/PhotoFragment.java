@@ -21,7 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.SearchView;
+import androidx.appcompat.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -45,7 +45,6 @@ import com.example.testgallery.activities.mainActivities.ItemAlbumActivity;
 import com.example.testgallery.activities.mainActivities.SettingsActivity;
 import com.example.testgallery.activities.mainActivities.SlideShowActivity;
 import com.example.testgallery.ml.MobilenetV110224Quant;
-import com.example.testgallery.models.Album;
 import com.example.testgallery.utility.GetAllPhotoFromGallery;
 import com.example.testgallery.R;
 import com.example.testgallery.models.Category;
