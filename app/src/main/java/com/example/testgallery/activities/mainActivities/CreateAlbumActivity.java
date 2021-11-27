@@ -2,9 +2,11 @@ package com.example.testgallery.activities.mainActivities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,27 +15,34 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.testgallery.R;
 import com.example.testgallery.adapters.ImageAdapter;
+import com.example.testgallery.adapters.ImageSelectAdapter;
 import com.example.testgallery.adapters.SlideShowAdapter;
 import com.example.testgallery.models.Image;
 import com.example.testgallery.utility.GetAllPhotoFromGallery;
+import com.example.testgallery.utility.ListTransInterface;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-public class CreateAlbumActivity extends AppCompatActivity {
+public class CreateAlbumActivity extends AppCompatActivity implements ListTransInterface {
     private ImageView img_back_create_album;
     private ImageView btnTick;
     private EditText edtTitleAlbum;
     private RecyclerView rycAddAlbum;
     private List<Image> listImage;
+    private ArrayList<Image> listImageSelected;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_album);
-
+        settingData();
         mappingControls();
         event();
     }
-
+    private void settingData() {
+        listImageSelected = new ArrayList<>();
+    }
     private void event() {
         img_back_create_album.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,10 +52,16 @@ public class CreateAlbumActivity extends AppCompatActivity {
         });
 
         setViewRyc();
+
         btnTick.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if(!TextUtils.isEmpty(edtTitleAlbum.getText())) {
+                    // ???????
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Title null", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -59,7 +74,8 @@ public class CreateAlbumActivity extends AppCompatActivity {
 
     private void setViewRyc() {
         listImage = GetAllPhotoFromGallery.getAllImageFromGallery(this);
-        ImageAdapter imageAdapter = new ImageAdapter(this);
+        ImageSelectAdapter imageAdapter = new ImageSelectAdapter(this);
+        imageAdapter.setListTransInterface(this);
         imageAdapter.setData(listImage);
         rycAddAlbum.setLayoutManager(new GridLayoutManager(this, 4));
         rycAddAlbum.setAdapter(imageAdapter);
@@ -70,5 +86,13 @@ public class CreateAlbumActivity extends AppCompatActivity {
         btnTick = findViewById(R.id.btnTick);
         edtTitleAlbum = findViewById(R.id.edtTitleAlbum);
         rycAddAlbum = findViewById(R.id.rycAddAlbum);
+    }
+
+    @Override
+    public void addList(Image img) {
+        listImageSelected.add(img);
+    }
+    public void removeList(Image img) {
+        listImageSelected.remove(img);
     }
 }
