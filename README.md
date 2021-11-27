@@ -3,7 +3,7 @@
 
 A simple gallery app for Android
 
-<a href="https://github.com/Ashpex/TipCalculator/releases/latest"><img width="200px" src="./preview/get-it-on-github.svg"></a>
+<a href="https://github.com/Ashpex/SimpleGallery/releases/latest"><img width="200px" src="https://github.com/Ashpex/TipCalculator/blob/master/preview/get-it-on-github.svg"></a>
 
 ![Screenshot](./preview/preview.png)
 
