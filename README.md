@@ -26,3 +26,5 @@ This gallery app helps you manage and view your photos with a straightforward UI
 + TargetedSDK: 30
 
 + This app will work properly on devices without any Google service installed.
+
+## Used libraries, components and icons
