@@ -1,5 +1,6 @@
 package com.example.testgallery.utility;
 //https://stackoverflow.com/questions/4178168/how-to-programmatically-move-copy-and-delete-files-and-directories-on-sd
+import android.media.MediaScannerConnection;
 import android.util.Log;
 
 import java.io.File;

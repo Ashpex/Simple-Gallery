@@ -38,9 +38,13 @@ public class SecretFragment extends Fragment {
     EditText createPass;
     EditText confirmPass;
     EditText enterPass;
+    EditText question;
+    EditText answer;
     TextInputLayout enterField;
     TextInputLayout createField;
     TextInputLayout confirmField;
+    TextInputLayout questionField;
+    TextInputLayout answerField;
     String password;
     SharedPreferences settings;
     private androidx.appcompat.widget.Toolbar toolbar_album;
@@ -78,7 +82,10 @@ public class SecretFragment extends Fragment {
                 switch (id){
                     case R.id.menuChangePass:
                         getChangePassFrag();
-
+                        break;
+                    case R.id.menuForgotPass:
+                        BottomSheetDialogFragment forgotDialog = new ForgotPassDialog();
+                        forgotDialog.show(getChildFragmentManager(),forgotDialog.getTag());
                         break;
                     case R.id.menuDeleteSecret:
                         deleteSecret();
@@ -121,14 +128,22 @@ public class SecretFragment extends Fragment {
             public void onClick(View view){
                 String createText = createPass.getText().toString();
                 String confirmText = confirmPass.getText().toString();
+                String questionText = question.getText().toString();
+                String answerText = answer.getText().toString();
                 if(createText.equals("")||confirmText.equals("")){
                     createField.setError("Empty input");
                     confirmField.setError("Empty input");
+                }
+                if(questionText.equals("")||answerText.equals("")){
+                    questionField.setError("Empty input");
+                    answerField.setError("Empty input");
                 }
                 else{
                     if(createText.equals(confirmText)){
                         SharedPreferences.Editor editor = settings.edit();
                         editor.putString("password",createText);
+                        editor.putString("question",questionText);
+                        editor.putString("answer",answerText);
                         editor.apply();
 
                         File mydir = new File(secretPath);
@@ -186,6 +201,10 @@ public class SecretFragment extends Fragment {
         enterField = view.findViewById(R.id.enterField);
         createField = view.findViewById(R.id.createField);
         confirmField = view.findViewById(R.id.confirmField);
+        questionField = view.findViewById(R.id.question_field);
+        answerField = view.findViewById(R.id.answer_field);
+        question = view.findViewById(R.id.question);
+        answer = view.findViewById(R.id.answer);
 
     }
     public void accessSecret(){
