@@ -261,7 +261,7 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
                                         imgFile.deleteOnExit();
                                         desImgFile.getPath();
                                         //fu.moveFile(imgPath,img.getName(),Environment.getExternalStorageDirectory()+File.separator+"DCIM"+File.separator+"Restore");
-                                        MediaScannerConnection.scanFile(getApplicationContext(), new String[]{scrPath}, null, null);
+                                        MediaScannerConnection.scanFile(getApplicationContext(), new String[]{outputPath}, null, null);
                                     }
                                 }
                                 finish();
