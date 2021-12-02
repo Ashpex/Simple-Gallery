@@ -42,7 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.testgallery.activities.mainActivities.ItemAlbumActivity;
-import com.example.testgallery.activities.mainActivities.MultiSelectImage;
+import com.example.testgallery.activities.subActivities.MultiSelectImage;
 import com.example.testgallery.activities.mainActivities.SettingsActivity;
 import com.example.testgallery.activities.mainActivities.SlideShowActivity;
 import com.example.testgallery.ml.MobilenetV110224Quant;

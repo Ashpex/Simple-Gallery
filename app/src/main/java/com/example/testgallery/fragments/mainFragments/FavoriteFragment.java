@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,6 +33,7 @@ import com.example.testgallery.models.Image;
 import com.example.testgallery.utility.GetAllPhotoFromGallery;
 
 
+import java.io.File;
 import java.util.ArrayList;
 
 import java.util.List;
@@ -52,7 +54,7 @@ public class FavoriteFragment extends Fragment {
         recyclerView = view.findViewById(R.id.favor_category);
         toolbar_favor = view.findViewById(R.id.toolbar_favor);
         // Toolbar events
-        toolbar_favor.inflateMenu(R.menu.menu_top_item_album);
+        toolbar_favor.inflateMenu(R.menu.menu_top_favor);
         toolbar_favor.setTitle("Favorite");
 
         toolbar_favor.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -170,6 +172,12 @@ public class FavoriteFragment extends Fragment {
         @Override
         protected Void doInBackground(Void... voids) {
             imageListPath = DataLocalManager.getListImg();
+            for(int i=0;i<imageListPath.size();i++) {
+                File file = new File(imageListPath.get(i));
+                if(!file.exists()) {
+                    imageListPath.remove(i);
+                }
+            }
             return null;
         }
 

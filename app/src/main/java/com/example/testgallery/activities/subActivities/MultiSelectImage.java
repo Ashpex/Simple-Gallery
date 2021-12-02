@@ -1,10 +1,8 @@
-package com.example.testgallery.activities.mainActivities;
+package com.example.testgallery.activities.subActivities;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,19 +13,15 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.text.Editable;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.testgallery.R;
-import com.example.testgallery.adapters.CategoryAdapter;
+import com.example.testgallery.activities.mainActivities.SlideShowActivity;
 import com.example.testgallery.adapters.CategoryMultiAdapter;
-import com.example.testgallery.adapters.ItemAlbumAdapter;
-import com.example.testgallery.models.Album;
 import com.example.testgallery.models.Category;
 import com.example.testgallery.models.Image;
 import com.example.testgallery.utility.GetAllPhotoFromGallery;

@@ -20,6 +20,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.testgallery.R;
+import com.example.testgallery.activities.subActivities.ItemAlbumMultiSelectActivity;
+import com.example.testgallery.activities.subActivities.MultiSelectImage;
 import com.example.testgallery.adapters.ItemAlbumAdapter;
 
 
@@ -33,7 +35,7 @@ public class ItemAlbumActivity extends AppCompatActivity {
     private String album_name;
     Toolbar toolbar_item_album;
     private SearchView searchView;
-
+    private static int REQUEST_CODE_CHOOSE = 55;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,6 +46,14 @@ public class ItemAlbumActivity extends AppCompatActivity {
         setData();
         setRyc();
         events();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_CHOOSE) {
+            finish();
+        }
     }
 
     private void setRyc() {
@@ -78,14 +88,12 @@ public class ItemAlbumActivity extends AppCompatActivity {
                         eventSearch(menuItem);
                         break;
 
-                    /*case R.id.album_item_add:
-                        Toast.makeText(ItemAlbumActivity.this, "Add images to album", Toast.LENGTH_SHORT).show();
+                    case R.id.menuChoose:
+                        Intent intent_mul = new Intent(ItemAlbumActivity.this, ItemAlbumMultiSelectActivity.class);
+                        intent_mul.putStringArrayListExtra("data_1", myAlbum);
+                        intent_mul.putExtra("name_1", album_name);
+                        startActivityForResult(intent_mul, REQUEST_CODE_CHOOSE);
                         break;
-
-                    case R.id.album_item_delete:
-                        Toast.makeText(ItemAlbumActivity.this, "Delete", Toast.LENGTH_SHORT).show();
-                        break;*/
-
                     case R.id.album_item_slideshow:
                         slideShowEvents();
                         break;
