@@ -1,6 +1,7 @@
 package com.example.testgallery.activities.mainActivities;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -17,6 +18,7 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.karan.churi.PermissionManager.PermissionManager;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     ViewPager2 viewPager;
     PermissionManager permission;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +41,14 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView = findViewById(R.id.bottom_nav);
         viewPager = findViewById(R.id.view_pager);
+        permission = new PermissionManager() {
 
-        // Show toolbar
-        /*toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);*/
+            @Override
+            public void ifCancelledAndCannotRequest(Activity activity) {
+
+            }
+        };
+
         setUpViewPager();
 
 
@@ -76,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        requestPermission();
+        permission.checkAndRequestPermissions(this);
     }
 
 
@@ -119,19 +126,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void requestPermission(){
-        permission = new PermissionManager() {
-        };
-        permission.checkAndRequestPermissions(this);
-
-
-    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,String permissions[], int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         permission.checkResult(requestCode, permissions, grantResults);
     }
+
 
     private void loadSettings(){
         PreferenceManager.setDefaultValues(this, R.xml.setting, false);
