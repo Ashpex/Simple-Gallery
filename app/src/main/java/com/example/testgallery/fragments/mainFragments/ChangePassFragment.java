@@ -31,9 +31,17 @@ public class ChangePassFragment extends BottomSheetDialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_secret_changepass, container,false);
+        setStyle(STYLE_NORMAL, R.style.DialogStyle);
         settings = getActivity().getSharedPreferences("PREFS",0);
         password = settings.getString("password","");
         getParentFragmentManager().beginTransaction().add(this,"ChangePass_frag");
+        if(password.equals("")){
+            Toast.makeText(getActivity(),"No password detected", Toast.LENGTH_SHORT).show();
+            Fragment thisFrag = getParentFragmentManager().findFragmentByTag("ChangePass_frag");
+            getParentFragmentManager().beginTransaction()
+                    .remove(thisFrag)
+                    .commit();
+        }
         mapping();
         event();
         return view;
