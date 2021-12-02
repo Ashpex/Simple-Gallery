@@ -12,4 +12,8 @@
         android:title="@string/hide_photo"
         android:icon="@drawable/ic_secret"
         app:showAsAction="never"/>
+    <item android:id="@+id/setWallpaper"
+        android:title="@string/set_wallpaper"
+        android:icon="@drawable/ic_secret"
+        app:showAsAction="never"/>
 </menu>
