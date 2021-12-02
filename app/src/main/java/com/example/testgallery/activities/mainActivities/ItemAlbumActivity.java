@@ -16,6 +16,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.testgallery.R;
@@ -48,6 +49,12 @@ public class ItemAlbumActivity extends AppCompatActivity {
     private void setRyc() {
         album_name = intent.getStringExtra("name");
         ryc_list_album.setLayoutManager(new GridLayoutManager(this, 3));
+        ryc_list_album.setAdapter(new ItemAlbumAdapter(myAlbum));
+    }
+
+    private void setLinearLayout(){
+        album_name = intent.getStringExtra("name");
+        ryc_list_album.setLayoutManager(new LinearLayoutManager(this));
         ryc_list_album.setAdapter(new ItemAlbumAdapter(myAlbum));
     }
 
