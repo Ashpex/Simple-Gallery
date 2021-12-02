@@ -41,16 +41,14 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView = findViewById(R.id.bottom_nav);
         viewPager = findViewById(R.id.view_pager);
-        permission = new PermissionManager() {
 
+        permission = new PermissionManager() {
             @Override
             public void ifCancelledAndCannotRequest(Activity activity) {
-
             }
         };
-
+        permission.checkAndRequestPermissions(this);
         setUpViewPager();
-
 
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
@@ -83,7 +81,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        permission.checkAndRequestPermissions(this);
+
+
     }
 
 
