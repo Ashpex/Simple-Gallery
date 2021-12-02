@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 import android.preference.Preference;
 import android.preference.SwitchPreference;
-import android.widget.Toast;
 
 import com.example.testgallery.R;
 
