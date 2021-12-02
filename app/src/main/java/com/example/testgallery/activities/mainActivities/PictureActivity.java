@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -253,6 +254,7 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
                                     }
                                     else{
                                         fu.moveFile(imgPath,img.getName(),Environment.getExternalStorageDirectory()+File.separator+"DCIM"+File.separator+"Restore");
+                                        MediaScannerConnection.scanFile(getApplicationContext(), new String[]{scrPath}, null, null);
                                     }
                                 }
                                 finish();
