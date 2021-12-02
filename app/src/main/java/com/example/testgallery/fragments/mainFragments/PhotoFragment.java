@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.testgallery.activities.mainActivities.ItemAlbumActivity;
+import com.example.testgallery.activities.mainActivities.MultiSelectImage;
 import com.example.testgallery.activities.mainActivities.SettingsActivity;
 import com.example.testgallery.activities.mainActivities.SlideShowActivity;
 import com.example.testgallery.ml.MobilenetV110224Quant;
@@ -119,14 +120,12 @@ public class PhotoFragment extends Fragment {
                     case R.id.menuCamera:
                         takenImg();
                         break;
-                    case R.id.menuAdd:
-                        Toast.makeText(getContext(),"main",Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.menuSlideshow:
-                        //slideShowEvents();
-                        break;
                     case R.id.menuSearch_Advanced:
                         actionSearchAdvanced();
+                        break;
+                    case R.id.menuChoose:
+                        Intent intent_mul = new Intent(getContext(), MultiSelectImage.class);
+                        startActivity(intent_mul);
                         break;
                     case R.id.menuSettings:
                         Intent intent = new Intent(getContext(), SettingsActivity.class);

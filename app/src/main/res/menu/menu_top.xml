@@ -17,22 +17,9 @@
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         android:iconTint="?attr/colorOnBackground"/>
 
-    <item android:id="@+id/menuAdd"
-        android:title="@string/add"
-        android:icon="@drawable/ic_add"
+    <item android:id="@+id/menuChoose"
+        android:title="@string/choose"
         app:showAsAction="never"/>
-
-    <item android:id="@+id/menuDelete"
-        android:title="@string/delete"
-        android:icon="@drawable/ic_delete"
-        app:showAsAction="never"/>
-
-    <item
-        android:id="@+id/menuSlideshow"
-        android:title="@string/slideshow"
-        android:icon="@drawable/ic_picture"
-        app:showAsAction="never"/>
-
 
     <item android:id="@+id/menuSearch_Advanced"
         android:title="@string/advance_search"

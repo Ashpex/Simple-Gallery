@@ -25,6 +25,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TestGallery">
         <activity
+            android:name=".activities.mainActivities.MultiSelectImage"
+            android:exported="true" />
+        <activity
             android:name=".activities.mainActivities.SplashActivity"
             android:exported="true">
             <intent-filter>
@@ -33,11 +36,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activities.mainActivities.SettingsActivity"
             android:exported="true"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".activities.mainActivities.ItemAlbumActivity"
             android:exported="true"
@@ -58,7 +60,6 @@
             android:name=".activities.mainActivities.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
-
         <activity
             android:name="com.dsphotoeditor.sdk.activity.DsPhotoEditorActivity"
             android:screenOrientation="portrait"

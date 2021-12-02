@@ -70,7 +70,6 @@ public class ImageAdapter extends RecyclerView.Adapter<ImageAdapter.ImageViewHol
             @Override
             public void onClick(View view) {
                 intent = new Intent(context, PictureActivity.class);
-
                 MyAsyncTask myAsyncTask = new MyAsyncTask();
                 myAsyncTask.setPos(position);
                 myAsyncTask.execute();

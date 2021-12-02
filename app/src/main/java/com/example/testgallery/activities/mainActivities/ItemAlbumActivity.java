@@ -52,11 +52,7 @@ public class ItemAlbumActivity extends AppCompatActivity {
         ryc_list_album.setAdapter(new ItemAlbumAdapter(myAlbum));
     }
 
-    private void setLinearLayout(){
-        album_name = intent.getStringExtra("name");
-        ryc_list_album.setLayoutManager(new LinearLayoutManager(this));
-        ryc_list_album.setAdapter(new ItemAlbumAdapter(myAlbum));
-    }
+
 
     private void events() {
         // Toolbar events
@@ -82,13 +78,13 @@ public class ItemAlbumActivity extends AppCompatActivity {
                         eventSearch(menuItem);
                         break;
 
-                    case R.id.album_item_add:
+                    /*case R.id.album_item_add:
                         Toast.makeText(ItemAlbumActivity.this, "Add images to album", Toast.LENGTH_SHORT).show();
                         break;
 
                     case R.id.album_item_delete:
                         Toast.makeText(ItemAlbumActivity.this, "Delete", Toast.LENGTH_SHORT).show();
-                        break;
+                        break;*/
 
                     case R.id.album_item_slideshow:
                         slideShowEvents();
