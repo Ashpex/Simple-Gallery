@@ -53,6 +53,7 @@ import com.dsphotoeditor.sdk.utils.DsPhotoEditorConstants;
 import com.example.testgallery.R;
 import com.example.testgallery.activities.mainActivities.data_favor.DataLocalManager;
 import com.example.testgallery.adapters.SlideImageAdapter;
+import com.example.testgallery.models.Image;
 import com.example.testgallery.utility.FileUtility;
 import com.example.testgallery.utility.PictureInterface;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -253,7 +254,13 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
                                         Toast.makeText(PictureActivity.this, "Your image is hidden", Toast.LENGTH_SHORT).show();
                                     }
                                     else{
-                                        fu.moveFile(imgPath,img.getName(),Environment.getExternalStorageDirectory()+File.separator+"DCIM"+File.separator+"Restore");
+                                        String outputPath = Environment.getExternalStorageDirectory()+File.separator+"DCIM" + File.separator + "Restore";
+                                        File imgFile = new File(img.getPath());
+                                        File desImgFile = new File(outputPath,"Restore"+"_"+imgFile.getName());
+                                        imgFile.renameTo(desImgFile);
+                                        imgFile.deleteOnExit();
+                                        desImgFile.getPath();
+                                        //fu.moveFile(imgPath,img.getName(),Environment.getExternalStorageDirectory()+File.separator+"DCIM"+File.separator+"Restore");
                                         MediaScannerConnection.scanFile(getApplicationContext(), new String[]{scrPath}, null, null);
                                     }
                                 }
