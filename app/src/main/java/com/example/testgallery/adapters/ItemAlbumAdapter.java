@@ -1,6 +1,7 @@
 package com.example.testgallery.adapters;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -25,7 +26,7 @@ import java.util.List;
 public class ItemAlbumAdapter extends RecyclerView.Adapter<ItemAlbumAdapter.ItemAlbumViewHolder> {
     private ArrayList<String> album;
     private ImageView imgPhoto;
-
+    private static int REQUEST_CODE_PIC = 10;
     public ItemAlbumAdapter(ArrayList<String> album) {
         this.album = album;
     }
@@ -71,8 +72,8 @@ public class ItemAlbumAdapter extends RecyclerView.Adapter<ItemAlbumAdapter.Item
                     intent.putStringArrayListExtra("data_list_path", album);
                     intent.putStringArrayListExtra("data_list_thumb", album);
                     intent.putExtra("pos", pos);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    context.startActivity(intent);
+
+                    ((Activity)context).startActivityForResult(intent,REQUEST_CODE_PIC);
                 }
             });
         }

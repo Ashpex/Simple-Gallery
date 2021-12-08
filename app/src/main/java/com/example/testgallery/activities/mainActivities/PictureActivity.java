@@ -121,7 +121,7 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
                         Bitmap mBitmap = ((BitmapDrawable) mDrawable).getBitmap();
                         String path = MediaStore.Images.Media.insertImage(getContentResolver(), mBitmap, "Image Description", null);
                         thumb = thumb.replaceAll(" ", "");
-                        //Uri uri = Uri.parse("file://" + thumb);
+
                         Uri uri = Uri.parse(path);
                         Intent shareIntent = new Intent(Intent.ACTION_SEND);
                         shareIntent.setType("image/*");
@@ -264,14 +264,21 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
                                     }
                                     else{
                                         String outputPath = Environment.getExternalStorageDirectory()+File.separator+"DCIM" + File.separator + "Restore";
+                                        File folder = new File(outputPath);
                                         File imgFile = new File(img.getPath());
                                         File desImgFile = new File(outputPath,imgFile.getName());
+                                        if(!folder.exists()) {
+                                            folder.mkdir();
+                                        }
                                         imgFile.renameTo(desImgFile);
                                         imgFile.deleteOnExit();
                                         desImgFile.getPath();
                                         MediaScannerConnection.scanFile(getApplicationContext(), new String[]{outputPath+File.separator+desImgFile.getName()}, null, null);
                                     }
                                 }
+                                Intent intentResult = new Intent();
+                                intentResult.putExtra("path_img", imgPath);
+                                setResult(RESULT_OK, intentResult);
                                 finish();
                                 dialog.dismiss();
                             }

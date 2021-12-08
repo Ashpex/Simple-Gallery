@@ -31,6 +31,7 @@ import androidx.transition.Transition;
 import com.example.testgallery.R;
 import com.example.testgallery.activities.mainActivities.data_favor.DataLocalManager;
 import com.example.testgallery.activities.subActivities.ItemAlbumMultiSelectActivity;
+import com.example.testgallery.activities.subActivities.ItemSecretMultiSelectActivity;
 import com.example.testgallery.activities.subActivities.MultiSelectImage;
 import com.example.testgallery.adapters.ItemAlbumAdapter;
 import com.example.testgallery.adapters.ItemAlbumAdapter2;
@@ -52,9 +53,11 @@ public class ItemAlbumActivity extends AppCompatActivity {
     private ItemAlbumAdapter2 itemAlbumAdapter2;
     private ItemAlbumAdapter3 itemAlbumAdapter3;
     private int spanCount;
-    private int isScret;
+    private int isSecret;
+    private static int REQUEST_CODE_PIC = 10;
     private static int REQUEST_CODE_CHOOSE = 55;
     private static int REQUEST_CODE_ADD = 56;
+    private static int REQUEST_CODE_SECRET = 56;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,6 +95,17 @@ public class ItemAlbumActivity extends AppCompatActivity {
                     myAlbum.remove(resultList);
                     spanAction();
                 }
+            }
+        }
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_SECRET) {
+            MyAsyncTask myAsyncTask = new MyAsyncTask();
+            myAsyncTask.execute();
+        }
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_PIC) {
+            String path_img = data.getStringExtra("path_img");
+            if(isSecret == 1) {
+                myAlbum.remove(path_img);
+                spanAction();
             }
         }
     }
@@ -171,11 +185,18 @@ public class ItemAlbumActivity extends AppCompatActivity {
                         spanCountEvent();
                         break;
                     case R.id.menuChoose:
-                        Intent intent_mul = new Intent(ItemAlbumActivity.this, ItemAlbumMultiSelectActivity.class);
-                        intent_mul.putStringArrayListExtra("data_1", myAlbum);
-                        intent_mul.putExtra("name_1", album_name);
-                        intent_mul.putExtra("path_folder", path_folder);
-                        startActivityForResult(intent_mul, REQUEST_CODE_CHOOSE);
+                        if(isSecret == 0) {
+                            Intent intent_mul = new Intent(ItemAlbumActivity.this, ItemAlbumMultiSelectActivity.class);
+                            intent_mul.putStringArrayListExtra("data_1", myAlbum);
+                            intent_mul.putExtra("name_1", album_name);
+                            intent_mul.putExtra("path_folder", path_folder);
+                            startActivityForResult(intent_mul, REQUEST_CODE_CHOOSE);
+                        }else {
+                            Intent intent_mul = new Intent(ItemAlbumActivity.this, ItemSecretMultiSelectActivity.class);
+                            intent_mul.putStringArrayListExtra("data_1", myAlbum);
+                            intent_mul.putExtra("name_1", album_name);
+                            startActivityForResult(intent_mul, REQUEST_CODE_SECRET);
+                        }
                         break;
                     case R.id.album_item_slideshow:
                         slideShowEvents();
@@ -192,7 +213,7 @@ public class ItemAlbumActivity extends AppCompatActivity {
                 return true;
             }
         });
-        if(isScret == 1)
+        if(isSecret == 1)
         hideMenu();
     }
 
@@ -287,7 +308,7 @@ public class ItemAlbumActivity extends AppCompatActivity {
     private void setData() {
         myAlbum = intent.getStringArrayListExtra("data");
         path_folder = intent.getStringExtra("path_folder");
-        isScret = intent.getIntExtra("isSecret", 0);
+        isSecret = intent.getIntExtra("isSecret", 0);
         itemAlbumAdapter2 = new ItemAlbumAdapter2(myAlbum);
         itemAlbumAdapter3 = new ItemAlbumAdapter3(myAlbum);
     }
@@ -326,7 +347,7 @@ public class ItemAlbumActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void unused) {
             super.onPostExecute(unused);
-            itemAlbumAdapter.notifyDataSetChanged();
+            spanAction();
         }
     }
 

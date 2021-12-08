@@ -28,6 +28,9 @@
             android:name=".activities.subActivities.MultiSelectImage"
             android:exported="true" />
         <activity
+            android:name=".activities.subActivities.ItemSecretMultiSelectActivity"
+            android:exported="true" />
+        <activity
             android:name=".activities.subActivities.ItemAlbumMultiSelectActivity"
             android:exported="true" />
         <activity

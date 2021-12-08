@@ -32,4 +32,5 @@
     <string name="multiSelect">MultiSelect</string>
     <string name="add_image">Add image</string>
     <string name="move_image">Move</string>
+    <string name="restore">Restore</string>
 </resources>
