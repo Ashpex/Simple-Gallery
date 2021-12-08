@@ -61,13 +61,14 @@ import com.example.testgallery.models.Image;
 import com.example.testgallery.utility.FileUtility;
 import com.example.testgallery.utility.GetAllPhotoFromGallery;
 import com.example.testgallery.utility.PictureInterface;
+import com.example.testgallery.utility.SubInterface;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.navigation.NavigationBarView;
 import com.smarteist.autoimageslider.SliderView;
 
 
-public class PictureActivity extends AppCompatActivity implements PictureInterface{
+public class PictureActivity extends AppCompatActivity implements PictureInterface, SubInterface {
     private ViewPager viewPager_picture;
     private Toolbar toolbar_picture;
     private BottomNavigationView bottomNavigationView;
@@ -467,6 +468,13 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
         showNavigation(flag);
     }
 
+    @Override
+    public void add(Album album) {
+        AddAlbumAsync addAlbumAsync = new AddAlbumAsync();
+        addAlbumAsync.setAlbum(album);
+        addAlbumAsync.execute();
+    }
+
     public class MyAsyncTask extends AsyncTask<Void, Integer, Void> {
         private AlbumSheetAdapter albumSheetAdapter;
         private List<Album> listAlbum;
@@ -481,9 +489,9 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
         protected void onPostExecute(Void unused) {
             super.onPostExecute(unused);
             albumSheetAdapter = new AlbumSheetAdapter(listAlbum, PictureActivity.this);
+            albumSheetAdapter.setSubInterface(PictureActivity.this);
             ryc_album.setAdapter(albumSheetAdapter);
             bottomSheetDialog.show();
-
         }
         @NonNull
         private List<Album> getListAlbum(List<Image> listImage) {
@@ -492,18 +500,49 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
 
             for (int i = 0; i < listImage.size(); i++) {
                 String[] _array = listImage.get(i).getThumb().split("/");
+                String _pathFolder = listImage.get(i).getThumb().substring(0, listImage.get(i).getThumb().lastIndexOf("/"));
                 String _name = _array[_array.length - 2];
-                if (!ref.contains(_name)) {
-                    ref.add(_name);
+                if (!ref.contains(_pathFolder)) {
+                    ref.add(_pathFolder);
                     Album token = new Album(listImage.get(i), _name);
+                    token.setPathFolder(_pathFolder);
                     token.addItem(listImage.get(i));
                     listAlbum.add(token);
                 } else {
-                    listAlbum.get(ref.indexOf(_name)).addItem(listImage.get(i));
+                    listAlbum.get(ref.indexOf(_pathFolder)).addItem(listImage.get(i));
                 }
             }
 
             return listAlbum;
+        }
+    }
+    public class AddAlbumAsync extends AsyncTask<Void, Integer, Void> {
+        Album album;
+        public void setAlbum(Album album) {
+            this.album = album;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            File directtory = new File(album.getPathFolder());
+            if(!directtory.exists()){
+                directtory.mkdirs();
+                Log.e("File-no-exist",directtory.getPath());
+            }
+            String[] paths = new String[1];
+            File imgFile = new File(imgPath);
+            File desImgFile = new File(album.getPathFolder(),album.getName()+"_"+imgFile.getName());
+            imgFile.renameTo(desImgFile);
+            imgFile.deleteOnExit();
+            paths[0] = desImgFile.getPath();
+            MediaScannerConnection.scanFile(getApplicationContext(),paths, null, null);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            super.onPostExecute(unused);
+            bottomSheetDialog.cancel();
         }
     }
 }

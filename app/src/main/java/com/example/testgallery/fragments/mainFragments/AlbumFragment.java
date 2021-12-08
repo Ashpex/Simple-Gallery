@@ -3,6 +3,7 @@ package com.example.testgallery.fragments.mainFragments;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 
 import android.view.MenuItem;
@@ -172,14 +173,16 @@ public class AlbumFragment extends Fragment {
 
         for (int i = 0; i < listImage.size(); i++) {
             String[] _array = listImage.get(i).getThumb().split("/");
+            String _pathFolder = listImage.get(i).getThumb().substring(0, listImage.get(i).getThumb().lastIndexOf("/"));
             String _name = _array[_array.length - 2];
-            if (!ref.contains(_name)) {
-                ref.add(_name);
+            if (!ref.contains(_pathFolder)) {
+                ref.add(_pathFolder);
                 Album token = new Album(listImage.get(i), _name);
+                token.setPathFolder(_pathFolder);
                 token.addItem(listImage.get(i));
                 listAlbum.add(token);
             } else {
-                listAlbum.get(ref.indexOf(_name)).addItem(listImage.get(i));
+                listAlbum.get(ref.indexOf(_pathFolder)).addItem(listImage.get(i));
             }
         }
 

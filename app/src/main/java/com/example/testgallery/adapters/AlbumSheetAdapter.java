@@ -18,6 +18,8 @@ import com.example.testgallery.R;
 import com.example.testgallery.activities.mainActivities.ItemAlbumActivity;
 import com.example.testgallery.activities.mainActivities.SlideShowActivity;
 import com.example.testgallery.models.Album;
+import com.example.testgallery.utility.PictureInterface;
+import com.example.testgallery.utility.SubInterface;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.io.File;
@@ -27,10 +29,14 @@ import java.util.List;
 public class AlbumSheetAdapter extends RecyclerView.Adapter<AlbumSheetAdapter.AlbumViewHolder> {
     private List<Album> mListAlbums;
     private Context context;
-    private BottomSheetDialog bottomSheetDialog;
+    private SubInterface subInterface;
     public AlbumSheetAdapter(List<Album> mListAlbums, Context context) {
         this.mListAlbums = mListAlbums;
         this.context = context;
+    }
+
+    public void setSubInterface(SubInterface subInterface) {
+        this.subInterface = subInterface;
     }
 
     public void setData(List<Album> mListAlbums) {
@@ -44,7 +50,6 @@ public class AlbumSheetAdapter extends RecyclerView.Adapter<AlbumSheetAdapter.Al
     @Override
     public AlbumSheetAdapter.AlbumViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_album, parent, false);
-
 
         return new AlbumSheetAdapter.AlbumViewHolder(view);
     }
@@ -67,8 +72,6 @@ public class AlbumSheetAdapter extends RecyclerView.Adapter<AlbumSheetAdapter.Al
         private final TextView txtName_album;
         private final TextView txtCount_item_album;
         private Context context;
-        private LinearLayout layout_bottom_delete;
-        private LinearLayout layout_bottom_slide_show;
 
         public AlbumViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -84,7 +87,7 @@ public class AlbumSheetAdapter extends RecyclerView.Adapter<AlbumSheetAdapter.Al
             img_album.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    subInterface.add(ref);
                 }
             });
 
@@ -94,40 +97,6 @@ public class AlbumSheetAdapter extends RecyclerView.Adapter<AlbumSheetAdapter.Al
             txtName_album.setText(ref.getName());
             txtCount_item_album.setText(String.valueOf(ref.getList().size()) + " items");
             Glide.with(context).load(ref.getImg().getThumb()).into(img_album);
-        }
-
-        private void slideShowEvents(@NonNull Album ref) {
-            Intent intent = new Intent(context, SlideShowActivity.class);
-            ArrayList<String> list = new ArrayList<>();
-            for(int i=0;i<ref.getList().size();i++) {
-                list.add(ref.getList().get(i).getThumb());
-            }
-            intent.putStringArrayListExtra("data_slide", list);
-            intent.putExtra("name", ref.getName());
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            bottomSheetDialog.cancel();
-            context.startActivity(intent);
-        }
-        private void deleteEvents(Album ref, int pos) {
-            for(int i=0;i<ref.getList().size();i++) {
-                Uri targetUri = Uri.parse("file://" + ref.getList().get(i).getPath());
-                File file = new File(targetUri.getPath());
-                if (file.exists()){
-                    file.delete();
-                }
-            }
-            mListAlbums.remove(pos);
-            notifyDataSetChanged();
-            bottomSheetDialog.cancel();
-        }
-        private void openBottomDialog() {
-            View viewDialog = LayoutInflater.from(context).inflate(R.layout.layout_bottom_sheet_album, null);
-            layout_bottom_delete = viewDialog.findViewById(R.id.layout_bottom_delete);
-            layout_bottom_slide_show = viewDialog.findViewById(R.id.layout_bottom_slide_show);
-
-            bottomSheetDialog = new BottomSheetDialog(context);
-            bottomSheetDialog.setContentView(viewDialog);
-            bottomSheetDialog.show();
         }
     }
 }

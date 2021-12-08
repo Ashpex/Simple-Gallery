@@ -8,6 +8,9 @@
     <item android:id="@+id/menuMultiDelete"
         android:title="@string/delete"
         app:showAsAction="never"/>
+    <item android:id="@+id/menuAddAlbum"
+        android:title="@string/addAlbum"
+        app:showAsAction="never"/>
     <item
         android:id="@+id/menuSlideshow"
         android:title="@string/slideshow"
