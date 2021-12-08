@@ -2,11 +2,16 @@ package com.example.testgallery.activities.mainActivities;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Rect;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import android.view.MenuItem;
 import android.view.View;
 
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,13 +23,18 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.transition.Explode;
+import androidx.transition.Transition;
 
 import com.example.testgallery.R;
+import com.example.testgallery.activities.mainActivities.data_favor.DataLocalManager;
 import com.example.testgallery.activities.subActivities.ItemAlbumMultiSelectActivity;
 import com.example.testgallery.activities.subActivities.MultiSelectImage;
 import com.example.testgallery.adapters.ItemAlbumAdapter;
+import com.example.testgallery.adapters.ItemAlbumAdapter2;
 
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class ItemAlbumActivity extends AppCompatActivity {
@@ -34,7 +44,8 @@ public class ItemAlbumActivity extends AppCompatActivity {
     private Intent intent;
     private String album_name;
     Toolbar toolbar_item_album;
-    private SearchView searchView;
+    private ItemAlbumAdapter itemAlbumAdapter;
+    private int spanCount;
     private static int REQUEST_CODE_CHOOSE = 55;
 
     @Override
@@ -42,10 +53,16 @@ public class ItemAlbumActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_album);
         intent = getIntent();
+        setUpSpanCount();
         mappingControls();
         setData();
         setRyc();
         events();
+    }
+
+    private void setUpSpanCount() {
+        SharedPreferences sharedPref = getSharedPreferences("MyPreferences", MODE_PRIVATE);
+        spanCount = sharedPref.getInt("span_count", 3);
     }
 
     @Override
@@ -58,10 +75,27 @@ public class ItemAlbumActivity extends AppCompatActivity {
 
     private void setRyc() {
         album_name = intent.getStringExtra("name");
-        ryc_list_album.setLayoutManager(new GridLayoutManager(this, 3));
-        ryc_list_album.setAdapter(new ItemAlbumAdapter(myAlbum));
+        ryc_list_album.setLayoutManager(new GridLayoutManager(this, spanCount));
+        itemAlbumAdapter = new ItemAlbumAdapter(myAlbum);
+        ryc_list_album.setAdapter(itemAlbumAdapter);
     }
 
+    private void animationRyc() {
+        switch(spanCount) {
+            case 2:
+                Animation animation2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_layout_ryc_1);
+                ryc_list_album.setAnimation(animation2);
+                break;
+            case 3:
+                Animation animation3 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_layout_ryc_2);
+                ryc_list_album.setAnimation(animation3);
+                break;
+            case 4:
+                Animation animation4 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_layout_ryc_3);
+                ryc_list_album.setAnimation(animation4);
+                break;
+        }
+    }
 
 
     private void events() {
@@ -87,7 +121,9 @@ public class ItemAlbumActivity extends AppCompatActivity {
                     case R.id.album_item_search:
                         eventSearch(menuItem);
                         break;
-
+                    case R.id.change_span_count:
+                        spanCountEvent();
+                        break;
                     case R.id.menuChoose:
                         Intent intent_mul = new Intent(ItemAlbumActivity.this, ItemAlbumMultiSelectActivity.class);
                         intent_mul.putStringArrayListExtra("data_1", myAlbum);
@@ -102,6 +138,24 @@ public class ItemAlbumActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+
+    private void spanCountEvent() {
+        if(spanCount<4) {
+            spanCount++;
+            ryc_list_album.setLayoutManager(new GridLayoutManager(this, spanCount));
+            ryc_list_album.setAdapter(itemAlbumAdapter);
+        }
+        else if(spanCount == 4) {
+            spanCount = 2;
+            ryc_list_album.setLayoutManager(new GridLayoutManager(this, spanCount));
+            ryc_list_album.setAdapter(new ItemAlbumAdapter2(myAlbum));
+
+        }
+        animationRyc();
+        SharedPreferences sharedPref = getSharedPreferences("MyPreferences", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt("span_count", spanCount);
     }
 
     private void eventSearch(@NonNull MenuItem item) {
@@ -170,9 +224,35 @@ public class ItemAlbumActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MyAsyncTask myAsyncTask = new MyAsyncTask();
+        myAsyncTask.execute();
+    }
+
     private void mappingControls() {
         ryc_list_album = findViewById(R.id.ryc_list_album);
         toolbar_item_album = findViewById(R.id.toolbar_item_album);
+    }
 
+    public class MyAsyncTask extends AsyncTask<Void, Integer, Void> {
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            for(int i=0;i<myAlbum.size();i++) {
+                File file = new File(myAlbum.get(i));
+                if(!file.exists()) {
+                    myAlbum.remove(i);
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            super.onPostExecute(unused);
+            itemAlbumAdapter.notifyDataSetChanged();
+        }
     }
 }

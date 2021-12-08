@@ -10,7 +10,7 @@
     <string name="add">Add</string>
     <string name="delete">Delete</string>
     <string name="information">Information</string>
-    <string name="hide_photo">Hide photo</string>
+    <string name="hide_photo">Hide/show photo</string>
     <string name="photo">Photo</string>
     <string name="album">Album</string>
     <string name="secret">Secret</string>

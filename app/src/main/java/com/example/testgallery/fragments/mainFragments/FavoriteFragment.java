@@ -53,6 +53,7 @@ public class FavoriteFragment extends Fragment {
         context = view.getContext();
         recyclerView = view.findViewById(R.id.favor_category);
         toolbar_favor = view.findViewById(R.id.toolbar_favor);
+
         // Toolbar events
         toolbar_favor.inflateMenu(R.menu.menu_top_favor);
         toolbar_favor.setTitle("Favorite");
@@ -65,14 +66,6 @@ public class FavoriteFragment extends Fragment {
                     case R.id.album_item_search:
                         eventSearch(menuItem);
                         break;
-                    /*case R.id.album_item_add:
-                        Toast.makeText(view.getContext(), "Add images to album", Toast.LENGTH_SHORT).show();
-                        break;
-
-                    case R.id.album_item_delete:
-                        Toast.makeText(view.getContext(), "Delete", Toast.LENGTH_SHORT).show();
-                        break;*/
-
                     case R.id.album_item_slideshow:
                         slideShowEvents();
                         break;
@@ -148,8 +141,8 @@ public class FavoriteFragment extends Fragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onResume() {
+        super.onResume();
         FavoriteFragment.MyAsyncTask myAsyncTask = new FavoriteFragment.MyAsyncTask();
         myAsyncTask.execute();
     }

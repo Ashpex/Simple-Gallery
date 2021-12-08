@@ -6,26 +6,22 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.testgallery.activities.mainActivities.PictureActivity;
 import com.example.testgallery.R;
-
-
+import com.example.testgallery.activities.mainActivities.PictureActivity;
 
 import java.util.ArrayList;
 
-public class ItemAlbumAdapter extends RecyclerView.Adapter<ItemAlbumAdapter.ItemAlbumViewHolder> {
+public class ItemAlbumAdapter2 extends RecyclerView.Adapter<ItemAlbumAdapter2.ItemAlbumViewHolder> {
     private ArrayList<String> album;
     private ImageView imgPhoto;
 
-    public ItemAlbumAdapter(ArrayList<String> album) {
+    public ItemAlbumAdapter2(ArrayList<String> album) {
         this.album = album;
     }
 
@@ -33,7 +29,7 @@ public class ItemAlbumAdapter extends RecyclerView.Adapter<ItemAlbumAdapter.Item
     @NonNull
     @Override
     public ItemAlbumViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_picture_album, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_picture_album_span2, parent, false);
 
         return new ItemAlbumViewHolder(view);
     }

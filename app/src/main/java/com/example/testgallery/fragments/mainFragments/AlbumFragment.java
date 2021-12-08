@@ -60,7 +60,6 @@ public class AlbumFragment extends Fragment {
     }
 
     private void getDataFromGallery() {
-//        listImage = GetAllPhotoFromGallery.getAllImageFromGallery(view.getContext());
         listAlbum = getListAlbum(listImage);
     }
 

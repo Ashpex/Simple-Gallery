@@ -255,16 +255,12 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
                                     }
                                     else{
                                         String outputPath = Environment.getExternalStorageDirectory()+File.separator+"DCIM" + File.separator + "Restore";
-                                        File restoreDir = new File (outputPath);
-                                        if(!restoreDir.exists()){
-                                            restoreDir.mkdirs();
-                                        }
                                         File imgFile = new File(img.getPath());
                                         File desImgFile = new File(outputPath,imgFile.getName());
                                         imgFile.renameTo(desImgFile);
                                         imgFile.deleteOnExit();
                                         desImgFile.getPath();
-                                        MediaScannerConnection.scanFile(getApplicationContext(), new String[]{outputPath+ File.separator+desImgFile.getName()}, null, null);
+                                        MediaScannerConnection.scanFile(getApplicationContext(), new String[]{outputPath}, null, null);
                                     }
                                 }
                                 finish();

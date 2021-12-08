@@ -7,7 +7,11 @@
         android:icon="@drawable/ic_search"
         app:showAsAction="ifRoom|collapseActionView"
         app:actionViewClass="androidx.appcompat.widget.SearchView" />
-
+    <item
+        android:id="@+id/change_span_count"
+        android:title="@string/search"
+        android:icon="@drawable/ic_change_span_count"
+        app:showAsAction="ifRoom|collapseActionView" />
     <item android:id="@+id/menuChoose"
         android:title="@string/choose"
         app:showAsAction="never"/>
