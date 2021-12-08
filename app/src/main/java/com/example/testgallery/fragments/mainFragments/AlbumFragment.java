@@ -75,10 +75,6 @@ public class AlbumFragment extends Fragment {
                     case R.id.menuSearch:
                         eventSearch(item);
                         break;
-                    case R.id.menuCamera:
-                        Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-                        startActivity(intent);
-                        break;
                     case R.id.menuAdd:
                         openCreateAlbumActivity();
                         break;

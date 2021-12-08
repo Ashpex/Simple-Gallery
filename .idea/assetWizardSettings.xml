@@ -319,7 +319,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="file:/$USER_HOME$/AppData/Local/Android/Sdk/icons/material/materialicons/apps/baseline_apps_24.xml" />
+                                      <entry key="url" value="file:$USER_HOME$/Android/Sdk/icons/material/materialicons/add_photo_alternate/baseline_add_photo_alternate_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -329,8 +329,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_change_span_count" />
-                            <entry key="sourceFile" value="C:\Users\maian\Downloads\picture.svg" />
+                            <entry key="outputName" value="ic_add_photos" />
+                            <entry key="sourceFile" value="$USER_HOME$/C:\Users\maian\Downloads\picture.svg" />
                           </map>
                         </option>
                       </PersistentState>

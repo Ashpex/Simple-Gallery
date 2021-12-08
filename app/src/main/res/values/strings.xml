@@ -17,7 +17,7 @@
     <string name="favorite">Favorite</string>
     <string name="change_password">Change Password</string>
     <string name="delete_secret_album">Delete Secret Album</string>
-    <string name="advance_search">Advance Search</string>
+    <string name="advance_search">Advanced Search</string>
     <string name="camera">Camera</string>
     <string name="edit_photo">Edit photo</string>
     <string name="add_to_favorite">Add to favorite</string>
@@ -33,4 +33,5 @@
     <string name="add_image">Add image</string>
     <string name="move_image">Move</string>
     <string name="restore">Restore</string>
+    <string name="create_album">Create album</string>
 </resources>

@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menuCamera"
-        android:title="Camera"
-        android:icon="@drawable/ic_toolbar_camera"
+        android:id="@+id/menuAdd"
+        android:title="@string/create_album"
+        android:icon="@drawable/ic_add_photos"
         app:showAsAction="always"
         android:iconTint="?attr/colorOnBackground"/>
 
@@ -16,9 +16,5 @@
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         android:iconTint="?attr/colorOnBackground"/>
 
-    <item android:id="@+id/menuAdd"
-        android:title="Create album"
-        android:icon="@drawable/ic_add"
-        app:showAsAction="never"/>
 
 </menu>

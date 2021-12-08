@@ -6,24 +6,29 @@
     </shared>
   </component>
   <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="ALO" />
+    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="ALOO" />
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="Show only selected application" />
   </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="994c01ad-da38-40ca-927e-39e67f8d2c1f" name="Default Changelist" comment="Multi hide image">
+    <list default="true" id="994c01ad-da38-40ca-927e-39e67f8d2c1f" name="Default Changelist" comment="fix some bug 'update image'">
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_add_photos.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/assetWizardSettings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/assetWizardSettings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/testgallery/adapters/AlbumAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/testgallery/adapters/AlbumAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/layout_bottom_sheet_album.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/layout_bottom_sheet_album.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/testgallery/fragments/mainFragments/AlbumFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/testgallery/fragments/mainFragments/AlbumFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/drawable/ic_add_photo_list_album.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/menu/menu_top_album.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/menu/menu_top_album.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[C:\Users\maian\.android\avd\Pixel_2_API_30.avd]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[192.168.0.106:42150]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -57,12 +62,11 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="dart.analysis.tool.window.visible" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/src/main/res/menu" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/src/main/res/layout" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="D:\Coding\SimpleGallery\app\src\main\res\menu" />
       <recent name="D:\Coding\SimpleGallery\app\src\main\res\layout" />
       <recent name="D:\Coding\SimpleGallery\app\src\main\res\anim" />
     </key>
@@ -70,7 +74,6 @@
       <recent name="com.example.testgallery" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.example.testgallery.activities.subActivities" />
       <recent name="com.example.testgallery.activities.mainActivities" />
       <recent name="com.example.testgallery.adapters" />
     </key>
@@ -242,35 +245,7 @@
       <option name="project" value="LOCAL" />
       <updated>1638935048246</updated>
     </task>
-    <task id="LOCAL-00015" summary="album, photo">
-      <created>1638952788814</created>
-      <option name="number" value="00015" />
-      <option name="presentableId" value="LOCAL-00015" />
-      <option name="project" value="LOCAL" />
-      <updated>1638952788814</updated>
-    </task>
-    <task id="LOCAL-00016" summary="Fix secret, multi restore">
-      <created>1638957059322</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1638957059322</updated>
-    </task>
-    <task id="LOCAL-00017" summary="Fix secret, multi restore">
-      <created>1638957485743</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1638957485743</updated>
-    </task>
-    <task id="LOCAL-00018" summary="Multi hide image">
-      <created>1638958863313</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1638958863313</updated>
-    </task>
-    <option name="localTasksCounter" value="19" />
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -299,9 +274,6 @@
     <MESSAGE value="Fix restore" />
     <MESSAGE value="add some anim album" />
     <MESSAGE value="fix some bug 'update image'" />
-    <MESSAGE value="album, photo" />
-    <MESSAGE value="Fix secret, multi restore" />
-    <MESSAGE value="Multi hide image" />
-    <option name="LAST_COMMIT_MESSAGE" value="Multi hide image" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix some bug 'update image'" />
   </component>
 </project>
