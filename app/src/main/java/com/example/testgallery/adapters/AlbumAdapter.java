@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,6 +29,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
     private List<Album> mListAlbums;
     private Context context;
     private BottomSheetDialog bottomSheetDialog;
+    private TextView txtPath;
     public AlbumAdapter(List<Album> mListAlbums, Context context) {
         this.mListAlbums = mListAlbums;
         this.context = context;
@@ -102,6 +104,16 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
                 @Override
                 public boolean onLongClick(View view) {
                     openBottomDialog();
+
+                    txtPath.setText(ref.getPathFolder());
+                    txtPath.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Toast.makeText(context, ref.getPathFolder(), Toast.LENGTH_SHORT).show();
+                            bottomSheetDialog.cancel();
+                        }
+                    });
+
                     layout_bottom_slide_show.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -154,6 +166,8 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
             View viewDialog = LayoutInflater.from(context).inflate(R.layout.layout_bottom_sheet_album, null);
             layout_bottom_delete = viewDialog.findViewById(R.id.layout_bottom_delete);
             layout_bottom_slide_show = viewDialog.findViewById(R.id.layout_bottom_slide_show);
+            txtPath = viewDialog.findViewById(R.id.txtPath);
+
 
             bottomSheetDialog = new BottomSheetDialog(context);
             bottomSheetDialog.setContentView(viewDialog);

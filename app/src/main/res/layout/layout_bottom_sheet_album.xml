@@ -9,6 +9,29 @@
     android:background="@drawable/bottom_sheet_background">
 
     <LinearLayout
+        android:id="@+id/layout_bottom_dir"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="normal"
+            android:textColor="@color/black"
+            android:text="Path: "/>
+        <TextView
+            android:id="@+id/txtPath"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center|left"
+            android:padding="8dp"
+            android:layout_marginStart="20dp"
+            android:textSize="18sp"
+            android:textStyle="normal"
+            android:textColor="@color/black"
+            android:singleLine="true"/>
+    </LinearLayout>
+    <LinearLayout
         android:id="@+id/layout_bottom_slide_show"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
