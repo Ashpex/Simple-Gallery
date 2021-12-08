@@ -13,19 +13,8 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="994c01ad-da38-40ca-927e-39e67f8d2c1f" name="Default Changelist" comment="album, photo">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/testgallery/activities/subActivities/ItemSecretMultiSelectActivity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/menu/menu_top_multi_secret.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/testgallery/activities/mainActivities/ItemAlbumActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/testgallery/activities/mainActivities/ItemAlbumActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/testgallery/activities/mainActivities/PictureActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/testgallery/activities/mainActivities/PictureActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/testgallery/adapters/ItemAlbumAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/testgallery/adapters/ItemAlbumAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/testgallery/adapters/ItemAlbumAdapter2.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/testgallery/adapters/ItemAlbumAdapter2.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/testgallery/adapters/ItemAlbumAdapter3.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/testgallery/adapters/ItemAlbumAdapter3.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/menu/menu_multi_select.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/menu/menu_multi_select.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
+    <list default="true" id="994c01ad-da38-40ca-927e-39e67f8d2c1f" name="Default Changelist" comment="Fix secret, multi restore">
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/testgallery/activities/subActivities/ItemSecretMultiSelectActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/testgallery/activities/subActivities/ItemSecretMultiSelectActivity.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -258,7 +247,14 @@
       <option name="project" value="LOCAL" />
       <updated>1638952788814</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Fix secret, multi restore">
+      <created>1638957059322</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1638957059322</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -288,6 +284,7 @@
     <MESSAGE value="add some anim album" />
     <MESSAGE value="fix some bug 'update image'" />
     <MESSAGE value="album, photo" />
-    <option name="LAST_COMMIT_MESSAGE" value="album, photo" />
+    <MESSAGE value="Fix secret, multi restore" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fix secret, multi restore" />
   </component>
 </project>

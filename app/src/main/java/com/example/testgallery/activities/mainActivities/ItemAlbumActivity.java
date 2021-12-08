@@ -57,7 +57,7 @@ public class ItemAlbumActivity extends AppCompatActivity {
     private static int REQUEST_CODE_PIC = 10;
     private static int REQUEST_CODE_CHOOSE = 55;
     private static int REQUEST_CODE_ADD = 56;
-    private static int REQUEST_CODE_SECRET = 56;
+    private static int REQUEST_CODE_SECRET = 57;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

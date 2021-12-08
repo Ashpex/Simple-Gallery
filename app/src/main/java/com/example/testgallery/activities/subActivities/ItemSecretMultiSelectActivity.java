@@ -150,11 +150,9 @@ public class ItemSecretMultiSelectActivity extends AppCompatActivity implements 
             if (file.exists()){
                 file.delete();
             }
-            if(i==listImageSelected.size()-1) {
-                setResult(RESULT_OK);
-                finish();
-            };
         }
+        setResult(RESULT_OK);
+        finish();
     }
     private void slideShowEvents() {
         Intent intent = new Intent(ItemSecretMultiSelectActivity.this, SlideShowActivity.class);
@@ -193,13 +191,6 @@ public class ItemSecretMultiSelectActivity extends AppCompatActivity implements 
     }
 
     public class RestoreAsync extends AsyncTask<Void, Integer, Void> {
-        private ArrayList<String> list;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            list = new ArrayList<>();
-        }
 
         @Override
         protected Void doInBackground(Void... voids) {
@@ -212,7 +203,6 @@ public class ItemSecretMultiSelectActivity extends AppCompatActivity implements 
             for(int i =0;i<listImageSelected.size();i++) {
                 Image img = listImageSelected.get(i);
                 File imgFile = new File(img.getPath());
-                list.add(img.getPath());
                 File desImgFile = new File(outputPath,imgFile.getName());
                 imgFile.renameTo(desImgFile);
                 imgFile.deleteOnExit();
@@ -226,9 +216,7 @@ public class ItemSecretMultiSelectActivity extends AppCompatActivity implements 
         @Override
         protected void onPostExecute(Void unused) {
             super.onPostExecute(unused);
-            Intent intentResult = new Intent();
-            intentResult.putStringArrayListExtra("list_path", list);
-            setResult(RESULT_OK, intentResult);
+            setResult(RESULT_OK);
             finish();
         }
     }
