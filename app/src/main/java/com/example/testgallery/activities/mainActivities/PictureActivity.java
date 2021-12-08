@@ -269,7 +269,7 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
                                         imgFile.renameTo(desImgFile);
                                         imgFile.deleteOnExit();
                                         desImgFile.getPath();
-                                        MediaScannerConnection.scanFile(getApplicationContext(), new String[]{outputPath}, null, null);
+                                        MediaScannerConnection.scanFile(getApplicationContext(), new String[]{outputPath+File.separator+desImgFile.getName()}, null, null);
                                     }
                                 }
                                 finish();
