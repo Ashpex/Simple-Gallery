@@ -36,7 +36,6 @@ public class SettingsFragment extends PreferenceFragment {
                         .isChecked();
                 if(checked){
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-
                 }
                 else{
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
@@ -44,8 +43,6 @@ public class SettingsFragment extends PreferenceFragment {
                 return true;
             }
         });
-
-
     }
 
 

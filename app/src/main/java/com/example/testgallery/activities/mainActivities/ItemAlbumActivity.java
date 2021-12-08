@@ -32,6 +32,7 @@ import com.example.testgallery.activities.subActivities.ItemAlbumMultiSelectActi
 import com.example.testgallery.activities.subActivities.MultiSelectImage;
 import com.example.testgallery.adapters.ItemAlbumAdapter;
 import com.example.testgallery.adapters.ItemAlbumAdapter2;
+import com.example.testgallery.adapters.ItemAlbumAdapter3;
 
 
 import java.io.File;
@@ -77,7 +78,9 @@ public class ItemAlbumActivity extends AppCompatActivity {
         album_name = intent.getStringExtra("name");
         ryc_list_album.setLayoutManager(new GridLayoutManager(this, spanCount));
         itemAlbumAdapter = new ItemAlbumAdapter(myAlbum);
-        if(spanCount == 2)
+        if(spanCount == 1)
+            ryc_list_album.setAdapter(new ItemAlbumAdapter3(myAlbum));
+        else if(spanCount == 2)
             ryc_list_album.setAdapter(new ItemAlbumAdapter2(myAlbum));
         else
             ryc_list_album.setAdapter(new ItemAlbumAdapter(myAlbum));
@@ -85,6 +88,9 @@ public class ItemAlbumActivity extends AppCompatActivity {
 
     private void animationRyc() {
         switch(spanCount) {
+            case 1:
+                Animation animation1 = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.anim_layout_ryc_1);
+                ryc_list_album.setAnimation(animation1);
             case 2:
                 Animation animation2 = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.anim_layout_ryc_1);
                 ryc_list_album.setAnimation(animation2);
@@ -144,7 +150,13 @@ public class ItemAlbumActivity extends AppCompatActivity {
     }
 
     private void spanCountEvent() {
-        if(spanCount<4) {
+        if(spanCount == 1){
+            spanCount++;
+            ryc_list_album.setLayoutManager(new LinearLayoutManager(this));
+            ryc_list_album.setAdapter(new ItemAlbumAdapter3(myAlbum));
+        }
+
+        else if(spanCount < 4) {
             spanCount++;
             ryc_list_album.setLayoutManager(new GridLayoutManager(this, spanCount));
             ryc_list_album.setAdapter(itemAlbumAdapter);
@@ -155,6 +167,8 @@ public class ItemAlbumActivity extends AppCompatActivity {
             ryc_list_album.setAdapter(new ItemAlbumAdapter2(myAlbum));
 
         }
+
+
         animationRyc();
         SharedPreferences sharedPref = getSharedPreferences("MyPreferences", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
