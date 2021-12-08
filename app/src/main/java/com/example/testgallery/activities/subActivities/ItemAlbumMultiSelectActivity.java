@@ -2,8 +2,12 @@ package com.example.testgallery.activities.subActivities;
 
 
 import android.content.Intent;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -17,24 +21,32 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.testgallery.R;
+import com.example.testgallery.activities.mainActivities.PictureActivity;
 import com.example.testgallery.activities.mainActivities.SlideShowActivity;
+import com.example.testgallery.adapters.AlbumSheetAdapter;
 import com.example.testgallery.adapters.ImageSelectAdapter;
 import com.example.testgallery.adapters.ItemAlbumAdapter;
+import com.example.testgallery.models.Album;
 import com.example.testgallery.models.Category;
 import com.example.testgallery.models.Image;
+import com.example.testgallery.utility.GetAllPhotoFromGallery;
 import com.example.testgallery.utility.ListTransInterface;
+import com.example.testgallery.utility.SubInterface;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemAlbumMultiSelectActivity extends AppCompatActivity implements ListTransInterface {
+public class ItemAlbumMultiSelectActivity extends AppCompatActivity implements ListTransInterface, SubInterface {
     private ArrayList<String> myAlbum;
     private RecyclerView ryc_album;
     private RecyclerView ryc_list_album;
     private Intent intent;
     private String album_name;
+    private String path_folder;
     Toolbar toolbar_item_album;
+    private BottomSheetDialog bottomSheetDialog;
     private ArrayList<Image> listImageSelected;
     private static int REQUEST_CODE_SLIDESHOW = 101;
 
@@ -55,6 +67,7 @@ public class ItemAlbumMultiSelectActivity extends AppCompatActivity implements L
     }
     private void setRyc() {
         album_name = intent.getStringExtra("name_1");
+        path_folder = intent.getStringExtra("path_folder");
         ryc_list_album.setLayoutManager(new GridLayoutManager(this, 3));
         ImageSelectAdapter imageSelectAdapter = new ImageSelectAdapter(ItemAlbumMultiSelectActivity.this);
         List<Image> listImg = new ArrayList<>();
@@ -97,6 +110,9 @@ public class ItemAlbumMultiSelectActivity extends AppCompatActivity implements L
                     case R.id.menuSlideshow:
                         slideShowEvents();
                         break;
+                    case R.id.menu_move_image:
+                        moveEvent();
+                        break;
                 }
 
                 return true;
@@ -104,6 +120,20 @@ public class ItemAlbumMultiSelectActivity extends AppCompatActivity implements L
         });
     }
 
+    private void moveEvent() {
+        openBottomDialog();
+    }
+    private void openBottomDialog() {
+        View viewDialog = LayoutInflater.from(ItemAlbumMultiSelectActivity.this).inflate(R.layout.layout_bottom_sheet_add_to_album, null);
+        ryc_album = viewDialog.findViewById(R.id.ryc_album);
+        ryc_album.setLayoutManager(new GridLayoutManager(this, 2));
+
+        bottomSheetDialog = new BottomSheetDialog(ItemAlbumMultiSelectActivity.this);
+        bottomSheetDialog.setContentView(viewDialog);
+        ItemAlbumMultiSelectActivity.MyAsyncTask myAsyncTask = new ItemAlbumMultiSelectActivity.MyAsyncTask();
+        myAsyncTask.execute();
+
+    }
     private void deleteEvents() {
         for(int i=0;i<listImageSelected.size();i++) {
             Uri targetUri = Uri.parse("file://" + listImageSelected.get(i).getPath());
@@ -151,5 +181,102 @@ public class ItemAlbumMultiSelectActivity extends AppCompatActivity implements L
     }
     public void removeList(Image img) {
         listImageSelected.remove(img);
+    }
+
+    @Override
+    public void add(Album album) {
+        ItemAlbumMultiSelectActivity.AddAlbumAsync addAlbumAsync = new ItemAlbumMultiSelectActivity.AddAlbumAsync();
+        addAlbumAsync.setAlbum(album);
+        addAlbumAsync.execute();
+    }
+
+    public class MyAsyncTask extends AsyncTask<Void, Integer, Void> {
+        private AlbumSheetAdapter albumSheetAdapter;
+        private List<Album> listAlbum;
+        @Override
+        protected Void doInBackground(Void... voids) {
+            List<Image> listImage = GetAllPhotoFromGallery.getAllImageFromGallery(ItemAlbumMultiSelectActivity.this);
+            listAlbum = getListAlbum(listImage);
+            for(int i =0;i<listAlbum.size();i++) {
+                if(path_folder.equals(listAlbum.get(i).getPathFolder())) {
+                    listAlbum.remove(i);
+                    break;
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            super.onPostExecute(unused);
+            albumSheetAdapter = new AlbumSheetAdapter(listAlbum, ItemAlbumMultiSelectActivity.this);
+            albumSheetAdapter.setSubInterface(ItemAlbumMultiSelectActivity.this);
+            ryc_album.setAdapter(albumSheetAdapter);
+            bottomSheetDialog.show();
+        }
+        @NonNull
+        private List<Album> getListAlbum(List<Image> listImage) {
+            List<String> ref = new ArrayList<>();
+            List<Album> listAlbum = new ArrayList<>();
+
+            for (int i = 0; i < listImage.size(); i++) {
+                String[] _array = listImage.get(i).getThumb().split("/");
+                String _pathFolder = listImage.get(i).getThumb().substring(0, listImage.get(i).getThumb().lastIndexOf("/"));
+                String _name = _array[_array.length - 2];
+                if (!ref.contains(_pathFolder)) {
+                    ref.add(_pathFolder);
+                    Album token = new Album(listImage.get(i), _name);
+                    token.setPathFolder(_pathFolder);
+                    token.addItem(listImage.get(i));
+                    listAlbum.add(token);
+                } else {
+                    listAlbum.get(ref.indexOf(_pathFolder)).addItem(listImage.get(i));
+                }
+            }
+
+            return listAlbum;
+        }
+    }
+    public class AddAlbumAsync extends AsyncTask<Void, Integer, Void> {
+        Album album;
+        ArrayList<String> list;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            list = new ArrayList<>();
+        }
+        public void setAlbum(Album album) {
+            this.album = album;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            String[] paths = new String[listImageSelected.size()];
+            int i =0;
+            for (Image img :listImageSelected){
+                File imgFile = new File(img.getPath());
+                File desImgFile = new File(album.getPathFolder(),album.getName()+"_"+imgFile.getName());
+                list.add(desImgFile.getPath());
+                imgFile.renameTo(desImgFile);
+                imgFile.deleteOnExit();
+                paths[i] = desImgFile.getPath();
+                i++;
+            }
+            MediaScannerConnection.scanFile(getApplicationContext(),paths, null, null);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            super.onPostExecute(unused);
+            bottomSheetDialog.cancel();
+            Intent resultIntent = new Intent();
+
+            resultIntent.putStringArrayListExtra("list_result", list);
+            resultIntent.putExtra("move", 1);
+            setResult(RESULT_OK, resultIntent);
+            finish();
+        }
     }
 }

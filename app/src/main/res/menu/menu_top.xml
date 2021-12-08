@@ -18,7 +18,7 @@
         android:iconTint="?attr/colorOnBackground"/>
 
     <item android:id="@+id/menuChoose"
-        android:title="Multiselect"
+        android:title="@string/multiSelect"
         app:showAsAction="never"/>
 
     <item android:id="@+id/menuSearch_Advanced"

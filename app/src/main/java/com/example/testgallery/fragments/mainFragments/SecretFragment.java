@@ -213,6 +213,7 @@ public class SecretFragment extends Fragment {
 
         intent.putStringArrayListExtra("data", list);
         intent.putExtra("name", "Secret");
+        intent.putExtra("isSecret", 1);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         this.getContext().startActivity(intent);
     }

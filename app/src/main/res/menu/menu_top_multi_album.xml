@@ -8,4 +8,7 @@
         android:id="@+id/menuSlideshow"
         android:title="@string/slideshow"
         app:showAsAction="never"/>
+    <item android:id="@+id/menu_move_image"
+        android:title="@string/move_image"
+        app:showAsAction="never"/>
 </menu>

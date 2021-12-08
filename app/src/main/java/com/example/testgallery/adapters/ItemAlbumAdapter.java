@@ -16,10 +16,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.testgallery.activities.mainActivities.PictureActivity;
 import com.example.testgallery.R;
-
+import com.example.testgallery.models.Album;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ItemAlbumAdapter extends RecyclerView.Adapter<ItemAlbumAdapter.ItemAlbumViewHolder> {
     private ArrayList<String> album;
@@ -29,7 +30,10 @@ public class ItemAlbumAdapter extends RecyclerView.Adapter<ItemAlbumAdapter.Item
         this.album = album;
     }
 
-
+    public void setData(ArrayList<String> album) {
+        this.album = album;
+        notifyDataSetChanged();
+    }
     @NonNull
     @Override
     public ItemAlbumViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

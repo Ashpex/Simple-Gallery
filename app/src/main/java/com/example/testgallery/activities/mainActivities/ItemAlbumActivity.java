@@ -1,12 +1,14 @@
 package com.example.testgallery.activities.mainActivities;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -40,14 +42,19 @@ import java.util.ArrayList;
 
 public class ItemAlbumActivity extends AppCompatActivity {
     private ArrayList<String> myAlbum;
+    private String path_folder ;
     private RecyclerView ryc_album;
     private RecyclerView ryc_list_album;
     private Intent intent;
     private String album_name;
     Toolbar toolbar_item_album;
     private ItemAlbumAdapter itemAlbumAdapter;
+    private ItemAlbumAdapter2 itemAlbumAdapter2;
+    private ItemAlbumAdapter3 itemAlbumAdapter3;
     private int spanCount;
+    private int isScret;
     private static int REQUEST_CODE_CHOOSE = 55;
+    private static int REQUEST_CODE_ADD = 56;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,8 +76,38 @@ public class ItemAlbumActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_ADD) {
+            ArrayList<String> resultList = data.getStringArrayListExtra("list_result");
+            if(resultList !=null) {
+                myAlbum.addAll(resultList);
+                spanAction();
+            }
+        }
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_CHOOSE) {
-            finish();
+            int isMoved = data.getIntExtra("move", 0);
+            if(isMoved == 1) {
+                ArrayList<String> resultList = data.getStringArrayListExtra("list_result");
+                if (resultList != null) {
+                    myAlbum.remove(resultList);
+                    spanAction();
+                }
+            }
+        }
+    }
+
+    private void spanAction() {
+        if(spanCount == 1) {
+            itemAlbumAdapter3.setData(myAlbum);
+            ryc_list_album.setAdapter(itemAlbumAdapter3);
+        }
+        else if(spanCount == 2) {
+            itemAlbumAdapter2.setData(myAlbum);
+            ryc_list_album.setAdapter(itemAlbumAdapter3);
+        }
+        else{
+            itemAlbumAdapter.setData(myAlbum);
+            ryc_list_album.setAdapter(itemAlbumAdapter);
         }
     }
 
@@ -137,23 +174,37 @@ public class ItemAlbumActivity extends AppCompatActivity {
                         Intent intent_mul = new Intent(ItemAlbumActivity.this, ItemAlbumMultiSelectActivity.class);
                         intent_mul.putStringArrayListExtra("data_1", myAlbum);
                         intent_mul.putExtra("name_1", album_name);
+                        intent_mul.putExtra("path_folder", path_folder);
                         startActivityForResult(intent_mul, REQUEST_CODE_CHOOSE);
                         break;
                     case R.id.album_item_slideshow:
                         slideShowEvents();
+                        break;
+                    case R.id.menu_add_image:
+                        Intent intent_add = new Intent(ItemAlbumActivity.this, AddImageToAlbumActivity.class);
+                        intent_add.putStringArrayListExtra("list_image", myAlbum);
+                        intent_add.putExtra("path_folder", path_folder);
+                        intent_add.putExtra("name_folder", album_name);
+                        startActivityForResult(intent_add, REQUEST_CODE_ADD);
                         break;
                 }
 
                 return true;
             }
         });
+        if(isScret == 1)
+        hideMenu();
+    }
+
+    private void hideMenu() {
+        toolbar_item_album.getMenu().findItem(R.id.menu_add_image).setVisible(false);
     }
 
     private void spanCountEvent() {
         if(spanCount == 1){
             spanCount++;
             ryc_list_album.setLayoutManager(new GridLayoutManager(this, spanCount));
-            ryc_list_album.setAdapter(new ItemAlbumAdapter2(myAlbum));
+            ryc_list_album.setAdapter(itemAlbumAdapter2);
         }
 
         else if(spanCount < 4 && spanCount > 1) {
@@ -165,7 +216,7 @@ public class ItemAlbumActivity extends AppCompatActivity {
 
             spanCount = 1;
             ryc_list_album.setLayoutManager(new LinearLayoutManager(this));
-            ryc_list_album.setAdapter(new ItemAlbumAdapter3(myAlbum));
+            ryc_list_album.setAdapter(itemAlbumAdapter3);
 
         }
 
@@ -235,6 +286,10 @@ public class ItemAlbumActivity extends AppCompatActivity {
 
     private void setData() {
         myAlbum = intent.getStringArrayListExtra("data");
+        path_folder = intent.getStringExtra("path_folder");
+        isScret = intent.getIntExtra("isSecret", 0);
+        itemAlbumAdapter2 = new ItemAlbumAdapter2(myAlbum);
+        itemAlbumAdapter3 = new ItemAlbumAdapter3(myAlbum);
     }
 
     @Override
@@ -274,4 +329,5 @@ public class ItemAlbumActivity extends AppCompatActivity {
             itemAlbumAdapter.notifyDataSetChanged();
         }
     }
+
 }

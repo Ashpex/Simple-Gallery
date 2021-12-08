@@ -29,4 +29,7 @@
     <string name="multi_create_album">Create Album</string>
     <string name="choose">Choose</string>
     <string name="addAlbum">Add to Album</string>
+    <string name="multiSelect">MultiSelect</string>
+    <string name="add_image">Add image</string>
+    <string name="move_image">Move</string>
 </resources>

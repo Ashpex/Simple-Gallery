@@ -91,6 +91,7 @@ public class AlbumAdapter extends RecyclerView.Adapter<AlbumAdapter.AlbumViewHol
                     }
 
                     intent.putStringArrayListExtra("data", list);
+                    intent.putExtra("path_folder", ref.getPathFolder());
                     intent.putExtra("name", ref.getName());
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);

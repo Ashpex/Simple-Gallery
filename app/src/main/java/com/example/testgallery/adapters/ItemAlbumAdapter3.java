@@ -16,6 +16,7 @@ import com.example.testgallery.R;
 import com.example.testgallery.activities.mainActivities.PictureActivity;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ItemAlbumAdapter3 extends RecyclerView.Adapter<ItemAlbumAdapter3.ItemAlbumViewHolder> {
     private ArrayList<String> album;
@@ -25,7 +26,10 @@ public class ItemAlbumAdapter3 extends RecyclerView.Adapter<ItemAlbumAdapter3.It
         this.album = album;
     }
 
-
+    public void setData(ArrayList<String> album) {
+        this.album = album;
+        notifyDataSetChanged();
+    }
     @NonNull
     @Override
     public ItemAlbumViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

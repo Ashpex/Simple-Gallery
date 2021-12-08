@@ -482,6 +482,13 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
         protected Void doInBackground(Void... voids) {
             List<Image> listImage = GetAllPhotoFromGallery.getAllImageFromGallery(PictureActivity.this);
             listAlbum = getListAlbum(listImage);
+            String path_folder = imgPath.substring(0, imgPath.lastIndexOf("/"));
+            for(int i =0;i<listAlbum.size();i++) {
+                if(path_folder.equals(listAlbum.get(i).getPathFolder())) {
+                    listAlbum.remove(i);
+                    break;
+                }
+            }
             return null;
         }
 
