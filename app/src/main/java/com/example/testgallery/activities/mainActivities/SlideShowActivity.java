@@ -86,7 +86,7 @@ public class SlideShowActivity extends AppCompatActivity {
         SlideShowAdapter slideShowAdapter = new SlideShowAdapter();
         slideShowAdapter.setData(imageList);
         sliderView.setSliderAdapter(slideShowAdapter);
-        //sliderView.startAutoCycle();
+        sliderView.startAutoCycle();
         sliderView.setSliderTransformAnimation(effect.get(i));
 
     }
