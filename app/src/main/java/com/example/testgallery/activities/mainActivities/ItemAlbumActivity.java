@@ -152,19 +152,20 @@ public class ItemAlbumActivity extends AppCompatActivity {
     private void spanCountEvent() {
         if(spanCount == 1){
             spanCount++;
-            ryc_list_album.setLayoutManager(new LinearLayoutManager(this));
-            ryc_list_album.setAdapter(new ItemAlbumAdapter3(myAlbum));
+            ryc_list_album.setLayoutManager(new GridLayoutManager(this, spanCount));
+            ryc_list_album.setAdapter(new ItemAlbumAdapter2(myAlbum));
         }
 
-        else if(spanCount < 4) {
+        else if(spanCount < 4 && spanCount > 1) {
             spanCount++;
             ryc_list_album.setLayoutManager(new GridLayoutManager(this, spanCount));
             ryc_list_album.setAdapter(itemAlbumAdapter);
         }
         else if(spanCount == 4) {
-            spanCount = 2;
-            ryc_list_album.setLayoutManager(new GridLayoutManager(this, spanCount));
-            ryc_list_album.setAdapter(new ItemAlbumAdapter2(myAlbum));
+
+            spanCount = 1;
+            ryc_list_album.setLayoutManager(new LinearLayoutManager(this));
+            ryc_list_album.setAdapter(new ItemAlbumAdapter3(myAlbum));
 
         }
 
