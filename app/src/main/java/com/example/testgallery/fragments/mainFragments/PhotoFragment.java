@@ -42,6 +42,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.example.testgallery.activities.mainActivities.ItemAlbumActivity;
+import com.example.testgallery.activities.mainActivities.PictureActivity;
 import com.example.testgallery.activities.subActivities.MultiSelectImage;
 import com.example.testgallery.activities.mainActivities.SettingsActivity;
 import com.example.testgallery.activities.mainActivities.SlideShowActivity;
@@ -65,7 +66,7 @@ public class PhotoFragment extends Fragment {
     private List<Image> imageList;
     private List<String> listLabel;
     private ArrayList<String> list_searchA;
-    private ArrayList<String> imageListPath;
+    private static int REQUEST_CODE_MULTI = 40;
 
     private Context context;
     @Nullable
@@ -125,7 +126,7 @@ public class PhotoFragment extends Fragment {
                         break;
                     case R.id.menuChoose:
                         Intent intent_mul = new Intent(getContext(), MultiSelectImage.class);
-                        startActivity(intent_mul);
+                        startActivityForResult(intent_mul, REQUEST_CODE_MULTI);
                         break;
                     case R.id.menuSettings:
                         Intent intent = new Intent(getContext(), SettingsActivity.class);
@@ -297,6 +298,11 @@ public class PhotoFragment extends Fragment {
                     }
                 }
         }
+        if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE_MULTI) {
+            MyAsyncTask myAsyncTask = new MyAsyncTask();
+            myAsyncTask.execute();
+            Toast.makeText(context, "Your image is hidden", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public String getRealPathFromURI(Uri contentUri) {
@@ -345,18 +351,6 @@ public class PhotoFragment extends Fragment {
         }
     }
 
-    private void slideShowEvents() {
-
-        Intent intent = new Intent(getContext(), SlideShowActivity.class);
-        imageList = GetAllPhotoFromGallery.getAllImageFromGallery(getContext());
-        for(int i = 0; i < imageList.size(); i++){
-            imageListPath.add((imageList.get(i)).getPath());
-        }
-        intent.putStringArrayListExtra("data_slide", imageListPath);
-
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        getView().getContext().startActivity(intent);
-    }
 
     public class LabelAsyncTask extends AsyncTask<Void, Integer, Void> {
         private String title;

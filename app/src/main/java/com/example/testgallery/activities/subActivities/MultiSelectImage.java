@@ -31,6 +31,7 @@ import com.example.testgallery.adapters.CategoryMultiAdapter;
 import com.example.testgallery.models.Album;
 import com.example.testgallery.models.Category;
 import com.example.testgallery.models.Image;
+import com.example.testgallery.utility.FileUtility;
 import com.example.testgallery.utility.GetAllPhotoFromGallery;
 import com.example.testgallery.utility.ListTransInterface;
 import com.example.testgallery.utility.SubInterface;
@@ -117,10 +118,43 @@ public class MultiSelectImage extends AppCompatActivity implements ListTransInte
                     case R.id.menuAddAlbum:
                         openBottomDialog();
                         break;
+                    case R.id.menuHide:
+                        hideEvents();
+                        break;
                 }
                 return true;
             }
         });
+    }
+
+    private void hideEvents() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MultiSelectImage.this);
+
+        builder.setTitle("Confirm");
+        builder.setMessage("Do you want to hide/show this image?");
+
+        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+
+            public void onClick(DialogInterface dialog, int which) {
+                AddSecretAsync addSecretAsync = new AddSecretAsync();
+                addSecretAsync.execute();
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                // Do nothing
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog alert = builder.create();
+        alert.show();
+
+
     }
 
     private void mappingControls() {
@@ -313,6 +347,41 @@ public class MultiSelectImage extends AppCompatActivity implements ListTransInte
         protected void onPostExecute(Void unused) {
             super.onPostExecute(unused);
             bottomSheetDialog.cancel();
+            finish();
+        }
+    }
+    public class AddSecretAsync extends AsyncTask<Void, Integer, Void> {
+        private ArrayList<String> list;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            list = new ArrayList<>();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            String scrPath = Environment.getExternalStorageDirectory()+File.separator+".secret";
+            File scrDir = new File(scrPath);
+            if(!scrDir.exists()){
+                Toast.makeText(MultiSelectImage.this, "You haven't created secret album", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                for(int i=0;i<listImageSelected.size();i++) {
+                    Image img = listImageSelected.get(i);
+                    FileUtility fu = new FileUtility();
+                    File imgFile = new File(img.getPath());
+                    list.add(img.getPath());
+                    fu.moveFile(img.getPath(), imgFile.getName(), scrPath);
+                }
+            }
+            return null;
+        }
+        @Override
+        protected void onPostExecute(Void unused) {
+            super.onPostExecute(unused);
+            Intent intentResult = new Intent();
+            intentResult.putStringArrayListExtra("list_hide",list);
+            setResult(RESULT_OK, intentResult);
             finish();
         }
     }
