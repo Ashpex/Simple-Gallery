@@ -217,12 +217,11 @@ public class PhotoFragment extends Fragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onResume() {
+        super.onResume();
         MyAsyncTask myAsyncTask = new MyAsyncTask();
         myAsyncTask.execute();
     }
-
     @Override
     public void onStop() {
         super.onStop();
