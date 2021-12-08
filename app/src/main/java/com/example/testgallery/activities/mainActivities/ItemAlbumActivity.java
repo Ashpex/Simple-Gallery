@@ -77,7 +77,10 @@ public class ItemAlbumActivity extends AppCompatActivity {
         album_name = intent.getStringExtra("name");
         ryc_list_album.setLayoutManager(new GridLayoutManager(this, spanCount));
         itemAlbumAdapter = new ItemAlbumAdapter(myAlbum);
-        ryc_list_album.setAdapter(itemAlbumAdapter);
+        if(spanCount == 2)
+            ryc_list_album.setAdapter(new ItemAlbumAdapter2(myAlbum));
+        else
+            ryc_list_album.setAdapter(new ItemAlbumAdapter(myAlbum));
     }
 
     private void animationRyc() {
@@ -156,6 +159,7 @@ public class ItemAlbumActivity extends AppCompatActivity {
         SharedPreferences sharedPref = getSharedPreferences("MyPreferences", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putInt("span_count", spanCount);
+        editor.commit();
     }
 
     private void eventSearch(@NonNull MenuItem item) {

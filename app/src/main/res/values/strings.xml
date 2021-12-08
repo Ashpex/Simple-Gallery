@@ -28,4 +28,5 @@
     <string name="set_wallpaper">Set wallpaper</string>
     <string name="multi_create_album">Create Album</string>
     <string name="choose">Choose</string>
+    <string name="addAlbum">Add to Album</string>
 </resources>

@@ -36,6 +36,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import java.io.File;
@@ -52,9 +54,12 @@ import com.dsphotoeditor.sdk.activity.DsPhotoEditorActivity;
 import com.dsphotoeditor.sdk.utils.DsPhotoEditorConstants;
 import com.example.testgallery.R;
 import com.example.testgallery.activities.mainActivities.data_favor.DataLocalManager;
+import com.example.testgallery.adapters.AlbumSheetAdapter;
 import com.example.testgallery.adapters.SlideImageAdapter;
+import com.example.testgallery.models.Album;
 import com.example.testgallery.models.Image;
 import com.example.testgallery.utility.FileUtility;
+import com.example.testgallery.utility.GetAllPhotoFromGallery;
 import com.example.testgallery.utility.PictureInterface;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -76,7 +81,8 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
     private String imgPath;
     private String imageName;
     private String thumb;
-
+    private BottomSheetDialog bottomSheetDialog;
+    private RecyclerView ryc_album;
     private static Set<String> imageListFavor = DataLocalManager.getListSet();
 
     @Override
@@ -231,7 +237,9 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
                             showExif(targetUri);
                         }
                         break;
-
+                    case R.id.menuAddAlbum:
+                        openBottomDialog();
+                        break;
                     case R.id.menuAddSecret:
                         AlertDialog.Builder builder = new AlertDialog.Builder(PictureActivity.this);
 
@@ -441,10 +449,61 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
         AlertDialog alert = builder.create();
         alert.show();
     }
+    //bottomDialog Add to album
+    private void openBottomDialog() {
+        View viewDialog = LayoutInflater.from(PictureActivity.this).inflate(R.layout.layout_bottom_sheet_add_to_album, null);
+        ryc_album = viewDialog.findViewById(R.id.ryc_album);
+        ryc_album.setLayoutManager(new GridLayoutManager(this, 2));
 
+        bottomSheetDialog = new BottomSheetDialog(PictureActivity.this);
+        bottomSheetDialog.setContentView(viewDialog);
+        MyAsyncTask myAsyncTask = new MyAsyncTask();
+        myAsyncTask.execute();
+
+    }
 
     @Override
     public void actionShow(boolean flag) {
         showNavigation(flag);
+    }
+
+    public class MyAsyncTask extends AsyncTask<Void, Integer, Void> {
+        private AlbumSheetAdapter albumSheetAdapter;
+        private List<Album> listAlbum;
+        @Override
+        protected Void doInBackground(Void... voids) {
+            List<Image> listImage = GetAllPhotoFromGallery.getAllImageFromGallery(PictureActivity.this);
+            listAlbum = getListAlbum(listImage);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            super.onPostExecute(unused);
+            albumSheetAdapter = new AlbumSheetAdapter(listAlbum, PictureActivity.this);
+            ryc_album.setAdapter(albumSheetAdapter);
+            bottomSheetDialog.show();
+
+        }
+        @NonNull
+        private List<Album> getListAlbum(List<Image> listImage) {
+            List<String> ref = new ArrayList<>();
+            List<Album> listAlbum = new ArrayList<>();
+
+            for (int i = 0; i < listImage.size(); i++) {
+                String[] _array = listImage.get(i).getThumb().split("/");
+                String _name = _array[_array.length - 2];
+                if (!ref.contains(_name)) {
+                    ref.add(_name);
+                    Album token = new Album(listImage.get(i), _name);
+                    token.addItem(listImage.get(i));
+                    listAlbum.add(token);
+                } else {
+                    listAlbum.get(ref.indexOf(_name)).addItem(listImage.get(i));
+                }
+            }
+
+            return listAlbum;
+        }
     }
 }
