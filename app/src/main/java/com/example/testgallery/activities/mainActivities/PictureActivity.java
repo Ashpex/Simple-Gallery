@@ -458,17 +458,17 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
         alert.show();
     }
     //bottomDialog Add to album
-    private void openBottomDialog() {
-        View viewDialog = LayoutInflater.from(PictureActivity.this).inflate(R.layout.layout_bottom_sheet_add_to_album, null);
-        ryc_album = viewDialog.findViewById(R.id.ryc_album);
-        ryc_album.setLayoutManager(new GridLayoutManager(this, 2));
+        private void openBottomDialog() {
+            View viewDialog = LayoutInflater.from(PictureActivity.this).inflate(R.layout.layout_bottom_sheet_add_to_album, null);
+            ryc_album = viewDialog.findViewById(R.id.ryc_album);
+            ryc_album.setLayoutManager(new GridLayoutManager(this, 2));
 
-        bottomSheetDialog = new BottomSheetDialog(PictureActivity.this);
-        bottomSheetDialog.setContentView(viewDialog);
-        MyAsyncTask myAsyncTask = new MyAsyncTask();
-        myAsyncTask.execute();
+            bottomSheetDialog = new BottomSheetDialog(PictureActivity.this);
+            bottomSheetDialog.setContentView(viewDialog);
+            MyAsyncTask myAsyncTask = new MyAsyncTask();
+            myAsyncTask.execute();
 
-    }
+        }
 
     @Override
     public void actionShow(boolean flag) {

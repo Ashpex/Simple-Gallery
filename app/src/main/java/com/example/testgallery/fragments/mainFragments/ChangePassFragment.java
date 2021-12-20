@@ -16,7 +16,11 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import com.example.testgallery.R;
+import com.example.testgallery.utility.BCrypt;
+import com.example.testgallery.utility.FileUtility;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+
+import java.io.FileNotFoundException;
 
 public class ChangePassFragment extends BottomSheetDialogFragment {
     private View view;
@@ -64,7 +68,7 @@ public class ChangePassFragment extends BottomSheetDialogFragment {
                 String oldPassText = oldPass.getText().toString();
                 String newPassText = newPass.getText().toString();
                 String confirmPassText = confirmPass.getText().toString();
-                if(!oldPassText.equals(password)){
+                if(!BCrypt.checkpw(oldPassText, password)){
                     Toast.makeText(getActivity(),"Wrong Password", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -72,9 +76,16 @@ public class ChangePassFragment extends BottomSheetDialogFragment {
                     Toast.makeText(getActivity(),"ConfirmPassword doesn't match", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                String hashed = BCrypt.hashpw(newPassText, BCrypt.gensalt());
                 SharedPreferences.Editor editor = settings.edit();
-                editor.putString("password",newPassText);
+                editor.putString("password",hashed);
                 editor.apply();
+                FileUtility fu = new FileUtility();
+                try {
+                    fu.updateInfoFile(hashed);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
                 Toast.makeText(getActivity(),"Change Password Success", Toast.LENGTH_SHORT).show();
                 Fragment thisFrag = getParentFragmentManager().findFragmentByTag("ChangePass_frag");
                 getParentFragmentManager().beginTransaction()

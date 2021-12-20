@@ -1,14 +1,21 @@
 package com.example.testgallery.utility;
 //https://stackoverflow.com/questions/4178168/how-to-programmatically-move-copy-and-delete-files-and-directories-on-sd
-import android.media.MediaScannerConnection;
+
+import android.os.Environment;
 import android.util.Log;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+
 
 public class FileUtility {
 
@@ -113,5 +120,27 @@ public class FileUtility {
             Log.e("tag", e.getMessage());
         }
 
+    }
+    public  void updateInfoFile(String password) throws FileNotFoundException {
+        File info = new File(Environment.getExternalStorageDirectory()+File.separator+".secret"+ File.separator+"info.txt");
+        try{
+            BufferedReader br = new BufferedReader(new FileReader(info));
+            String info_password = br.readLine();
+            String info_question = br.readLine();
+            String info_answer = br.readLine();
+            br.close();
+            FileOutputStream fos = new FileOutputStream(info);
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+            bw.write(password);
+            bw.newLine();
+            bw.write(info_question);
+            bw.newLine();
+            bw.write(info_answer);
+            bw.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

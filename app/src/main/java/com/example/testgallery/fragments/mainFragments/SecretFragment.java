@@ -1,9 +1,12 @@
 package com.example.testgallery.fragments.mainFragments;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -12,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,13 +25,21 @@ import androidx.fragment.app.Fragment;
 
 import com.example.testgallery.R;
 import com.example.testgallery.activities.mainActivities.ItemAlbumActivity;
+import com.example.testgallery.utility.BCrypt;
 import com.example.testgallery.utility.FileUtility;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.textfield.TextInputLayout;
 
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 public class SecretFragment extends Fragment {
@@ -46,7 +58,10 @@ public class SecretFragment extends Fragment {
     TextInputLayout questionField;
     TextInputLayout answerField;
     String password;
+    String info_question;
+    String info_answer;
     SharedPreferences settings;
+    boolean checked = false;
     private androidx.appcompat.widget.Toolbar toolbar_album;
     private LinearLayout createPassView;
     private LinearLayout enterPassView;
@@ -56,10 +71,33 @@ public class SecretFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         secretPath = Environment.getExternalStorageDirectory()+File.separator+".secret";
+
         settings = getActivity().getSharedPreferences("PREFS",0);
         password = settings.getString("password","");
+        info_question = settings.getString("question","");
+        info_answer = settings.getString("answer","");
         view = inflater.inflate(R.layout.fragment_secret, container,false);
         mapping();
+        File check_info = new File(secretPath+File.separator+"info.txt");
+        if((check_info.exists()&&password.equals(""))||(check_info.exists()&&!checked)){
+            try {
+                BufferedReader br = new BufferedReader(new FileReader(check_info));
+                password = br.readLine();
+                info_question = br.readLine();
+                info_answer = br.readLine();
+                br.close();
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putString("password",password);
+                editor.putString("question",info_question);
+                editor.putString("answer",info_answer);
+                editor.apply();
+                checked=true;
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         if(!password.equals("")){
             createPassView.setVisibility(View.INVISIBLE);
         }
@@ -82,13 +120,19 @@ public class SecretFragment extends Fragment {
                 switch (id){
                     case R.id.menuChangePass:
                         getChangePassFrag();
+
                         break;
                     case R.id.menuForgotPass:
                         BottomSheetDialogFragment forgotDialog = new ForgotPassDialog();
                         forgotDialog.show(getChildFragmentManager(),forgotDialog.getTag());
                         break;
                     case R.id.menuDeleteSecret:
-                        deleteSecret();
+                        if(!password.equals("")){
+                            deleteSecret();
+                        }
+                        else{
+                            Toast.makeText(getActivity(),"Doesn't have secret", Toast.LENGTH_SHORT).show();
+                        }
                         break;
                 }
                 return true;
@@ -96,19 +140,59 @@ public class SecretFragment extends Fragment {
         });
     }
     public void deleteSecret(){
-        File scrDir = new File(secretPath);
-        if(scrDir.exists()){
-            FileUtility fu = new FileUtility();
-            fu.deleteRecursive(scrDir);
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putString("password","");
-            editor.apply();
-            enterPassView.setVisibility(View.INVISIBLE);
-            createPassView.setVisibility(View.VISIBLE);
-        }
-        else{
-            Toast.makeText(getActivity(),"Doesn't have secret", Toast.LENGTH_SHORT).show();
-        }
+        AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
+        LinearLayout linearLayout = new LinearLayout(getContext());
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        final  EditText pass_box = new EditText(getContext());
+        pass_box.setHint("Enter you password");
+        pass_box.setTransformationMethod(new PasswordTransformationMethod());
+        final TextView question = new TextView(getContext());
+        question.setText("Answer this question: "+settings.getString("question",""));
+        final  EditText del_answer = new EditText(getContext());
+        del_answer.setTransformationMethod(new PasswordTransformationMethod());
+        linearLayout.addView(pass_box);
+        linearLayout.addView(question);
+        linearLayout.addView(del_answer);
+        alert.setTitle("Confirm your action");
+        alert.setView(linearLayout);
+
+        alert.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String del_pass_value = pass_box.getText().toString();
+                String del_answer_value = del_answer.getText().toString();
+                if(!BCrypt.checkpw(del_pass_value, password)){
+                    Toast.makeText(getActivity(),"Wrong password", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(!BCrypt.checkpw(del_answer_value, settings.getString("answer",""))){
+                    Toast.makeText(getActivity(),"Wrong answer", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                File scrDir = new File(secretPath);
+                if(scrDir.exists()){
+                    FileUtility fu = new FileUtility();
+                    fu.deleteRecursive(scrDir);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putString("password","");
+                    editor.apply();
+                    enterPassView.setVisibility(View.INVISIBLE);
+                    createPassView.setVisibility(View.VISIBLE);
+                    Toast.makeText(getActivity(),"Delete secret success", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(getActivity(),"Doesn't have secret", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                dialog.cancel();
+            }
+        });
+
+        alert.show();
+
 
     }
 
@@ -140,18 +224,35 @@ public class SecretFragment extends Fragment {
                 }
                 else{
                     if(createText.equals(confirmText)){
+                        String hashedPass = BCrypt.hashpw(createText,BCrypt.gensalt());
+                        String hashedAnswer = BCrypt.hashpw(answerText,BCrypt.gensalt());
                         SharedPreferences.Editor editor = settings.edit();
-                        editor.putString("password",createText);
+                        editor.putString("password",hashedPass);
                         editor.putString("question",questionText);
-                        editor.putString("answer",answerText);
+                        editor.putString("answer",hashedAnswer);
                         editor.apply();
 
                         File mydir = new File(secretPath);
                         if (!mydir.exists()) {
                             mydir.mkdirs();
-                            File nonmedia = new File(Environment.getExternalStorageDirectory() + File.separator + ".secret" + File.separator + ".nonmedia");
+                            File nomedia = new File(Environment.getExternalStorageDirectory() + File.separator + ".secret" + File.separator + ".nomedia");
                             try {
-                                nonmedia.createNewFile();
+                                nomedia.createNewFile();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            File info = new File(secretPath+ File.separator+"info.txt");
+
+                            try {
+                                info.createNewFile();
+                                FileOutputStream fos = new FileOutputStream(info);
+                                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+                                bw.write(hashedPass);
+                                bw.newLine();
+                                bw.write(questionText);
+                                bw.newLine();
+                                bw.write(hashedAnswer);
+                                bw.close();
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -176,7 +277,7 @@ public class SecretFragment extends Fragment {
             public void onClick(View view){
                 updatePassword();
                 String enterText = enterPass.getText().toString();
-                if(enterText.equals(password)){
+                if(BCrypt.checkpw(enterText, password)){
                     Toast.makeText(getActivity(),"Password correct", Toast.LENGTH_SHORT).show();
                     accessSecret();
                     enterPass.setText("");
@@ -228,7 +329,7 @@ public class SecretFragment extends Fragment {
             ArrayList<String> listPath = new ArrayList<>();
             File list[] = mydir.listFiles();
             for(File file:list){
-                if(!file.getName().equals(".nonmedia")) {
+                if(!file.getName().equals(".nomedia")&&!file.getName().equals("info.txt")) {
                     listPath.add(file.getPath());
                 }
             }
