@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.testgallery.R;
+import com.example.testgallery.activities.mainActivities.data_favor.DataLocalManager;
 import com.example.testgallery.adapters.ImageSelectAdapter;
 import com.example.testgallery.models.Image;
 import com.example.testgallery.utility.GetAllPhotoFromGallery;
@@ -26,6 +27,7 @@ import com.example.testgallery.utility.ListTransInterface;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class AddImageToAlbumActivity extends AppCompatActivity implements ListTransInterface {
     private ImageView img_back_create_album;
@@ -37,6 +39,7 @@ public class AddImageToAlbumActivity extends AppCompatActivity implements ListTr
     private String path_folder;
     private ArrayList<String> myAlbum;
     private String album_name;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +101,7 @@ public class AddImageToAlbumActivity extends AppCompatActivity implements ListTr
     public class AddAlbumAsyncTask extends AsyncTask<Void, Integer, Void> {
         ArrayList<String> list;
 
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -117,6 +121,7 @@ public class AddImageToAlbumActivity extends AppCompatActivity implements ListTr
                 imgFile.deleteOnExit();
                 paths[i] = desImgFile.getPath();
                 i++;
+
             }
             MediaScannerConnection.scanFile(getApplicationContext(),paths, null, null);
             return null;

@@ -11,7 +11,7 @@
 
     <item android:id="@+id/starPic"
         android:title="@string/add_to_favorite"
-        android:icon="@drawable/ic_star" />
+        android:icon="@drawable/ic_star"/>
 
     <item android:id="@+id/deletePic"
         android:title="@string/delete"

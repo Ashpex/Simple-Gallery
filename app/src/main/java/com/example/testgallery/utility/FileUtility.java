@@ -4,6 +4,8 @@ package com.example.testgallery.utility;
 import android.os.Environment;
 import android.util.Log;
 
+import com.example.testgallery.activities.mainActivities.data_favor.DataLocalManager;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -15,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.util.Set;
 
 
 public class FileUtility {

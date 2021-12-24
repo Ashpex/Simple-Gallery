@@ -124,6 +124,7 @@ public class CreateAlbumActivity extends AppCompatActivity implements ListTransI
                 imgFile.deleteOnExit();
                 paths[i] = desImgFile.getPath();
                 i++;
+
             }
             MediaScannerConnection.scanFile(getApplicationContext(),paths, null, null);
             return null;

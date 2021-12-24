@@ -153,6 +153,12 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
 
                         DataLocalManager.setListImg(imageListFavor);
                         Toast.makeText(PictureActivity.this, imageListFavor.size()+"", Toast.LENGTH_SHORT).show();
+                        if(!check(imgPath)){
+                            bottomNavigationView.getMenu().getItem(2).setIcon(R.drawable.ic_star);
+                        }
+                        else{
+                            bottomNavigationView.getMenu().getItem(2).setIcon(R.drawable.ic_star_red);
+                        }
                         break;
 
                     case R.id.deletePic:
@@ -392,6 +398,12 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
                 thumb = imageListThumb.get(position);
                 imgPath = imageListPath.get(position);
                 setTitleToolbar(thumb.substring(thumb.lastIndexOf('/') + 1));
+                if(!check(imgPath)){
+                    bottomNavigationView.getMenu().getItem(2).setIcon(R.drawable.ic_star);
+                }
+                else{
+                    bottomNavigationView.getMenu().getItem(2).setIcon(R.drawable.ic_star_red);
+                }
             }
 
             @Override
@@ -418,10 +430,21 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
     private void mappingControls() {
         viewPager_picture = findViewById(R.id.viewPager_picture);
         bottomNavigationView = findViewById(R.id.bottom_picture);
+
+
+
         toolbar_picture = findViewById(R.id.toolbar_picture);
         frame_viewPager = findViewById(R.id.frame_viewPager);
     }
 
+    public Boolean check(String  Path){
+        for (String img: imageListFavor) {
+            if(img.equals(Path)){
+                return true;
+            }
+        }
+        return false;
+    }
 
     public void setTitleToolbar(String imageName) {
         this.imageName = imageName;
