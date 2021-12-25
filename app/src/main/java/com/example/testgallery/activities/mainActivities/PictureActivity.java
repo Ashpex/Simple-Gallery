@@ -87,6 +87,12 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
     private static Set<String> imageListFavor = DataLocalManager.getListSet();
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        imageListFavor = DataLocalManager.getListSet();
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_picture);
@@ -572,6 +578,13 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
             imgFile.renameTo(desImgFile);
             imgFile.deleteOnExit();
             paths[0] = desImgFile.getPath();
+            for (String imgFavor: imageListFavor){
+                if(imgFavor.equals(imgFile)){
+                    imageListFavor.remove(imgFile.getPath());
+                    imageListFavor.add(desImgFile.getPath());
+                    break;
+                }
+            }
             MediaScannerConnection.scanFile(getApplicationContext(),paths, null, null);
             return null;
         }

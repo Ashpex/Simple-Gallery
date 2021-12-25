@@ -29,12 +29,20 @@ public class DataLocalManager {
 
     public static void setListImg(Set<String> listImg){
         DataLocalManager.getInstance().mySharedPreferences.deleteListFavor(PREF_IMG_FAVOR);
-//        Gson gson = new Gson();
-//        JsonArray jsonArray = gson.toJsonTree(listImg).getAsJsonArray();
-//        String strJsonArry = jsonArray.toString();
-//        DataLocalManager.getInstance().mySharedPreferences.putStringvalue(PREF_IMG_FAVOR,strJsonArry);
 
         DataLocalManager.getInstance().mySharedPreferences.putStringSet(PREF_IMG_FAVOR, listImg);
+
+    }
+
+    public static void setListImgByList(List<String> listImg){
+        Set<String> setListImg = new HashSet<>();
+
+        for (String i: listImg) {
+            setListImg.add(i);
+        }
+        DataLocalManager.getInstance().mySharedPreferences.deleteListFavor(PREF_IMG_FAVOR);
+
+        DataLocalManager.getInstance().mySharedPreferences.putStringSet(PREF_IMG_FAVOR, setListImg);
 
     }
 

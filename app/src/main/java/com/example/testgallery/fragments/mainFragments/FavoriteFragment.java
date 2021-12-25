@@ -37,15 +37,18 @@ import java.io.File;
 import java.util.ArrayList;
 
 import java.util.List;
+import java.util.Set;
 
 public class FavoriteFragment extends Fragment {
     private RecyclerView recyclerView;
 
     private List<String> imageListPath;
+
     private List<Image> imageList;
     private androidx.appcompat.widget.Toolbar toolbar_favor;
     private Context context;
 
+    private Set<String> imgListFavor;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -76,8 +79,8 @@ public class FavoriteFragment extends Fragment {
         });
 
         imageListPath = DataLocalManager.getListImg();
-        imageList = getListImgFavor(imageListPath);
-
+        imgListFavor=DataLocalManager.getListSet();
+        //imageList = getListImgFavor(imageListPath);;
         setRyc();
 
 
@@ -143,8 +146,18 @@ public class FavoriteFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        FavoriteFragment.MyAsyncTask myAsyncTask = new FavoriteFragment.MyAsyncTask();
-        myAsyncTask.execute();
+        imageListPath = DataLocalManager.getListImg();
+        for(int i=0;i<imageListPath.size();i++) {
+            File file = new File(imageListPath.get(i));
+            if(!file.canRead()) {
+                imageListPath.remove(i);
+            }
+        }
+
+        DataLocalManager.setListImgByList(imageListPath);
+        recyclerView.setAdapter(new ItemAlbumAdapter(new ArrayList<>(imageListPath)));
+        //FavoriteFragment.MyAsyncTask myAsyncTask = new FavoriteFragment.MyAsyncTask();
+        //myAsyncTask.execute();
     }
 
     private List<Image> getListImgFavor(List<String> imageListUri) {
@@ -167,10 +180,12 @@ public class FavoriteFragment extends Fragment {
             imageListPath = DataLocalManager.getListImg();
             for(int i=0;i<imageListPath.size();i++) {
                 File file = new File(imageListPath.get(i));
-                if(!file.exists()) {
+                if(!file.exists()|| !file.canRead()) {
                     imageListPath.remove(i);
                 }
             }
+
+            DataLocalManager.setListImgByList(imageListPath);
             return null;
         }
 
