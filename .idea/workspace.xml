@@ -16,16 +16,15 @@
   <component name="ChangeListManager">
     <list default="true" id="994c01ad-da38-40ca-927e-39e67f8d2c1f" name="Default Changelist" comment="update star favor">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/testgallery/activities/mainActivities/AddImageToAlbumActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/testgallery/activities/mainActivities/AddImageToAlbumActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/testgallery/activities/mainActivities/PictureActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/testgallery/activities/mainActivities/PictureActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/testgallery/activities/mainActivities/data_favor/DataLocalManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/testgallery/activities/mainActivities/data_favor/DataLocalManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/testgallery/fragments/mainFragments/FavoriteFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/testgallery/fragments/mainFragments/FavoriteFragment.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[192.168.1.2:5555]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -287,5 +286,16 @@
     <MESSAGE value="fix some bug 'update image'" />
     <MESSAGE value="update star favor" />
     <option name="LAST_COMMIT_MESSAGE" value="update star favor" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="java-line">
+          <url>file://$PROJECT_DIR$/app/src/main/java/com/example/testgallery/activities/mainActivities/AddImageToAlbumActivity.java</url>
+          <line>116</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

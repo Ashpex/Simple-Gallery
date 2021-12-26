@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.testgallery.R;
+import com.example.testgallery.activities.mainActivities.data_favor.DataLocalManager;
 import com.example.testgallery.adapters.ImageAdapter;
 import com.example.testgallery.adapters.ImageSelectAdapter;
 import com.example.testgallery.adapters.SlideShowAdapter;
@@ -32,6 +33,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class CreateAlbumActivity extends AppCompatActivity implements ListTransInterface {
     private ImageView img_back_create_album;
@@ -117,6 +119,7 @@ public class CreateAlbumActivity extends AppCompatActivity implements ListTransI
             }
             String[] paths = new String[listImageSelected.size()];
             int i =0;
+            Set<String> imageListFavor = DataLocalManager.getListSet();
             for (Image img :listImageSelected){
                 File imgFile = new File(img.getPath());
                 File desImgFile = new File(albumPath,albumName+"_"+imgFile.getName());
@@ -124,8 +127,15 @@ public class CreateAlbumActivity extends AppCompatActivity implements ListTransI
                 imgFile.deleteOnExit();
                 paths[i] = desImgFile.getPath();
                 i++;
-
+                for (String imgFavor: imageListFavor){
+                    if(imgFavor.equals(imgFile.getPath())){
+                        imageListFavor.remove(imgFile.getPath());
+                        imageListFavor.add(desImgFile.getPath());
+                        break;
+                    }
+                }
             }
+            DataLocalManager.setListImg(imageListFavor);
             MediaScannerConnection.scanFile(getApplicationContext(),paths, null, null);
             return null;
         }

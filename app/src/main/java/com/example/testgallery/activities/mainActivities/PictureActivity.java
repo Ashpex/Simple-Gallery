@@ -84,7 +84,7 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
     private String thumb;
     private BottomSheetDialog bottomSheetDialog;
     private RecyclerView ryc_album;
-    private static Set<String> imageListFavor = DataLocalManager.getListSet();
+    public static Set<String> imageListFavor = DataLocalManager.getListSet();
 
     @Override
     protected void onResume() {
@@ -164,6 +164,7 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
                         }
                         else{
                             bottomNavigationView.getMenu().getItem(2).setIcon(R.drawable.ic_star_red);
+
                         }
                         break;
 
@@ -579,12 +580,13 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
             imgFile.deleteOnExit();
             paths[0] = desImgFile.getPath();
             for (String imgFavor: imageListFavor){
-                if(imgFavor.equals(imgFile)){
+                if(imgFavor.equals(imgFile.getPath())){
                     imageListFavor.remove(imgFile.getPath());
                     imageListFavor.add(desImgFile.getPath());
                     break;
                 }
             }
+            DataLocalManager.setListImg(imageListFavor);
             MediaScannerConnection.scanFile(getApplicationContext(),paths, null, null);
             return null;
         }
