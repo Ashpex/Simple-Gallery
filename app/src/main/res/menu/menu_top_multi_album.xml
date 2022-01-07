@@ -11,4 +11,7 @@
     <item android:id="@+id/menu_move_image"
         android:title="@string/move_image"
         app:showAsAction="never"/>
+    <item android:id="@+id/menuGif"
+        android:title="@string/gif"
+        app:showAsAction="never"/>
 </menu>

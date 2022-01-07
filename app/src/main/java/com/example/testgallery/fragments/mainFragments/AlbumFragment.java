@@ -1,5 +1,7 @@
 package com.example.testgallery.fragments.mainFragments;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -40,7 +42,8 @@ public class AlbumFragment extends Fragment {
     private List<Album> listAlbum;
     private LinearLayout layout_bottom;
     private AlbumAdapter albumAdapter;
-
+    private ProgressDialog progressDialog;
+    private static int REQUEST_CODE_CREATE = 100;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -48,20 +51,15 @@ public class AlbumFragment extends Fragment {
         listImage = GetAllPhotoFromGallery.getAllImageFromGallery(view.getContext());
         toolbar_album = view.findViewById(R.id.toolbar_album);
         layout_bottom = view.findViewById(R.id.layout_bottom);
-
-        getDataFromGallery();
+        progressDialog = new ProgressDialog(getContext());
 
         toolBarEvents();
         mappingControls();
-        events();
+        eventsUpdateAlbum();
         setViewRyc();
         albumAdapter.setData(listAlbum);
 
         return view;
-    }
-
-    private void getDataFromGallery() {
-        listAlbum = getListAlbum(listImage);
     }
 
     private void toolBarEvents() {
@@ -134,7 +132,7 @@ public class AlbumFragment extends Fragment {
 
     }
 
-    private void events() {
+    private void eventsUpdateAlbum() {
         MyAsyncTask myAsyncTask = new MyAsyncTask();
         myAsyncTask.execute();
     }
@@ -149,7 +147,7 @@ public class AlbumFragment extends Fragment {
     private void openCreateAlbumActivity() {
         Intent _intent = new Intent(view.getContext(), CreateAlbumActivity.class);
         _intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        view.getContext().startActivity(_intent);
+        ((Activity) view.getContext()).startActivityForResult(_intent, REQUEST_CODE_CREATE);
     }
 
     private void mappingControls() {
@@ -160,6 +158,14 @@ public class AlbumFragment extends Fragment {
         ryc_album.setLayoutManager(new GridLayoutManager(view.getContext(), 2));
         albumAdapter = new AlbumAdapter(listAlbum, getContext());
         ryc_album.setAdapter(albumAdapter);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == REQUEST_CODE_CREATE && resultCode == Activity.RESULT_OK) {
+            eventsUpdateAlbum();
+        }
     }
 
     @NonNull
@@ -181,12 +187,15 @@ public class AlbumFragment extends Fragment {
                 listAlbum.get(ref.indexOf(_pathFolder)).addItem(listImage.get(i));
             }
         }
-
         return listAlbum;
     }
 
     public class MyAsyncTask extends AsyncTask<Void, Integer, Void> {
-
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog.show();
+        }
 
         @Override
         protected Void doInBackground(Void... voids) {
@@ -199,6 +208,7 @@ public class AlbumFragment extends Fragment {
         protected void onPostExecute(Void unused) {
             super.onPostExecute(unused);
             albumAdapter.setData(listAlbum);
+            progressDialog.cancel();
         }
     }
 }

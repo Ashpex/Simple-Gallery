@@ -25,6 +25,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TestGallery">
         <activity
+            android:name=".activities.subActivities.GifShowActivity"
+            android:exported="true" />
+        <activity
             android:name=".activities.subActivities.MultiSelectImage"
             android:exported="true" />
         <activity

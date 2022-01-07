@@ -1,5 +1,6 @@
 package com.example.testgallery.activities.mainActivities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.media.MediaScannerConnection;
 import android.os.AsyncTask;
@@ -67,9 +68,13 @@ public class CreateAlbumActivity extends AppCompatActivity implements ListTransI
             @Override
             public void onClick(View view) {
                 if(!TextUtils.isEmpty(edtTitleAlbum.getText())) {
-                    // ???????
-                    CreateAlbumAsyncTask createAlbumAsyncTask = new CreateAlbumAsyncTask();
-                    createAlbumAsyncTask.execute();
+                    if(edtTitleAlbum.getText().toString().contains("#")) {
+                        Toast.makeText(getApplicationContext(), "Không được chứa kí tự #", Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        CreateAlbumAsyncTask createAlbumAsyncTask = new CreateAlbumAsyncTask();
+                        createAlbumAsyncTask.execute();
+                    }
                 }
                 else{
                     Toast.makeText(getApplicationContext(), "Title null", Toast.LENGTH_SHORT).show();
@@ -143,6 +148,7 @@ public class CreateAlbumActivity extends AppCompatActivity implements ListTransI
         @Override
         protected void onPostExecute(Void unused) {
             super.onPostExecute(unused);
+            setResult(Activity.RESULT_OK);
             finish();
         }
     }

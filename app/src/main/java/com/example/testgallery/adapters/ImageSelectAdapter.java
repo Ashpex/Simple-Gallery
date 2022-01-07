@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -67,14 +68,13 @@ public class ImageSelectAdapter extends RecyclerView.Adapter<ImageSelectAdapter.
         holder.imgPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(holder.imgPhoto.getImageAlpha() == 100) {
-                    holder.imgPhoto.setImageAlpha(255);
-                    listTransInterface.removeList(image);
-                }
-                else if(holder.imgPhoto.getImageAlpha() == 255) {
-                    holder.imgPhoto.setImageAlpha(100);
-                    listTransInterface.addList(image);
-                }
+                    if (holder.imgPhoto.getImageAlpha() == 100) {
+                        holder.imgPhoto.setImageAlpha(255);
+                        listTransInterface.removeList(image);
+                    } else if (holder.imgPhoto.getImageAlpha() == 255) {
+                        holder.imgPhoto.setImageAlpha(100);
+                        listTransInterface.addList(image);
+                    }
             }
         });
 

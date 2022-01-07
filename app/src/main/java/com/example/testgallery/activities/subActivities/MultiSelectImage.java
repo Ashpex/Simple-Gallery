@@ -8,19 +8,23 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.testgallery.R;
@@ -39,7 +43,9 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class MultiSelectImage extends AppCompatActivity implements ListTransInterface, SubInterface {
     private RecyclerView ryc_list_album;
@@ -121,10 +127,57 @@ public class MultiSelectImage extends AppCompatActivity implements ListTransInte
                     case R.id.menuHide:
                         hideEvents();
                         break;
+                    case R.id.menuGif:
+                        gifEvents();
+                        break;
                 }
                 return true;
             }
         });
+    }
+
+    private void gifEvents() {
+        Toast.makeText(getApplicationContext(),"App sẽ loại bỏ ảnh gif có trong danh sách chọn", Toast.LENGTH_SHORT).show();
+        ArrayList<String> list_send_gif = new ArrayList<>();
+        for(int i =0;i<listImageSelected.size();i++) {
+            if(!listImageSelected.get(i).getPath().contains(".gif"))
+            list_send_gif.add(listImageSelected.get(i).getPath());
+        }
+        if(list_send_gif.size()!=0) {
+            inputDialog(list_send_gif);
+
+        }
+        else
+            Toast.makeText(getApplicationContext(),"Danh sách trống", Toast.LENGTH_SHORT).show();
+    }
+
+    private void inputDialog(ArrayList<String> list_send_gif) {
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(MultiSelectImage.this);
+        alertDialog.setTitle("Nhập khoảng delay");
+        alertDialog.setMessage("Delay: ");
+        final EditText input = new EditText(MultiSelectImage.this);
+        input.setInputType(InputType.TYPE_CLASS_NUMBER);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        input.setLayoutParams(lp);
+        alertDialog.setView(input);
+
+        alertDialog.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if(!TextUtils.isEmpty(input.getText())) {
+                    Intent intent_gif = new Intent(MultiSelectImage.this, GifShowActivity.class);
+                    intent_gif.putExtra("delay", Integer.valueOf(input.getText().toString()));
+                    intent_gif.putStringArrayListExtra("list", list_send_gif);
+                    startActivity(intent_gif);
+                    dialogInterface.cancel();
+                }
+                else
+                    Toast.makeText(getApplicationContext(),"Mời nhập đầy đủ", Toast.LENGTH_SHORT).show();
+            }
+        });
+        alertDialog.show();
     }
 
     private void hideEvents() {

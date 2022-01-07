@@ -34,4 +34,6 @@
     <string name="move_image">Move</string>
     <string name="restore">Restore</string>
     <string name="create_album">Create album</string>
+    <string name="gif">Make a Gif</string>
+    <string name="listGif">GIF</string>
 </resources>
