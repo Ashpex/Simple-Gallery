@@ -11,6 +11,23 @@
         <entry key="..\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/layout/item_slide_show.xml" value="0.19519927536231885" />
         <entry key="..\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/menu/menu_bottom_nav.xml" value="0.25" />
         <entry key="..\:/CODE_ANDROID_19_3/SimpleGallery/app/src/main/res/menu/menu_top.xml" value="0.12708333333333333" />
+        <entry key="..\:/SimpleGallery/app/src/main/res/layout/activity_gif_show.xml" value="0.264" />
+        <entry key="..\:/SimpleGallery/app/src/main/res/layout/activity_gifactivity.xml" value="0.2" />
+        <entry key="..\:/SimpleGallery/app/src/main/res/layout/activity_item_album.xml" value="0.1337386018237082" />
+        <entry key="..\:/SimpleGallery/app/src/main/res/layout/activity_picture.xml" value="0.1337386018237082" />
+        <entry key="..\:/SimpleGallery/app/src/main/res/layout/activity_slide_show.xml" value="0.1337386018237082" />
+        <entry key="..\:/SimpleGallery/app/src/main/res/layout/item_picture.xml" value="0.1337386018237082" />
+        <entry key="..\:/SimpleGallery/app/src/main/res/layout/item_picture_album.xml" value="0.21875" />
+        <entry key="..\:/SimpleGallery/app/src/main/res/layout/item_picture_album_linear.xml" value="0.21875" />
+        <entry key="..\:/SimpleGallery/app/src/main/res/layout/item_picture_album_span2.xml" value="0.21875" />
+        <entry key="..\:/SimpleGallery/app/src/main/res/layout/item_slide_show.xml" value="0.11702127659574468" />
+        <entry key="..\:/SimpleGallery/app/src/main/res/layout/layout_dialog_search_advanced.xml" value="0.11702127659574468" />
+        <entry key="..\:/SimpleGallery/app/src/main/res/layout/layout_info.xml" value="0.11702127659574468" />
+        <entry key="..\:/SimpleGallery/app/src/main/res/layout/layout_toolbar.xml" value="0.1337386018237082" />
+        <entry key="..\:/SimpleGallery/app/src/main/res/menu/menu_multi_select.xml" value="0.275" />
+        <entry key="..\:/SimpleGallery/app/src/main/res/menu/menu_top.xml" value="0.1675925925925926" />
+        <entry key="..\:/SimpleGallery/app/src/main/res/menu/menu_top_multi_album.xml" value="0.259375" />
+        <entry key="..\:/SimpleGallery/app/src/main/res/menu/menu_top_multi_secret.xml" value="0.259375" />
         <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2911458333333333" />
         <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_add_photo_list_album.xml" value="0.2911458333333333" />
         <entry key="..\:/Users/death/OneDrive/Documents/GitHub/SimpleGallery/app/src/main/res/drawable/ic_albums.xml" value="0.2755208333333333" />
