@@ -37,6 +37,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 public class FavoriteFragment extends Fragment {
@@ -103,9 +104,10 @@ public class FavoriteFragment extends Fragment {
             public boolean onQueryTextSubmit(String s) {
                 ArrayList<String> listImageSearch = new ArrayList<>();
                 for (String image : imageListPath) {
-                    if (image.toLowerCase().contains(s)) {
+                    if (image.toLowerCase().contains(s.toLowerCase())) {
                         listImageSearch.add(image);
                     }
+
                 }
 
                 if (listImageSearch.size() != 0) {

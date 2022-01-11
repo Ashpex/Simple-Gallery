@@ -36,6 +36,7 @@ import com.example.testgallery.activities.subActivities.MultiSelectImage;
 import com.example.testgallery.adapters.ItemAlbumAdapter;
 import com.example.testgallery.adapters.ItemAlbumAdapter2;
 import com.example.testgallery.adapters.ItemAlbumAdapter3;
+import com.example.testgallery.models.Image;
 
 
 import java.io.File;

@@ -16,6 +16,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -137,7 +138,7 @@ public class PhotoFragment extends Fragment {
 
     private void eventSearch(@NonNull MenuItem item) {
         SearchView searchView = (SearchView) item.getActionView();
-        searchView.setQueryHint("Type to search");
+        searchView.setQueryHint("Ex: 28-12");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
@@ -145,8 +146,11 @@ public class PhotoFragment extends Fragment {
                 List<Image> listImageSearch = new ArrayList<>();
 
                 for (Image image : imageList) {
-                    String thumb = image.getThumb();
-                    if (thumb.substring(thumb.lastIndexOf('/') + 1).toLowerCase().contains(s)) {
+//                    String thumb = image.getThumb();
+//                    if (thumb.substring(thumb.lastIndexOf('/') + 1).toLowerCase().contains(s)) {
+//                        listImageSearch.add(image);
+//                    }
+                    if (image.getDateTaken().contains(s)) {
                         listImageSearch.add(image);
                     }
                 }
@@ -156,9 +160,10 @@ public class PhotoFragment extends Fragment {
                 List<Category> categoryList = new ArrayList<>();
                 categoryList.add(category);
 
+                categoryAdapter1.setData(categoryList);
+                recyclerView.setAdapter(categoryAdapter1);
+
                 if (listImageSearch.size() != 0) {
-                    categoryAdapter1.setData(categoryList);
-                    recyclerView.setAdapter(categoryAdapter1);
                     synchronized (PhotoFragment.this) {
                         PhotoFragment.this.notifyAll();
                     }
