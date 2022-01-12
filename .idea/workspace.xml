@@ -14,22 +14,8 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="994c01ad-da38-40ca-927e-39e67f8d2c1f" name="Default Changelist" comment="Remove unused code">
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/values-vi-rVN/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/testgallery/activities/mainActivities/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/testgallery/activities/mainActivities/MainActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/testgallery/activities/mainActivities/SettingsActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/testgallery/activities/mainActivities/SettingsActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/testgallery/fragments/mainFragments/SettingsFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/testgallery/fragments/mainFragments/SettingsFragment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_create_album.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_create_album.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_secret.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_secret.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_secret_changepass.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_secret_changepass.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_secret_forgotpass.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_secret_forgotpass.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/layout_info.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/layout_info.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/menu/menu_album_secret.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/menu/menu_album_secret.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/strings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/xml/setting.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/xml/setting.xml" afterDir="false" />
+    <list default="true" id="994c01ad-da38-40ca-927e-39e67f8d2c1f" name="Default Changelist" comment="Add share gif image">
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/testgallery/activities/mainActivities/PictureActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/testgallery/activities/mainActivities/PictureActivity.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,7 +32,6 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="resourceFile" />
-        <option value="valueResourceFile" />
       </list>
     </option>
   </component>
@@ -275,14 +260,7 @@
       <option name="project" value="LOCAL" />
       <updated>1641963808378</updated>
     </task>
-    <task id="LOCAL-00017" summary="Remove unused code">
-      <created>1641963892909</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1641963892909</updated>
-    </task>
-    <option name="localTasksCounter" value="18" />
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -313,8 +291,7 @@
     <MESSAGE value="fix some bug 'update image'" />
     <MESSAGE value="update star favor" />
     <MESSAGE value="Add share gif image" />
-    <MESSAGE value="Remove unused code" />
-    <option name="LAST_COMMIT_MESSAGE" value="Remove unused code" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add share gif image" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
