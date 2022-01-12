@@ -28,7 +28,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private Toolbar toolbar_settings;
     public static final String KEY_PREF_LANGUAGE = "changeLanguage";
-    public String languagePref_ID;
+    public boolean languagePref_ID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,16 +48,14 @@ public class SettingsActivity extends AppCompatActivity {
                 new SharedPreferences.OnSharedPreferenceChangeListener() {
                     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
                         if (key.equals(KEY_PREF_LANGUAGE)) {
-                            languagePref_ID = prefs.getString(SettingsActivity.KEY_PREF_LANGUAGE, "2");
-                            switch (languagePref_ID) {
-                                case "1":
-                                    Locale localeEN = new Locale("en_US");
-                                    setLocale(localeEN);
-                                    break;
-                                case "2":
-                                    Locale localeVI = new Locale("vi");
-                                    setLocale(localeVI);
-                                    break;
+                            languagePref_ID = prefs.getBoolean(SettingsActivity.KEY_PREF_LANGUAGE, false);
+                            if(languagePref_ID){
+                                Locale localeEN = new Locale("en_US");
+                                setLocale(localeEN);
+                            }
+                            else{
+                                Locale localeVI = new Locale("vi");
+                                setLocale(localeVI);
                             }
                         }
                     }
@@ -87,16 +85,14 @@ public class SettingsActivity extends AppCompatActivity {
 
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
         if (key.equals(KEY_PREF_LANGUAGE)) {
-            languagePref_ID = sharedPreferences.getString(SettingsActivity.KEY_PREF_LANGUAGE, "2");
-            switch (languagePref_ID) {
-                case "1":
-                    Locale localeEN = new Locale("en_US");
-                    setLocale(localeEN);
-                    break;
-                case "2":
-                    Locale localeVI = new Locale("vi");
-                    setLocale(localeVI);
-                    break;
+            languagePref_ID = sharedPreferences.getBoolean(SettingsActivity.KEY_PREF_LANGUAGE,false);
+            if(languagePref_ID){
+                Locale localeEN = new Locale("en_US");
+                setLocale(localeEN);
+            }
+            else{
+                Locale localeVI = new Locale("vi");
+                setLocale(localeVI);
             }
         }
     }
