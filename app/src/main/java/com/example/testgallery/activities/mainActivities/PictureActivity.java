@@ -148,16 +148,21 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
                     case R.id.editPic:
                         Intent editIntent = new Intent(PictureActivity.this, DsPhotoEditorActivity.class);
 
-                        // Set data
-                        editIntent.setData(Uri.fromFile(new File(imgPath)));
-                        // Set output directory
-                        editIntent.putExtra(DsPhotoEditorConstants.DS_PHOTO_EDITOR_OUTPUT_DIRECTORY, "Simple Gallery");
-                        // Set toolbar color
-                        editIntent.putExtra(DsPhotoEditorConstants.DS_TOOL_BAR_BACKGROUND_COLOR, Color.parseColor("#FF000000"));
-                        // Set background color
-                        editIntent.putExtra(DsPhotoEditorConstants.DS_MAIN_BACKGROUND_COLOR, Color.parseColor("#FF000000"));
-                        // Start activity
-                        startActivity(editIntent);
+                        if(imgPath.contains("gif")){
+                            Toast.makeText(PictureActivity.this,"Cannot edit GIF images",Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            // Set data
+                            editIntent.setData(Uri.fromFile(new File(imgPath)));
+                            // Set output directory
+                            editIntent.putExtra(DsPhotoEditorConstants.DS_PHOTO_EDITOR_OUTPUT_DIRECTORY, "Simple Gallery");
+                            // Set toolbar color
+                            editIntent.putExtra(DsPhotoEditorConstants.DS_TOOL_BAR_BACKGROUND_COLOR, Color.parseColor("#FF000000"));
+                            // Set background color
+                            editIntent.putExtra(DsPhotoEditorConstants.DS_MAIN_BACKGROUND_COLOR, Color.parseColor("#FF000000"));
+                            // Start activity
+                            startActivity(editIntent);
+                        }
 
                         break;
 

@@ -58,8 +58,8 @@
     <string name="focal_length">Focal length</string>
     <string name="flash">Flash</string>
     <string name="author">Author</string>
-    <string name="confirm_password" />
-    <string name="unknown" />
+    <string name="confirm_password">Confirm your password</string>
+    <string name="unknown">Unknown</string>
     <string name="forgot_password">Forgot password</string>
     <string name="duplicate_images">Duplicate Images</string>
 </resources>

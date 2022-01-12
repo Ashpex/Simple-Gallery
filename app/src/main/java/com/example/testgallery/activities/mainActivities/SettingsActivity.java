@@ -50,12 +50,12 @@ public class SettingsActivity extends AppCompatActivity {
                         if (key.equals(KEY_PREF_LANGUAGE)) {
                             languagePref_ID = prefs.getBoolean(SettingsActivity.KEY_PREF_LANGUAGE, false);
                             if(languagePref_ID){
-                                Locale localeEN = new Locale("en_US");
-                                setLocale(localeEN);
+                                Locale localeVI = new Locale("vi-rVN");
+                                setLocale(localeVI);
                             }
                             else{
-                                Locale localeVI = new Locale("vi");
-                                setLocale(localeVI);
+                                Locale localeEN = new Locale("en");
+                                setLocale(localeEN);
                             }
                         }
                     }
@@ -87,12 +87,12 @@ public class SettingsActivity extends AppCompatActivity {
         if (key.equals(KEY_PREF_LANGUAGE)) {
             languagePref_ID = sharedPreferences.getBoolean(SettingsActivity.KEY_PREF_LANGUAGE,false);
             if(languagePref_ID){
-                Locale localeEN = new Locale("en_US");
-                setLocale(localeEN);
+                Locale localeVI = new Locale("vi-rVN");
+                setLocale(localeVI);
             }
             else{
-                Locale localeVI = new Locale("vi");
-                setLocale(localeVI);
+                Locale localeEN = new Locale("en");
+                setLocale(localeEN);
             }
         }
     }

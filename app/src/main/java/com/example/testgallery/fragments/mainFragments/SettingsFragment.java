@@ -4,6 +4,7 @@ import static androidx.core.content.ContextCompat.getSystemService;
 
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -57,7 +58,7 @@ public class SettingsFragment extends PreferenceFragment {
 
 
                 if(checked){
-                    selectedLanguage = "vi";
+                    selectedLanguage = "vi-rVN";
                 }
                 else{
                     selectedLanguage = "en";
@@ -89,7 +90,7 @@ public class SettingsFragment extends PreferenceFragment {
             boolean changeLanguage = sharedPreferences.getBoolean("changeLanguage", false);
 
             if(changeLanguage){
-                selectedLanguage = "vi";
+                selectedLanguage = "vi-rVN";
             }
 
             else{
@@ -121,7 +122,7 @@ public class SettingsFragment extends PreferenceFragment {
         boolean changeLanguage = preferences.getBoolean("changeLanguage", false);
 
         if(changeLanguage){
-            selectedLanguage = "vi";
+            selectedLanguage = "vi-rVN";
         }
 
         else{
@@ -129,7 +130,8 @@ public class SettingsFragment extends PreferenceFragment {
         }
         Locale locale = new Locale(selectedLanguage);
         Locale.setDefault(locale);
-        Configuration config = new Configuration();
+        Resources res = getResources();
+        Configuration config = res.getConfiguration();
         config.locale = locale;
         getContext().getResources().updateConfiguration(config, null);
 
