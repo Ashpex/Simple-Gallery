@@ -403,6 +403,7 @@ public class PhotoFragment extends Fragment {
         @Override
         protected void onPostExecute(Void unused) {
             super.onPostExecute(unused);
+            mProgressDialog.cancel();
             Intent intent_duplicate = new Intent(getContext(), ItemAlbumActivity.class);
             intent_duplicate.putStringArrayListExtra("data", (ArrayList<String>) list);
             intent_duplicate.putExtra("name", "Duplicate Image");
