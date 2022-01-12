@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.testgallery.R;
 import com.example.testgallery.models.SearchRV;
+import com.example.testgallery.utility.IClickListener;
 
 import java.util.ArrayList;
 
@@ -21,8 +22,16 @@ public class SearchRVAdapter extends RecyclerView.Adapter<SearchRVAdapter.ViewHo
     // arraylist for storing our data and context
     private ArrayList<SearchRV> searchRVModals;
     private Context context;
+    private IClickListener iClickListener;
 
     // constructor for our variables.
+
+
+    public SearchRVAdapter(ArrayList<SearchRV> searchRVModals, IClickListener iClickListener) {
+        this.searchRVModals = searchRVModals;
+        this.iClickListener = iClickListener;
+    }
+
     public SearchRVAdapter(ArrayList<SearchRV> dataModalArrayList, Context context) {
         this.searchRVModals = dataModalArrayList;
         this.context = context;

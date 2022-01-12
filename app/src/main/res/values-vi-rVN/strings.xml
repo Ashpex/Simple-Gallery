@@ -57,6 +57,13 @@
     <string name="confirm_password"> Xác nhận mật khẩu</string>
     <string name="unknown"> Không biết</string>
     <string name="forgot_password">Đổi mật khẩu</string>
-    <string name="search_results">Search results</string>
-    <string name="insert_to_search">Insert to search</string>
+    <string name="search_results">Tìm kiếm kết quả</string>
+    <string name="insert_to_search">Thêm để tìm kiếm</string>
+    <string name="duplicate_images">Tìm ảnh trùng</string>
+    <string name="night_mode">Chế độ tối</string>
+    <string name="night_mode_activated">Chế độ tối đã được bật</string>
+    <string name="night_mode_deactivated">Đã tắt chế độ tối</string>
+    <string name="languague">Ngôn ngữ</string>
+    <string name="vietnamese">Tiếng Việt</string>
+    <string name="english">Tiếng Anh</string>
 </resources>
