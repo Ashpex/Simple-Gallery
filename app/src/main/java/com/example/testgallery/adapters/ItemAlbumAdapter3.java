@@ -47,7 +47,9 @@ public class ItemAlbumAdapter3 extends RecyclerView.Adapter<ItemAlbumAdapter3.It
 
     @Override
     public int getItemCount() {
-        return album.size();
+        if(album !=null)
+            return album.size();
+        return 0;
     }
 
 

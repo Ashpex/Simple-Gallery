@@ -13,8 +13,8 @@
             android:key="changeLanguage"
             android:title="Language"
             android:defaultValue="false"
-            android:summaryOn="Vietnamese"
-            android:summaryOff="English"/>
+            android:summaryOn="English"
+            android:summaryOff="Vietnamese"/>
 
     </PreferenceCategory>
 

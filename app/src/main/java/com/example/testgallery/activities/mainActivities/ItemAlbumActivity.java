@@ -56,6 +56,7 @@ public class ItemAlbumActivity extends AppCompatActivity {
     private int spanCount;
     private int isSecret;
     private int duplicateImg;
+    private int isAlbum;
     private static int REQUEST_CODE_PIC = 10;
     private static int REQUEST_CODE_CHOOSE = 55;
     private static int REQUEST_CODE_ADD = 56;
@@ -90,12 +91,14 @@ public class ItemAlbumActivity extends AppCompatActivity {
             }
         }
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_CHOOSE) {
-            int isMoved = data.getIntExtra("move", 0);
-            if(isMoved == 1) {
-                ArrayList<String> resultList = data.getStringArrayListExtra("list_result");
-                if (resultList != null) {
-                    myAlbum.remove(resultList);
-                    spanAction();
+            if(data != null) {
+                int isMoved = data.getIntExtra("move", 0);
+                if (isMoved == 1) {
+                    ArrayList<String> resultList = data.getStringArrayListExtra("list_result");
+                    if (resultList != null) {
+                        myAlbum.remove(resultList);
+                        spanAction();
+                    }
                 }
             }
         }
@@ -117,16 +120,13 @@ public class ItemAlbumActivity extends AppCompatActivity {
 
     private void spanAction() {
         if(spanCount == 1) {
-            itemAlbumAdapter3.setData(myAlbum);
-            ryc_list_album.setAdapter(itemAlbumAdapter3);
+            ryc_list_album.setAdapter(new ItemAlbumAdapter3(myAlbum));
         }
         else if(spanCount == 2) {
-            itemAlbumAdapter2.setData(myAlbum);
-            ryc_list_album.setAdapter(itemAlbumAdapter3);
+            ryc_list_album.setAdapter(new ItemAlbumAdapter2(myAlbum));
         }
         else{
-            itemAlbumAdapter.setData(myAlbum);
-            ryc_list_album.setAdapter(itemAlbumAdapter);
+            ryc_list_album.setAdapter(new ItemAlbumAdapter(myAlbum));
         }
     }
 
@@ -167,7 +167,10 @@ public class ItemAlbumActivity extends AppCompatActivity {
         // Toolbar events
         toolbar_item_album.inflateMenu(R.menu.menu_top_item_album);
         toolbar_item_album.setTitle(album_name);
-
+        if(isAlbum == 0) {
+            toolbar_item_album.getMenu().findItem(R.id.menu_add_image).setVisible(false);
+        } else
+            toolbar_item_album.getMenu().findItem(R.id.menu_add_image).setVisible(true);
         // Show back button
         toolbar_item_album.setNavigationIcon(R.drawable.abc_ic_ab_back_material);
         toolbar_item_album.setNavigationOnClickListener(new View.OnClickListener() {
@@ -183,9 +186,6 @@ public class ItemAlbumActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 int id = menuItem.getItemId();
                 switch (id) {
-                    case R.id.album_item_search:
-                        eventSearch(menuItem);
-                        break;
                     case R.id.change_span_count:
                         spanCountEvent();
                         break;
@@ -207,11 +207,13 @@ public class ItemAlbumActivity extends AppCompatActivity {
                         slideShowEvents();
                         break;
                     case R.id.menu_add_image:
-                        Intent intent_add = new Intent(ItemAlbumActivity.this, AddImageToAlbumActivity.class);
-                        intent_add.putStringArrayListExtra("list_image", myAlbum);
-                        intent_add.putExtra("path_folder", path_folder);
-                        intent_add.putExtra("name_folder", album_name);
-                        startActivityForResult(intent_add, REQUEST_CODE_ADD);
+
+                            Intent intent_add = new Intent(ItemAlbumActivity.this, AddImageToAlbumActivity.class);
+                            intent_add.putStringArrayListExtra("list_image", myAlbum);
+                            intent_add.putExtra("path_folder", path_folder);
+                            intent_add.putExtra("name_folder", album_name);
+                            startActivityForResult(intent_add, REQUEST_CODE_ADD);
+
                         break;
                 }
 
@@ -254,54 +256,6 @@ public class ItemAlbumActivity extends AppCompatActivity {
         editor.commit();
     }
 
-    private void eventSearch(@NonNull MenuItem item) {
-        SearchView searchView = (SearchView) item.getActionView();
-        searchView.setQueryHint("Type to search");
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                ArrayList<String> listImageSearch = new ArrayList<>();
-                for (String image : myAlbum) {
-                    if (image.toLowerCase().contains(s)) {
-                        listImageSearch.add(image);
-                    }
-                }
-
-                if (listImageSearch.size() != 0) {
-                    ryc_list_album.setAdapter(new ItemAlbumAdapter(listImageSearch));
-                    synchronized (ItemAlbumActivity.this) {
-                        ItemAlbumActivity.this.notifyAll();
-                    }
-                } else {
-                    Toast.makeText(getApplicationContext(), "Searched image not found", Toast.LENGTH_LONG).show();
-                }
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String s) {
-                return false;
-            }
-        });
-
-        item.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
-
-            @Override
-            public boolean onMenuItemActionExpand(MenuItem item) {
-                return true;
-            }
-
-            @Override
-            public boolean onMenuItemActionCollapse(MenuItem item) {
-                ryc_list_album.setAdapter(new ItemAlbumAdapter(myAlbum));
-                synchronized (ItemAlbumActivity.this) {
-                    ItemAlbumActivity.this.notifyAll();
-                }
-                return true;
-            }
-        });
-    }
-
     private void slideShowEvents() {
         Intent intent = new Intent(ItemAlbumActivity.this, SlideShowActivity.class);
         intent.putStringArrayListExtra("data_slide", myAlbum);
@@ -316,7 +270,9 @@ public class ItemAlbumActivity extends AppCompatActivity {
         isSecret = intent.getIntExtra("isSecret", 0);
         duplicateImg = intent.getIntExtra("duplicateImg",0);
         itemAlbumAdapter2 = new ItemAlbumAdapter2(myAlbum);
+        isAlbum = intent.getIntExtra("ok",0);
         itemAlbumAdapter3 = new ItemAlbumAdapter3(myAlbum);
+
     }
 
     @Override
