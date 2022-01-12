@@ -49,7 +49,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.example.testgallery.activities.mainActivities.ItemAlbumActivity;
 import com.example.testgallery.activities.subActivities.MultiSelectImage;
@@ -134,6 +137,9 @@ public class PhotoFragment extends Fragment {
                     case R.id.menuSearch_Advanced:
                         actionSearchAdvanced();
                         break;
+                    case R.id.duplicateImages:
+                        actionDuplicateImage();
+                        break;
                     case R.id.menuChoose:
                         Intent intent_mul = new Intent(getContext(), MultiSelectImage.class);
                         startActivityForResult(intent_mul, REQUEST_CODE_MULTI);
@@ -147,6 +153,78 @@ public class PhotoFragment extends Fragment {
         });
     }
 
+    private void actionDuplicateImage(){
+        DupAsyncTask dupAsyncTask = new DupAsyncTask();
+        dupAsyncTask.execute();
+    }
+
+    public class DupAsyncTask extends AsyncTask<Void, Integer, Void> {
+
+        private ProgressDialog mProgressDialog ;
+        List<String> list;
+        @Override
+        protected Void doInBackground(Void... voids) {
+            list = getListImg();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            super.onPostExecute(unused);
+            Intent intent_duplicate = new Intent(getContext(), ItemAlbumActivity.class);
+            intent_duplicate.putStringArrayListExtra("data", (ArrayList<String>) list);
+            intent_duplicate.putExtra("name", "Duplicate Image");
+            intent_duplicate.putExtra("duplicateImg", 2);
+            intent_duplicate.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent_duplicate);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mProgressDialog = new ProgressDialog(context);
+            mProgressDialog.setMessage("Loading, please wait...");
+            mProgressDialog.show();
+        }
+
+    }
+
+    public ArrayList<String> getListImg(){
+        List<Image> imageList = GetAllPhotoFromGallery.getAllImageFromGallery(getContext());
+        long hash = 0;
+        Map<Long,ArrayList<String>> map = new HashMap<Long,ArrayList<String>>();
+        for (Image img: imageList) {
+            Bitmap bitmap = BitmapFactory.decodeFile(img.getPath());
+            hash = hashBitmap(bitmap);
+            if(map.containsKey(hash)){
+                map.get(hash).add(img.getPath());
+            }else{
+                ArrayList<String> list = new ArrayList<>();
+                list.add(img.getPath());
+                map.put(hash,list);
+            }
+        }
+        ArrayList<String> result = new ArrayList<>();
+        Set set = map.keySet();
+        for (Object key: set) {
+            if(map.get(key).size() >=2){
+
+                result.addAll(map.get(key));
+            }
+        }
+        return result;
+    }
+
+    public long hashBitmap(Bitmap bmp){
+        long hash = 31;
+        for(int x = 1; x <  bmp.getWidth(); x=x*2){
+            for (int y = 1; y < bmp.getHeight(); y=y*2){
+                hash *= (bmp.getPixel(x,y) + 31);
+                hash = hash%1111122233;
+            }
+        }
+        return hash;
+    }
     private void eventSearch(@NonNull MenuItem item) {
         final Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DATE);
