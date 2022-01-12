@@ -27,6 +27,7 @@ public class ItemAlbumAdapter extends RecyclerView.Adapter<ItemAlbumAdapter.Item
     private ArrayList<String> album;
     private ImageView imgPhoto;
     private static int REQUEST_CODE_PIC = 10;
+
     public ItemAlbumAdapter(ArrayList<String> album) {
         this.album = album;
     }
@@ -35,6 +36,7 @@ public class ItemAlbumAdapter extends RecyclerView.Adapter<ItemAlbumAdapter.Item
         this.album = album;
         notifyDataSetChanged();
     }
+
     @NonNull
     @Override
     public ItemAlbumViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -53,15 +55,15 @@ public class ItemAlbumAdapter extends RecyclerView.Adapter<ItemAlbumAdapter.Item
         return album.size();
     }
 
-
-
     public class ItemAlbumViewHolder extends RecyclerView.ViewHolder {
         private Context context;
+
         public ItemAlbumViewHolder(@NonNull View itemView) {
             super(itemView);
             context = itemView.getContext();
             imgPhoto = itemView.findViewById(R.id.imgPhoto);
         }
+
         public void onBind(String img, int pos) {
             // set ảnh cho imgPhoto bằng thư viện Glide
             Glide.with(context).load(img).into(imgPhoto);
@@ -73,7 +75,7 @@ public class ItemAlbumAdapter extends RecyclerView.Adapter<ItemAlbumAdapter.Item
                     intent.putStringArrayListExtra("data_list_thumb", album);
                     intent.putExtra("pos", pos);
 
-                    ((Activity)context).startActivityForResult(intent,REQUEST_CODE_PIC);
+                    ((Activity) context).startActivityForResult(intent, REQUEST_CODE_PIC);
                 }
             });
         }

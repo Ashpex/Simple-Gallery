@@ -225,6 +225,7 @@ public class PhotoFragment extends Fragment {
         }
         return hash;
     }
+
     private void eventSearch(@NonNull MenuItem item) {
         final Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DATE);
@@ -253,21 +254,38 @@ public class PhotoFragment extends Fragment {
             }
         }
 
-        CategoryAdapter categoryAdapter1 = new CategoryAdapter(getContext());
-        Category category = new Category(listImageSearch);
-        List<Category> categoryList = new ArrayList<>();
-        categoryList.add(category);
-
-        categoryAdapter1.setData(categoryList);
-        recyclerView.setAdapter(categoryAdapter1);
-
-        if (listImageSearch.size() != 0) {
-            synchronized (PhotoFragment.this) {
-                PhotoFragment.this.notifyAll();
-            }
-        } else {
+        if (listImageSearch.size() == 0){
             Toast.makeText(getContext(), "Searched image not found", Toast.LENGTH_LONG).show();
+        } else {
+            ArrayList<String> listStringImage = new ArrayList<>();
+            for (Image image : listImageSearch) {
+                listStringImage.add(image.getPath());
+            }
+            Intent intent = new Intent(context, ItemAlbumActivity.class);
+            intent.putStringArrayListExtra("data", listStringImage);
+//            intent.putExtra("name", title);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
         }
+
+
+
+
+//        CategoryAdapter categoryAdapter1 = new CategoryAdapter(getContext());
+//        Category category = new Category(listImageSearch);
+//        List<Category> categoryList = new ArrayList<>();
+//        categoryList.add(category);
+//
+//        categoryAdapter1.setData(categoryList);
+//        recyclerView.setAdapter(categoryAdapter1);
+//
+//        if (listImageSearch.size() != 0) {
+//            synchronized (PhotoFragment.this) {
+//                PhotoFragment.this.notifyAll();
+//            }
+//        } else {
+//            Toast.makeText(getContext(), "Searched image not found", Toast.LENGTH_LONG).show();
+//        }
     }
 
 
