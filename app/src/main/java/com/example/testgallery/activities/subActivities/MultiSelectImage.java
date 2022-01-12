@@ -125,7 +125,10 @@ public class MultiSelectImage extends AppCompatActivity implements ListTransInte
                         openBottomDialog();
                         break;
                     case R.id.menuHide:
+                        if(listImageSelected.size()!=0)
                         hideEvents();
+                        else 
+                            Toast.makeText(getApplicationContext(), "Danh sách trống", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.menuGif:
                         gifEvents();
@@ -145,7 +148,6 @@ public class MultiSelectImage extends AppCompatActivity implements ListTransInte
         }
         if(list_send_gif.size()!=0) {
             inputDialog(list_send_gif);
-
         }
         else
             Toast.makeText(getApplicationContext(),"Danh sách trống", Toast.LENGTH_SHORT).show();
@@ -153,10 +155,11 @@ public class MultiSelectImage extends AppCompatActivity implements ListTransInte
 
     private void inputDialog(ArrayList<String> list_send_gif) {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(MultiSelectImage.this);
-        alertDialog.setTitle("Nhập khoảng delay");
-        alertDialog.setMessage("Delay: ");
+        alertDialog.setTitle("Enter delay");
+        alertDialog.setMessage("Delay(millisecond): ");
         final EditText input = new EditText(MultiSelectImage.this);
         input.setInputType(InputType.TYPE_CLASS_NUMBER);
+        input.setHint("100");
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT);
@@ -174,7 +177,7 @@ public class MultiSelectImage extends AppCompatActivity implements ListTransInte
                     dialogInterface.cancel();
                 }
                 else
-                    Toast.makeText(getApplicationContext(),"Mời nhập đầy đủ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(),"Please enter in full", Toast.LENGTH_SHORT).show();
             }
         });
         alertDialog.show();
