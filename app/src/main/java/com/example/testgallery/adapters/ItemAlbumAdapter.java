@@ -31,6 +31,7 @@ public class ItemAlbumAdapter extends RecyclerView.Adapter<ItemAlbumAdapter.Item
         this.album = album;
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void setData(ArrayList<String> album) {
         this.album = album;
         notifyDataSetChanged();

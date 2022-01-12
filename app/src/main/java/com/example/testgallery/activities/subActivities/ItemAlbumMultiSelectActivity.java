@@ -250,6 +250,7 @@ public class ItemAlbumMultiSelectActivity extends AppCompatActivity implements L
         protected Void doInBackground(Void... voids) {
             List<Image> listImage = GetAllPhotoFromGallery.getAllImageFromGallery(ItemAlbumMultiSelectActivity.this);
             listAlbum = getListAlbum(listImage);
+            if(path_folder!=null)
             for(int i =0;i<listAlbum.size();i++) {
                 if(path_folder.equals(listAlbum.get(i).getPathFolder())) {
                     listAlbum.remove(i);

@@ -177,6 +177,7 @@ public class PhotoFragment extends Fragment {
             intent_duplicate.putExtra("duplicateImg", 2);
             intent_duplicate.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent_duplicate);
+            mProgressDialog.cancel();
         }
 
         @Override
