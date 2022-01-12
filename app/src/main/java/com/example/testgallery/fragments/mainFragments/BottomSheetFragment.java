@@ -7,9 +7,12 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.testgallery.R;
+import com.example.testgallery.adapters.SearchRVAdapter;
 import com.example.testgallery.models.SearchRV;
 import com.example.testgallery.utility.IClickListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -19,11 +22,11 @@ import java.util.ArrayList;
 
 public class BottomSheetFragment extends BottomSheetDialogFragment {
 
-    private ArrayList<SearchRV> searchRVModals;
+    private ArrayList<SearchRV> searchRVArrayList;
     private IClickListener iClickListener;
 
-    public BottomSheetFragment(ArrayList<SearchRV> searchRVModals, IClickListener iClickListener) {
-        this.searchRVModals = searchRVModals;
+    public BottomSheetFragment(ArrayList<SearchRV> searchRVArrayList, IClickListener iClickListener) {
+        this.searchRVArrayList = searchRVArrayList;
         this.iClickListener = iClickListener;
     }
 
@@ -34,7 +37,19 @@ public class BottomSheetFragment extends BottomSheetDialogFragment {
 
         View view = LayoutInflater.from(getContext()).inflate(R.layout.layout_bottom_sheet_search, null);
         bottomSheetDialog.setContentView(view);
-        //RecyclerView rcvData = view.findViewById()
+        RecyclerView rcvSearch = view.findViewById(R.id.rcv_search);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        rcvSearch.setLayoutManager(linearLayoutManager);
+        SearchRVAdapter searchRVAdapter = new SearchRVAdapter(searchRVArrayList, getContext(), new IClickListener() {
+            @Override
+            public void clickItem(SearchRV searchRV) {
+                iClickListener.clickItem(searchRV);
+            }
+        });
+
+        rcvSearch.setAdapter(searchRVAdapter);
+        RecyclerView.ItemDecoration itemDecoration = new DividerItemDecoration(getContext(),DividerItemDecoration.HORIZONTAL);
+        rcvSearch.addItemDecoration(itemDecoration);
         return bottomSheetDialog;
     }
 }

@@ -23,21 +23,21 @@
 
         <Preference
             android:key="sourceCode"
-            android:title="Source Code">
+            android:title="@string/source_code">
             <intent android:action="android.intent.action.VIEW"
                 android:data="https://github.com/Ashpex/SimpleGallery"/>
         </Preference>
 
         <Preference
             android:key="contributors"
-            android:title="Contributors">
+            android:title="@string/contributors">
             <intent android:action="android.intent.action.VIEW"
                 android:data="https://github.com/Ashpex/SimpleGallery"/>
         </Preference>
 
         <Preference
             android:key="libraries"
-            android:title="Included Libraries">
+            android:title="@string/libraries">
             <intent android:action="android.intent.action.VIEW"
                 android:data="https://github.com/Ashpex/SimpleGallery/blob/master/Included_libraries.md"/>
         </Preference>

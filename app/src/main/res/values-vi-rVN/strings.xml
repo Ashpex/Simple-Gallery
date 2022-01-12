@@ -66,4 +66,7 @@
     <string name="languague">Ngôn ngữ</string>
     <string name="vietnamese">Tiếng Việt</string>
     <string name="english">Tiếng Anh</string>
+    <string name="source_code">Mã nguồn</string>
+    <string name="contributors">Người phát triển</string>
+    <string name="libraries">Thư viện</string>
 </resources>

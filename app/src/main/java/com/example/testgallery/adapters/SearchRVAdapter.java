@@ -27,9 +27,10 @@ public class SearchRVAdapter extends RecyclerView.Adapter<SearchRVAdapter.ViewHo
     // constructor for our variables.
 
 
-    public SearchRVAdapter(ArrayList<SearchRV> searchRVModals, IClickListener iClickListener) {
+    public SearchRVAdapter(ArrayList<SearchRV> searchRVModals,Context context, IClickListener iClickListener) {
         this.searchRVModals = searchRVModals;
         this.iClickListener = iClickListener;
+        this.context = context;
     }
 
     public SearchRVAdapter(ArrayList<SearchRV> dataModalArrayList, Context context) {
@@ -57,9 +58,11 @@ public class SearchRVAdapter extends RecyclerView.Adapter<SearchRVAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 // opening a link in your browser.
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(modal.getLink()));
-                context.startActivity(i);
+                //Intent intent = new Intent(Intent.ACTION_VIEW);
+                //intent.setData(Uri.parse(modal.getLink()));
+                //context.startActivity(intent);
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(modal.getLink()));
+                context.startActivity(browserIntent);
             }
         });
     }

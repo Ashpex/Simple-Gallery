@@ -70,7 +70,8 @@
     <string name="languague">Language</string>
     <string name="vietnamese">Vietnamese</string>
     <string name="english">English</string>
-
-
+    <string name="source_code">Source Code</string>
+    <string name="contributors">Contributors</string>
+    <string name="libraries">Included Libraries</string>
 
 </resources>
