@@ -37,6 +37,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
@@ -49,23 +50,41 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.dsphotoeditor.sdk.activity.DsPhotoEditorActivity;
 import com.dsphotoeditor.sdk.utils.DsPhotoEditorConstants;
 import com.example.testgallery.R;
 import com.example.testgallery.activities.mainActivities.data_favor.DataLocalManager;
 import com.example.testgallery.adapters.AlbumSheetAdapter;
+import com.example.testgallery.adapters.SearchRVAdapter;
 import com.example.testgallery.adapters.SlideImageAdapter;
 import com.example.testgallery.models.Album;
 import com.example.testgallery.models.Image;
+import com.example.testgallery.models.SearchRV;
 import com.example.testgallery.utility.FileUtility;
 import com.example.testgallery.utility.GetAllPhotoFromGallery;
 import com.example.testgallery.utility.PictureInterface;
 import com.example.testgallery.utility.SubInterface;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.firebase.ml.vision.FirebaseVision;
+import com.google.firebase.ml.vision.common.FirebaseVisionImage;
+import com.google.firebase.ml.vision.label.FirebaseVisionImageLabel;
+import com.google.firebase.ml.vision.label.FirebaseVisionImageLabeler;
 import com.smarteist.autoimageslider.SliderView;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class PictureActivity extends AppCompatActivity implements PictureInterface, SubInterface {
@@ -82,6 +101,10 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
     private String imgPath;
     private String imageName;
     private String thumb;
+    private String title, link, displayedLink, snippet;
+    private RecyclerView resultsRV;
+    private SearchRVAdapter searchRVAdapter;
+    private ArrayList<SearchRV> searchRVArrayList;
     private BottomSheetDialog bottomSheetDialog;
     private RecyclerView ryc_album;
     public static Set<String> imageListFavor = DataLocalManager.getListSet();
@@ -332,7 +355,11 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
                         intent.setDataAndType(uri_wallpaper, "image/*");
                         intent.putExtra("mimeType", "image/*");
                         startActivity(Intent.createChooser(intent, "Set as:"));
-
+                    case R.id.searchImage:
+                        searchRVArrayList = new ArrayList<>();
+                        searchRVAdapter = new SearchRVAdapter(searchRVArrayList,PictureActivity.this);
+                        resultsRV.setLayoutManager(new LinearLayoutManager(PictureActivity.this,LinearLayoutManager.HORIZONTAL,false));
+                        resultsRV.setAdapter(searchRVAdapter);
                 }
 
                 return true;
@@ -404,6 +431,64 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
     }
 
     ;
+
+    private void getResults(){
+        Drawable mDrawable = Drawable.createFromPath(imgPath);
+        Bitmap mBitmap = ((BitmapDrawable) mDrawable).getBitmap();
+        FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(mBitmap);
+        FirebaseVisionImageLabeler labeler = FirebaseVision.getInstance().getOnDeviceImageLabeler();
+        labeler.processImage(image).addOnSuccessListener(new OnSuccessListener<List<FirebaseVisionImageLabel>>() {
+            @Override
+            public void onSuccess(List<FirebaseVisionImageLabel> firebaseVisionImageLabels) {
+                String searchQuery = firebaseVisionImageLabels.get(0).getText();
+                getSearchResults(searchQuery);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(PictureActivity.this, "Failed to detect image...", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void getSearchResults(String searchQuery){
+        String url = "https://serpapi.com/search.json?engine=google&q="+searchQuery+"&api_key=51f619982c077bb7ef5cb7e50667ec174162dcae9f75f6c3a5ef88b00a7d305e";
+        RequestQueue queue = Volley.newRequestQueue(PictureActivity.this);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                try{
+                    JSONArray organicArray = response.getJSONArray("organic_results");
+                    for(int i = 0; i < organicArray.length(); i++){
+                        JSONObject organicObj = organicArray.getJSONObject(i);
+
+                        if(organicObj.has("title")){
+                            title = organicObj.getString("title");
+                        }
+                        if(organicObj.has("link")){
+                            link = organicObj.getString("link");
+                        }
+                        if(organicObj.has("displayed_link")){
+                            displayedLink = organicObj.getString("displayed_link");
+                        }
+                        if(organicObj.has("snippet")){
+                            snippet = organicObj.getString("snippet");
+                        }
+                        searchRVArrayList.add(new SearchRV(title,link,displayedLink,snippet));
+                    }
+                    searchRVAdapter.notifyDataSetChanged();
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(PictureActivity.this,"No results found...",Toast.LENGTH_SHORT).show();;
+            }
+        });
+        queue.add(jsonObjectRequest);
+    }
 
     private void setUpSilder() {
 

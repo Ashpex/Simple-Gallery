@@ -141,6 +141,7 @@
         <entry key="app/src/main/res/layout/item_picture_album.xml" value="0.4046875" />
         <entry key="app/src/main/res/layout/item_picture_album_linear.xml" value="0.4046875" />
         <entry key="app/src/main/res/layout/item_picture_album_span2.xml" value="0.4046875" />
+        <entry key="app/src/main/res/layout/item_search_result.xml" value="0.36277173913043476" />
         <entry key="app/src/main/res/layout/item_slide_picture.xml" value="0.44212962962962965" />
         <entry key="app/src/main/res/layout/item_slide_show.xml" value="0.44212962962962965" />
         <entry key="app/src/main/res/layout/layout_bottom_sheet_add_to_album.xml" value="0.4046875" />

@@ -18,7 +18,7 @@
         app:startIconContentDescription="@string/search"
         app:endIconMode="clear_text"
         app:errorEnabled="true"
-        android:hint="Nhập để tìm"
+        android:hint="@string/insert_to_search"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
         <com.google.android.material.textfield.TextInputEditText

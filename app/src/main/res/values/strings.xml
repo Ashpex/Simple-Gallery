@@ -62,4 +62,6 @@
     <string name="unknown">Unknown</string>
     <string name="forgot_password">Forgot password</string>
     <string name="duplicate_images">Duplicate Images</string>
+    <string name="search_results">Search results</string>
+    <string name="insert_to_search">Insert to search</string>
 </resources>

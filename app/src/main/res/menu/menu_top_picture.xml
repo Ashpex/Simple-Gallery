@@ -16,4 +16,7 @@
     <item android:id="@+id/setWallpaper"
         android:title="@string/set_wallpaper"
         app:showAsAction="never"/>
+    <item android:id="@+id/searchImage"
+        android:title="@string/search_results"
+        app:showAsAction="never"/>
 </menu>
