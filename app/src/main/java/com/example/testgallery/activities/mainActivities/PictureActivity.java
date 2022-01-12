@@ -66,6 +66,7 @@ import com.example.testgallery.adapters.AlbumSheetAdapter;
 import com.example.testgallery.adapters.SearchRVAdapter;
 import com.example.testgallery.adapters.SlideImageAdapter;
 import com.example.testgallery.fragments.mainFragments.BottomSheetFragment;
+import com.example.testgallery.fragments.mainFragments.PhotoFragment;
 import com.example.testgallery.models.Album;
 import com.example.testgallery.models.Image;
 import com.example.testgallery.models.SearchRV;
@@ -108,7 +109,7 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
     private String title, link, displayedLink, snippet;
     private RecyclerView resultsRV;
     private SearchRVAdapter searchRVAdapter;
-    private ArrayList<SearchRV> searchRVArrayList;
+    //private ArrayList<SearchRV> searchRVArrayList;
     private BottomSheetDialog bottomSheetDialog;
     private RecyclerView ryc_album;
     public static Set<String> imageListFavor = DataLocalManager.getListSet();
@@ -359,7 +360,7 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
                         intent.putExtra("mimeType", "image/*");
                         startActivity(Intent.createChooser(intent, "Set as:"));
                     case R.id.searchImage:
-                        actionSearchImage();
+                        searchImage();
                 }
 
                 return true;
@@ -367,9 +368,50 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
         });
     }
 
-    private void actionSearchImage() {
-        searchRVArrayList = new ArrayList<>();
-        //searchRVAdapter = new SearchRVAdapter(searchRVArrayList,PictureActivity.this);
+    private void searchImage(){
+        SearchAsyncTask searchAsyncTask = new SearchAsyncTask();
+        searchAsyncTask.execute();
+    }
+
+    public class SearchAsyncTask extends AsyncTask<Void, Integer, Void> {
+
+        private ProgressDialog mProgressDialog ;
+        ArrayList<SearchRV> searchRVArrayList = new ArrayList<>();
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            //searchRVAdapter = new SearchRVAdapter(searchRVArrayList,PictureActivity.this);
+            getResults(searchRVArrayList);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            super.onPostExecute(unused);
+            BottomSheetFragment bottomSheetFragment = new BottomSheetFragment(searchRVArrayList, new IClickListener() {
+                @Override
+                public void clickItem(SearchRV searchRV) {
+                    Toast.makeText(PictureActivity.this,"test",Toast.LENGTH_SHORT).show();
+                }
+            });
+            bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
+            mProgressDialog.cancel();
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mProgressDialog = new ProgressDialog(PictureActivity.this);
+            mProgressDialog.setMessage("Loading, please wait...");
+            mProgressDialog.show();
+            searchRVArrayList.add(new SearchRV("Test 1","https://ashpex.eu.org","https://ashpex.eu.org","test test test"));
+            searchRVArrayList.add(new SearchRV("Test 2","https://ashpex.eu.org","https://ashpex.eu.org","test test test"));
+        }
+
+    }
+
+
+    private void getResults(ArrayList<SearchRV> searchRVArrayList){
         Uri imageUri = Uri.parse("file://" + thumb);
         try {
             ParcelFileDescriptor parcelFileDescriptor =
@@ -381,49 +423,13 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(imageBitmap);
         FirebaseVisionImageLabeler labeler = FirebaseVision.getInstance().getOnDeviceImageLabeler();
         labeler.processImage(image).addOnSuccessListener(new OnSuccessListener<List<FirebaseVisionImageLabel>>() {
             @Override
             public void onSuccess(List<FirebaseVisionImageLabel> firebaseVisionImageLabels) {
                 String searchQuery = firebaseVisionImageLabels.get(0).getText();
-                getSearchResults(searchQuery,searchRVArrayList);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(PictureActivity.this, "Failed to detect image...", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        searchRVArrayList.add(new SearchRV("Test 1","https://ashpex.eu.org","https://ashpex.eu.org","test test test"));
-        searchRVArrayList.add(new SearchRV("Test 2","https://ashpex.eu.org","https://ashpex.eu.org","test test test"));
-        searchRVArrayList.add(new SearchRV("Test 3","https://ashpex.eu.org","https://ashpex.eu.org","test test test"));
-        searchRVArrayList.add(new SearchRV("Test 3","https://ashpex.eu.org","https://ashpex.eu.org","test test test"));
-
-
-        //resultsRV.setLayoutManager(new LinearLayoutManager(PictureActivity.this,LinearLayoutManager.HORIZONTAL,false));
-        //resultsRV.setAdapter(searchRVAdapter);
-        BottomSheetFragment bottomSheetFragment = new BottomSheetFragment(searchRVArrayList, new IClickListener() {
-            @Override
-            public void clickItem(SearchRV searchRV) {
-                Toast.makeText(PictureActivity.this,"test",Toast.LENGTH_SHORT).show();
-            }
-        });
-        bottomSheetFragment.show(getSupportFragmentManager(), bottomSheetFragment.getTag());
-    }
-
-    private void getResults(){
-        Drawable mDrawable = Drawable.createFromPath(imgPath);
-        Bitmap mBitmap = ((BitmapDrawable) mDrawable).getBitmap();
-        FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(mBitmap);
-        FirebaseVisionImageLabeler labeler = FirebaseVision.getInstance().getOnDeviceImageLabeler();
-        labeler.processImage(image).addOnSuccessListener(new OnSuccessListener<List<FirebaseVisionImageLabel>>() {
-            @Override
-            public void onSuccess(List<FirebaseVisionImageLabel> firebaseVisionImageLabels) {
-                String searchQuery = firebaseVisionImageLabels.get(0).getText();
-                //getSearchResults(searchQuery);
+                getSearchResults(searchQuery, searchRVArrayList);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

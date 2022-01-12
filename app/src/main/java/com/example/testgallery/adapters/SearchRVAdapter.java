@@ -70,7 +70,10 @@ public class SearchRVAdapter extends RecyclerView.Adapter<SearchRVAdapter.ViewHo
     @Override
     public int getItemCount() {
         // returning the size of array list.
-        return searchRVModals.size();
+        if( searchRVModals != null){
+            return searchRVModals.size();
+        }
+        else return 0;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
