@@ -138,15 +138,7 @@ public class PhotoFragment extends Fragment {
                         break;
                     case R.id.duplicateImages:
 
-                        Intent intent_duplicate = new Intent(getContext(), ItemAlbumActivity.class);
-                        List<String> list = getListImg();
-
-                        intent_duplicate.putStringArrayListExtra("data", (ArrayList<String>) list);
-                        intent_duplicate.putExtra("name", "Duplicate Image");
-                        intent_duplicate.putExtra("duplicateImg", 2);
-                        intent_duplicate.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent_duplicate);
-
+                        actionDuplicateImage();
                         break;
                 }
                 return true;
@@ -250,6 +242,11 @@ public class PhotoFragment extends Fragment {
             }
         });
 
+    }
+
+    private void actionDuplicateImage(){
+        DupAsyncTask dupAsyncTask = new DupAsyncTask();
+        dupAsyncTask.execute();
     }
 
     private void actionSearchAdvanced() {
@@ -392,6 +389,38 @@ public class PhotoFragment extends Fragment {
         }
 
     }
+
+    public class DupAsyncTask extends AsyncTask<Void, Integer, Void> {
+
+        private ProgressDialog mProgressDialog ;
+        List<String> list;
+        @Override
+        protected Void doInBackground(Void... voids) {
+            list = getListImg();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void unused) {
+            super.onPostExecute(unused);
+            Intent intent_duplicate = new Intent(getContext(), ItemAlbumActivity.class);
+            intent_duplicate.putStringArrayListExtra("data", (ArrayList<String>) list);
+            intent_duplicate.putExtra("name", "Duplicate Image");
+            intent_duplicate.putExtra("duplicateImg", 2);
+            intent_duplicate.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent_duplicate);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mProgressDialog = new ProgressDialog(context);
+            mProgressDialog.setMessage("Loading, please wait...");
+            mProgressDialog.show();
+        }
+
+    }
+
     public class MyAsyncTask extends AsyncTask<Void, Integer, Void> {
 
         @Override
