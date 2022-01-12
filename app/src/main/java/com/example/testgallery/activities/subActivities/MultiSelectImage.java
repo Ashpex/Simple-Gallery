@@ -125,7 +125,10 @@ public class MultiSelectImage extends AppCompatActivity implements ListTransInte
                         openBottomDialog();
                         break;
                     case R.id.menuHide:
+                        if(listImageSelected.size()!=0)
                         hideEvents();
+                        else 
+                            Toast.makeText(getApplicationContext(), "Danh sách trống", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.menuGif:
                         gifEvents();
