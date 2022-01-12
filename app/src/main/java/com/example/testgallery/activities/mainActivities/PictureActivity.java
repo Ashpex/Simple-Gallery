@@ -123,16 +123,31 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
 
                     case R.id.sharePic:
 
-                        Drawable mDrawable = Drawable.createFromPath(imgPath);
-                        Bitmap mBitmap = ((BitmapDrawable) mDrawable).getBitmap();
-                        String path = MediaStore.Images.Media.insertImage(getContentResolver(), mBitmap, "Image Description", null);
-                        thumb = thumb.replaceAll(" ", "");
+                        if(thumb.contains("gif")){
+                            Intent share = new Intent(Intent.ACTION_SEND);
 
-                        Uri uri = Uri.parse(path);
-                        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                        shareIntent.setType("image/*");
-                        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
-                        startActivity(Intent.createChooser(shareIntent, "Share Image"));
+                            // For sharing png image only:
+                            // setType("image/png");
+                            // For sharing jpeg image only:
+                            // setType("image/jpeg");
+                            share.setType("image/*");
+                            //Uri uri = Uri.fromFile(targetUri);
+                            share.putExtra(Intent.EXTRA_STREAM, targetUri);
+                            startActivity( Intent.createChooser(share, "Share this image to your friends!") );
+                        }
+                        else {
+                            Drawable mDrawable = Drawable.createFromPath(imgPath);
+                            Bitmap mBitmap = ((BitmapDrawable) mDrawable).getBitmap();
+                            String path = MediaStore.Images.Media.insertImage(getContentResolver(), mBitmap, "Image Description", null);
+                            thumb = thumb.replaceAll(" ", "");
+
+                            Uri uri = Uri.parse(path);
+                            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                            shareIntent.setType("image/*");
+                            shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+                            startActivity(Intent.createChooser(shareIntent, "Share Image"));
+                        }
+
                         break;
 
                     case R.id.editPic:
