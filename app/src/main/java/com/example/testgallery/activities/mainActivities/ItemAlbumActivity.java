@@ -55,6 +55,7 @@ public class ItemAlbumActivity extends AppCompatActivity {
     private ItemAlbumAdapter3 itemAlbumAdapter3;
     private int spanCount;
     private int isSecret;
+    private int duplicateImg;
     private static int REQUEST_CODE_PIC = 10;
     private static int REQUEST_CODE_CHOOSE = 55;
     private static int REQUEST_CODE_ADD = 56;
@@ -105,6 +106,9 @@ public class ItemAlbumActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_PIC) {
             String path_img = data.getStringExtra("path_img");
             if(isSecret == 1) {
+                myAlbum.remove(path_img);
+                spanAction();
+            }else if (duplicateImg == 2){
                 myAlbum.remove(path_img);
                 spanAction();
             }
@@ -310,6 +314,7 @@ public class ItemAlbumActivity extends AppCompatActivity {
         myAlbum = intent.getStringArrayListExtra("data");
         path_folder = intent.getStringExtra("path_folder");
         isSecret = intent.getIntExtra("isSecret", 0);
+        duplicateImg = intent.getIntExtra("duplicateImg",0);
         itemAlbumAdapter2 = new ItemAlbumAdapter2(myAlbum);
         itemAlbumAdapter3 = new ItemAlbumAdapter3(myAlbum);
     }

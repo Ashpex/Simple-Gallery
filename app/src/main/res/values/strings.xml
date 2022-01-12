@@ -61,4 +61,5 @@
     <string name="confirm_password" />
     <string name="unknown" />
     <string name="forgot_password">Forgot password</string>
+    <string name="duplicate_images">Duplicate Images</string>
 </resources>

@@ -15,8 +15,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,9 +40,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import com.example.testgallery.activities.mainActivities.ItemAlbumActivity;
+import com.example.testgallery.activities.mainActivities.data_favor.DataLocalManager;
 import com.example.testgallery.activities.subActivities.MultiSelectImage;
 import com.example.testgallery.activities.mainActivities.SettingsActivity;
 import com.example.testgallery.ml.MobilenetV110224Quant;
@@ -129,13 +133,62 @@ public class PhotoFragment extends Fragment {
                         break;
                     case R.id.menuSettings:
                         Intent intent = new Intent(getContext(), SettingsActivity.class);
+
                         startActivity(intent);
+                        break;
+                    case R.id.duplicateImages:
+
+                        Intent intent_duplicate = new Intent(getContext(), ItemAlbumActivity.class);
+                        List<String> list = getListImg();
+
+                        intent_duplicate.putStringArrayListExtra("data", (ArrayList<String>) list);
+                        intent_duplicate.putExtra("name", "Duplicate Image");
+                        intent_duplicate.putExtra("duplicateImg", 2);
+                        intent_duplicate.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent_duplicate);
+
+                        break;
                 }
                 return true;
             }
         });
     }
+    public ArrayList<String> getListImg(){
+        List<Image> imageList = GetAllPhotoFromGallery.getAllImageFromGallery(getContext());
+        long hash = 0;
+        Map<Long,ArrayList<String>> map = new HashMap<Long,ArrayList<String>>();
+        for (Image img: imageList) {
+            Bitmap bitmap = BitmapFactory.decodeFile(img.getPath());
+            hash = hashBitmap(bitmap);
+            if(map.containsKey(hash)){
+                map.get(hash).add(img.getPath());
+            }else{
+                ArrayList<String> list = new ArrayList<>();
+                list.add(img.getPath());
+                map.put(hash,list);
+            }
+        }
+        ArrayList<String> result = new ArrayList<>();
+        Set set = map.keySet();
+        for (Object key: set) {
+            if(map.get(key).size() >=2){
 
+                result.addAll(map.get(key));
+            }
+        }
+        return result;
+    }
+
+    public long hashBitmap(Bitmap bmp){
+        long hash = 31;
+        for(int x = 1; x <  bmp.getWidth(); x=x*2){
+            for (int y = 1; y < bmp.getHeight(); y=y*2){
+                hash *= (bmp.getPixel(x,y) + 31);
+                hash = hash%1111122233;
+            }
+        }
+        return hash;
+    }
     private void eventSearch(@NonNull MenuItem item) {
         SearchView searchView = (SearchView) item.getActionView();
         searchView.setQueryHint("Ex: 28-12");
