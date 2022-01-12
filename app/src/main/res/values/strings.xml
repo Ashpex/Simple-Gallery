@@ -64,4 +64,13 @@
     <string name="duplicate_images">Duplicate Images</string>
     <string name="search_results">Search results</string>
     <string name="insert_to_search">Insert to search</string>
+    <string name="night_mode">Night Mode</string>
+    <string name="night_mode_activated"> Night mode is activated</string>
+    <string name="night_mode_deactivated"> Night mode is deactivated</string>
+    <string name="languague">Language</string>
+    <string name="vietnamese">Vietnamese</string>
+    <string name="english">English</string>
+
+
+
 </resources>

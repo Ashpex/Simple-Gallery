@@ -5,13 +5,13 @@
         android:title="General">
         <SwitchPreference
             android:key="nightMode"
-            android:title="Night Mode"
+            android:title="@string/night_mode"
             android:defaultValue="false"
-            android:summaryOn="Night mode is activated"
-            android:summaryOff="Night mode is deactivated"/>
+            android:summaryOn="@string/night_mode_activated"
+            android:summaryOff="@string/night_mode_deactivated"/>
         <SwitchPreference
             android:key="changeLanguage"
-            android:title="Language"
+            android:title="@string/languague"
             android:defaultValue="false"
             android:summaryOn="English"
             android:summaryOff="Vietnamese"/>
