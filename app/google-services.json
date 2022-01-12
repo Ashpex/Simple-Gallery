@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "886026603067",
+    "project_id": "lens-application-ashpex",
+    "storage_bucket": "lens-application-ashpex.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:886026603067:android:e354a9f3607df5bfa3ea1e",
+        "android_client_info": {
+          "package_name": "com.example.testgallery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "886026603067-r1frum6skpssrjbsd4l8jvdl1gllsanl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCD6PG3mxX-6NwAWv49GFHw-TscQpELhZ8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "886026603067-r1frum6skpssrjbsd4l8jvdl1gllsanl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
