@@ -5,7 +5,7 @@
     <string name="share">Share</string>
     <string name="gallery">Gallery</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="slideshow">Slideshow</string>
     <string name="add">Add</string>
     <string name="delete">Delete</string>
@@ -21,9 +21,9 @@
     <string name="camera">Camera</string>
     <string name="edit_photo">Edit photo</string>
     <string name="add_to_favorite">Add to favorite</string>
-    <string name="anti_clockspin_transformation">ANTI CLOCKSPIN TRANSFORMATION</string>
-    <string name="zoom_out_transformation">ZOOM OUT TRANSFORMATION</string>
-    <string name="depth_transformation">DEPTH TRANSFORMATION</string>
+    <string name="anti_clockspin_transformation" translatable="false">ANTI CLOCKSPIN TRANSFORMATION</string>
+    <string name="zoom_out_transformation" translatable="false">ZOOM OUT TRANSFORMATION</string>
+    <string name="depth_transformation" translatable="false">DEPTH TRANSFORMATION</string>
     <string name="settings">Settings</string>
     <string name="set_wallpaper">Set wallpaper</string>
     <string name="multi_create_album">Create Album</string>
@@ -36,4 +36,29 @@
     <string name="create_album">Create album</string>
     <string name="gif">Make a Gif</string>
     <string name="listGif">GIF</string>
+    <string name="add_title">Add title</string>
+    <string name="enter_your_password">Enter your password</string>
+    <string name="enter">Enter</string>
+    <string name="create_password">Create Password</string>
+    <string name="question_for_getting_back_password">Question for getting back password</string>
+    <string name="write_your_question">Write your question</string>
+    <string name="your_answer_for_the_question_above">Your answer for the question above</string>
+    <string name="create">Create</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
+    <string name="question">Question</string>
+    <string name="your_answer">Your answer</string>
+    <string name="confirm">Confirm</string>
+    <string name="exif_data">Exif Data</string>
+    <string name="unkown">Unkown</string>
+    <string name="name">Name</string>
+    <string name="producer">Producer</string>
+    <string name="model">Model</string>
+    <string name="size">Size</string>
+    <string name="focal_length">Focal length</string>
+    <string name="flash">Flash</string>
+    <string name="author">Author</string>
+    <string name="confirm_password" />
+    <string name="unknown" />
+    <string name="forgot_password">Forgot password</string>
 </resources>

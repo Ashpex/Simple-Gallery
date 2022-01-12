@@ -2,6 +2,7 @@ package com.example.testgallery.activities.mainActivities;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -137,5 +138,6 @@ public class MainActivity extends AppCompatActivity {
         PreferenceManager.setDefaultValues(this, R.xml.setting, false);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
     }
+
 
 }

@@ -3,6 +3,7 @@ package com.example.testgallery.fragments.mainFragments;
 import static androidx.core.content.ContextCompat.getSystemService;
 
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -14,11 +15,15 @@ import android.preference.SwitchPreference;
 
 import com.example.testgallery.R;
 
+import java.util.Locale;
+
 public class SettingsFragment extends PreferenceFragment {
 
 
     public android.preference.SwitchPreference switchNight;
+    public android.preference.SwitchPreference switchLanguage;
     public static SharedPreferences prefs;
+    public String selectedLanguage;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -26,7 +31,7 @@ public class SettingsFragment extends PreferenceFragment {
 
         addPreferencesFromResource(R.xml.setting);
         switchNight = (SwitchPreference) findPreference("nightMode");
-
+        switchLanguage = (SwitchPreference) findPreference("changeLanguage");
 
         switchNight.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
@@ -43,6 +48,30 @@ public class SettingsFragment extends PreferenceFragment {
                 return true;
             }
         });
+
+        switchLanguage.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                boolean checked = ((SwitchPreference) preference)
+                        .isChecked();
+
+
+                if(checked){
+                    selectedLanguage = "vi";
+                }
+                else{
+                    selectedLanguage = "en";
+                }
+
+                Locale locale = new Locale(selectedLanguage);
+                Locale.setDefault(locale);
+                Configuration config = new Configuration();
+                config.locale = locale;
+                getContext().getResources().updateConfiguration(config, null);
+                return true;
+            }
+        });
+
     }
 
 
@@ -54,6 +83,23 @@ public class SettingsFragment extends PreferenceFragment {
             } else {
                 AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
             }
+        }
+
+        if(key.equals("changeLanguage")){
+            boolean changeLanguage = sharedPreferences.getBoolean("changeLanguage", false);
+
+            if(changeLanguage){
+                selectedLanguage = "vi";
+            }
+
+            else{
+                selectedLanguage = "en";
+            }
+            Locale locale = new Locale(selectedLanguage);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getContext().getResources().updateConfiguration(config, null);
         }
     }
 
@@ -70,5 +116,24 @@ public class SettingsFragment extends PreferenceFragment {
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
+
+        switchLanguage = (SwitchPreference) findPreference("changeLanguage");
+        boolean changeLanguage = preferences.getBoolean("changeLanguage", false);
+
+        if(changeLanguage){
+            selectedLanguage = "vi";
+        }
+
+        else{
+            selectedLanguage = "en";
+        }
+        Locale locale = new Locale(selectedLanguage);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getContext().getResources().updateConfiguration(config, null);
+
     }
+
+
 }

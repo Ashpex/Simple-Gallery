@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="15dp"
-        android:text="Exif Data"
+        android:text="@string/exif_data"
         android:textSize="18sp"
         android:textStyle="bold"
         android:textColor="@color/black"/>
@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="5dp"
-            android:text="Unkown"
+            android:text="@string/unkown"
             android:textStyle="bold"
             android:textColor="@color/black"/>
 
@@ -72,14 +72,14 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="5dp"
-            android:text="Name"/>
+            android:text="@string/name"/>
         <TextView
             android:id="@+id/txtInfoName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginStart="5dp"
-            android:text="Unkown"
+            android:text="@string/unkown"
             android:textStyle="bold"
             android:textColor="@color/black"/>
 
@@ -117,13 +117,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Producer"
+                    android:text="@string/producer"
                     android:textSize="10sp"/>
                 <TextView
                     android:id="@+id/txtInfoProducer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Unknown"
+                    android:text="@string/unknown"
                     android:textStyle="bold"
                     android:textColor="@color/black"/>
             </LinearLayout>
@@ -154,13 +154,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Model"
+                    android:text="@string/model"
                     android:textSize="10sp"/>
                 <TextView
                     android:id="@+id/txtInfoModel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Unknown"
+                    android:text="@string/unknown"
                     android:textStyle="bold"
                     android:textColor="@color/black"/>
             </LinearLayout>
@@ -198,13 +198,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Size"
+                    android:text="@string/size"
                     android:textSize="10sp"/>
                 <TextView
                     android:id="@+id/txtInfoSize"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Unknown"
+                    android:text="@string/unknown"
                     android:textStyle="bold"
                     android:textColor="@color/black"/>
             </LinearLayout>
@@ -235,13 +235,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Focal length"
+                    android:text="@string/focal_length"
                     android:textSize="10sp"/>
                 <TextView
                     android:id="@+id/txtInfoFocalLength"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Unknown"
+                    android:text="@string/unknown"
                     android:textStyle="bold"
                     android:textColor="@color/black"/>
             </LinearLayout>
@@ -279,13 +279,13 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Flash"
+                    android:text="@string/flash"
                     android:textSize="10sp"/>
                 <TextView
                     android:id="@+id/txtInfoFlash"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Unknown"
+                    android:text="@string/unknown"
                     android:textStyle="bold"
                     android:textColor="@color/black"/>
             </LinearLayout>
@@ -316,7 +316,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Author"
+                    android:text="@string/author"
                     android:textSize="10sp"/>
                 <TextView
                     android:id="@+id/txtInfoAuthor"

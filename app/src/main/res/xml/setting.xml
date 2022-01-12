@@ -9,6 +9,12 @@
             android:defaultValue="false"
             android:summaryOn="Night mode is activated"
             android:summaryOff="Night mode is deactivated"/>
+        <SwitchPreference
+            android:key="changeLanguage"
+            android:title="Language"
+            android:defaultValue="false"
+            android:summaryOn="Vietnamese"
+            android:summaryOff="English"/>
 
     </PreferenceCategory>
 
