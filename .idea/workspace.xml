@@ -14,8 +14,7 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="994c01ad-da38-40ca-927e-39e67f8d2c1f" name="Default Changelist" comment="update star favor">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="994c01ad-da38-40ca-927e-39e67f8d2c1f" name="Default Changelist" comment="Add share gif image">
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/testgallery/activities/mainActivities/PictureActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/testgallery/activities/mainActivities/PictureActivity.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -254,7 +253,14 @@
       <option name="project" value="LOCAL" />
       <updated>1640369378331</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Add share gif image">
+      <created>1641963808378</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1641963808378</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -284,7 +290,8 @@
     <MESSAGE value="add some anim album" />
     <MESSAGE value="fix some bug 'update image'" />
     <MESSAGE value="update star favor" />
-    <option name="LAST_COMMIT_MESSAGE" value="update star favor" />
+    <MESSAGE value="Add share gif image" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add share gif image" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

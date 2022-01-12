@@ -125,11 +125,6 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
 
                         if(thumb.contains("gif")){
                             Intent share = new Intent(Intent.ACTION_SEND);
-
-                            // For sharing png image only:
-                            // setType("image/png");
-                            // For sharing jpeg image only:
-                            // setType("image/jpeg");
                             share.setType("image/*");
                             //Uri uri = Uri.fromFile(targetUri);
                             share.putExtra(Intent.EXTRA_STREAM, targetUri);
