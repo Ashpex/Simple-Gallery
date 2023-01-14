@@ -244,7 +244,12 @@ public class MultiSelectImage extends AppCompatActivity implements ListTransInte
             Uri targetUri = Uri.parse("file://" + listImageSelected.get(i).getPath());
             File file = new File(targetUri.getPath());
             if (file.exists()){
-                file.delete();
+                GetAllPhotoFromGallery.removeImageFromAllImages(targetUri.getPath());
+                if(file.delete()) { // TODO Fails if photos were made in "Burst" mode (Asus Zenfone 6)
+                    GetAllPhotoFromGallery.removeImageFromAllImages(targetUri.getPath());
+                }else {
+                    Log.d("deleteEvents","Failed to remove file "+targetUri.getPath());
+                }
             }
             if(i==listImageSelected.size()-1) {
                 finish();

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Simple Gallery</string>
+    <string name="picture">Zdjęcia</string>
+    <string name="search">Szukaj</string>
+    <string name="share">Udostępnij</string>
+    <string name="gallery">Galeria</string>
+    <string name="slideshow">Pokaz slajdów</string>
+    <string name="add">Dodaj</string>
+    <string name="delete">Usuń</string>
+    <string name="information">Szczegóły</string>
+    <string name="hide_photo">Ukryj/Pokaż zdjęcie</string>
+    <string name="photo">Zdjęcia</string>
+    <string name="album">Albumy</string>
+    <string name="secret">Prywatne</string>
+    <string name="favorite">Ulubione</string>
+    <string name="change_password">Zmień hasło</string>
+    <string name="delete_secret_album">Usuń prywatny album</string>
+    <string name="advance_search">Wyszukiwanie zaawansowane</string>
+    <string name="camera">Aparat</string>
+    <string name="edit_photo">Edytuj zdjęcie</string>
+    <string name="add_to_favorite">Dodaj do ulubionych</string>
+    <string name="anti_clockspin_transformation" translatable="false">ANTI CLOCKSPIN TRANSFORMATION</string>
+    <string name="zoom_out_transformation" translatable="false">ZOOM OUT TRANSFORMATION</string>
+    <string name="depth_transformation" translatable="false">DEPTH TRANSFORMATION</string>
+    <string name="settings">Ustawienia</string>
+    <string name="set_wallpaper">Ustaw jako tapeta</string>
+    <string name="multi_create_album">Stwórz album</string>
+    <string name="choose">Wybierz</string>
+    <string name="addAlbum">Dodaj do albumu</string>
+    <string name="multiSelect">Zaznacz wiele</string>
+    <string name="add_image">Dodaj obraz</string>
+    <string name="move_image">Przenieś</string>
+    <string name="restore">Przywróć</string>
+    <string name="create_album">Stwórz album</string>
+    <string name="gif">Zrób GIF</string>
+    <string name="listGif">GIF</string>
+    <string name="add_title">Dodaj tytuł</string>
+    <string name="enter_your_password">Wprowadź hasło</string>
+    <string name="enter">Wprowadź</string>
+    <string name="create_password">Ustaw hasło</string>
+    <string name="question_for_getting_back_password">Pytanie aby odzyskać hasło</string>
+    <string name="write_your_question">Wpisz swoje pytanie</string>
+    <string name="your_answer_for_the_question_above">Wpisz odpowiedź na pytanie</string>
+    <string name="create">Stwórz</string>
+    <string name="old_password">Stare hasło</string>
+    <string name="new_password">Nowe hasło</string>
+    <string name="question">Pytanie</string>
+    <string name="your_answer">Twoja odpowiedź</string>
+    <string name="confirm">Potwierdź</string>
+    <string name="exif_data">Exif Data</string>
+    <string name="unkown">Nieznane</string>
+    <string name="name">Nazwa</string>
+    <string name="producer">Producent</string>
+    <string name="model">Model</string>
+    <string name="size">Rozmiar</string>
+    <string name="focal_length">Ogniskowa</string>
+    <string name="flash">Lampa błyskowa</string>
+    <string name="author">Autor</string>
+    <string name="confirm_password">Zatwierdź hasło</string>
+    <string name="unknown">Nieznane</string>
+    <string name="forgot_password">Zapomniałem hasła</string>
+    <string name="duplicate_images">Powielone zdjęcia</string>
+    <string name="search_results">Wyniki wyszukiwania</string>
+    <string name="insert_to_search">Wprowadź aby wyszukać</string>
+    <string name="night_mode">Tryb nocny</string>
+    <string name="night_mode_activated"> Tryb nocny jest włączony</string>
+    <string name="night_mode_deactivated"> Tryb nocny jest wyłączony</string>
+    <string name="languague">Język</string>
+    <string name="vietnamese">Vietnamese</string>
+    <string name="english">English</string>
+    <string name="source_code">Kod źródłowy</string>
+    <string name="contributors">Contributors</string>
+    <string name="libraries">Użyte biblioteki</string>
+
+</resources>

@@ -122,7 +122,7 @@ public class PhotoFragment extends Fragment {
 
     private void toolBarEvents() {
         toolbar_photo.inflateMenu(R.menu.menu_top);
-        toolbar_photo.setTitle("Photo");
+        toolbar_photo.setTitle(getContext().getResources().getString(R.string.photo));
         toolbar_photo.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -347,6 +347,9 @@ public class PhotoFragment extends Fragment {
             Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
             startActivityForResult(intent, PICTURE_RESULT);
+            // TODO Simply append one image to the allImages list. No need to loop through it.
+            GetAllPhotoFromGallery.updateNewImages();
+            GetAllPhotoFromGallery.refreshAllImages();
 
         }
     }

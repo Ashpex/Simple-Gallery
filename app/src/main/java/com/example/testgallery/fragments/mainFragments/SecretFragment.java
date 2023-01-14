@@ -112,7 +112,7 @@ public class SecretFragment extends Fragment {
     }
     private void toolBarEvents() {
         toolbar_album.inflateMenu(R.menu.menu_album_secret);
-        toolbar_album.setTitle("Secret");
+        toolbar_album.setTitle(getContext().getResources().getString(R.string.secret));
         toolbar_album.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -144,7 +144,7 @@ public class SecretFragment extends Fragment {
         LinearLayout linearLayout = new LinearLayout(getContext());
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         final  EditText pass_box = new EditText(getContext());
-        pass_box.setHint("Enter you password");
+        pass_box.setHint(getView().getResources().getString(R.string.enter_your_password));
         pass_box.setTransformationMethod(new PasswordTransformationMethod());
         final TextView question = new TextView(getContext());
         question.setText("Answer this question: "+settings.getString("question",""));

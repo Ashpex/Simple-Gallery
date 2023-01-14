@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatDelegate;
 
 import android.preference.Preference;
 import android.preference.SwitchPreference;
+import android.util.Log;
 
 import com.example.testgallery.R;
 
@@ -64,11 +65,13 @@ public class SettingsFragment extends PreferenceFragment {
                     selectedLanguage = "en";
                 }
 
+                Log.d("Simple-Gallery","SettingsFragment onClickListener()");
                 Locale locale = new Locale(selectedLanguage);
                 Locale.setDefault(locale);
-                Configuration config = new Configuration();
-                config.locale = locale;
-                getContext().getResources().updateConfiguration(config, null);
+                Resources res = getResources();
+                Configuration config = res.getConfiguration();
+                config.setLocale(locale);
+                getContext().createConfigurationContext(config);
                 return true;
             }
         });
@@ -96,11 +99,13 @@ public class SettingsFragment extends PreferenceFragment {
             else{
                 selectedLanguage = "en";
             }
+            Log.d("Simple-Gallery","SettingsFragment onPreferenceChange()");
             Locale locale = new Locale(selectedLanguage);
             Locale.setDefault(locale);
-            Configuration config = new Configuration();
-            config.locale = locale;
-            getContext().getResources().updateConfiguration(config, null);
+            Resources res = getResources();
+            Configuration config = res.getConfiguration();
+            config.setLocale(locale);
+            getContext().createConfigurationContext(config);
         }
     }
 
@@ -128,12 +133,14 @@ public class SettingsFragment extends PreferenceFragment {
         else{
             selectedLanguage = "en";
         }
+        Log.d("Simple-Gallery","SettingsFragment onResume()");
         Locale locale = new Locale(selectedLanguage);
         Locale.setDefault(locale);
-        Resources res = getResources();
+        Resources res = getContext().getResources();
         Configuration config = res.getConfiguration();
+        config.setLocale(locale);
         config.locale = locale;
-        getContext().getResources().updateConfiguration(config, null);
+        getContext().createConfigurationContext(config);
 
     }
 
