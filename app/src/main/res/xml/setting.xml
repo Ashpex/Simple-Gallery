@@ -15,6 +15,13 @@
             android:defaultValue="false"
             android:summaryOn="English"
             android:summaryOff="Vietnamese"/>
+        <ListPreference
+            android:defaultValue="@string/english"
+            android:entries="@array/languages"
+            android:entryValues="@array/languages"
+            android:key="changeLanguageList"
+            android:summary="@string/language_summary"
+            android:title="@string/languague" />
 
     </PreferenceCategory>
 

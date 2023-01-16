@@ -192,6 +192,7 @@ public class ItemAlbumMultiSelectActivity extends AppCompatActivity implements L
             Uri targetUri = Uri.parse("file://" + listImageSelected.get(i).getPath());
             File file = new File(targetUri.getPath());
             if (file.exists()){
+                GetAllPhotoFromGallery.removeImageFromAllImages(targetUri.getPath());
                 file.delete();
             }
             if(i==listImageSelected.size()-1) {

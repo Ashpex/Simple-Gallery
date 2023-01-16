@@ -148,6 +148,8 @@ public class ItemSecretMultiSelectActivity extends AppCompatActivity implements 
             Uri targetUri = Uri.parse("file://" + listImageSelected.get(i).getPath());
             File file = new File(targetUri.getPath());
             if (file.exists()){
+                //GetAllPhotoFromGallery.removeImageFromAllImages(targetUri.getPath()); This is secret
+                // I can't easily test it TODO/FIXME
                 file.delete();
             }
         }

@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         };
         permission.checkAndRequestPermissions(this);
         setUpViewPager();
-
+        loadSettings(); // doesn't work?
 
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override

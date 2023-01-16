@@ -64,7 +64,7 @@ public class AlbumFragment extends Fragment {
 
     private void toolBarEvents() {
         toolbar_album.inflateMenu(R.menu.menu_top_album);
-        toolbar_album.setTitle("Album");
+        toolbar_album.setTitle(getContext().getResources().getString(R.string.album));
         toolbar_album.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {

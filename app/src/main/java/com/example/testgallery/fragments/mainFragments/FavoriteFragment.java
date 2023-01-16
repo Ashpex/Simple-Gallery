@@ -60,7 +60,7 @@ public class FavoriteFragment extends Fragment {
 
         // Toolbar events
         toolbar_favor.inflateMenu(R.menu.menu_top_favor);
-        toolbar_favor.setTitle("Favorite");
+        toolbar_favor.setTitle(context.getResources().getString(R.string.favorite));
 
         toolbar_favor.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override

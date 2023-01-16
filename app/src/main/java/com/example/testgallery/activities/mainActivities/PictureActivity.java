@@ -224,6 +224,7 @@ public class PictureActivity extends AppCompatActivity implements PictureInterfa
 
                                 if (file.exists()) {
                                     if (file.delete()) {
+                                        GetAllPhotoFromGallery.removeImageFromAllImages(targetUri.getPath());
                                         Toast.makeText(PictureActivity.this, "Delete successfully: " + targetUri.getPath(), Toast.LENGTH_SHORT).show();
                                     } else
                                         Toast.makeText(PictureActivity.this, "Delete failed: " + targetUri.getPath(), Toast.LENGTH_SHORT).show();

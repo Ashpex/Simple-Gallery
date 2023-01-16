@@ -68,6 +68,7 @@
     <string name="night_mode_activated"> Night mode is activated</string>
     <string name="night_mode_deactivated"> Night mode is deactivated</string>
     <string name="languague">Language</string>
+    <string name="language_summary" translatable="false">Select your language</string>
     <string name="vietnamese">Vietnamese</string>
     <string name="english">English</string>
     <string name="source_code">Source Code</string>
